@@ -198,36 +198,32 @@ INSERT INTO tag(tagName) VALUES
 ('Python'),
 ('JavaScript');
 
-
--- Populate questionTag
-INSERT INTO questionTag (questionId, tagId) VALUES
-(1, 1),  -- Question 1 is associated with Tag 1
-(1, 2),  -- Question 1 is associated with Tag 2
-(2, 2),  -- Question 2 is associated with Tag 2
-(2, 3);  -- Question 2 is associated with Tag 3
-
-
 -- Populate questions
 INSERT INTO question(date, title, content, usersId) VALUES
 ('2023-10-23 09:00:00', 'How to normalize a database?', 'I need help with database normalization. Any tips?', 1),
 ('2023-10-23 10:00:00', 'Best practices for SQL?', 'What are the best practices for writing SQL queries?', 2);
-
 
 -- Populate comments
 INSERT INTO comment(date, content, usersId, questionId) VALUES
 ('2023-10-23 10:30:00', 'You can start with the 1NF, 2NF, and 3NF.', 3, 1),
 ('2023-10-23 11:00:00', 'Avoid SELECT *. Always specify your columns.', 4, 2);
 
+-- Populate questionTag
+INSERT INTO questionTag (questionId, tagId) VALUES
+(1, 1),  -- Question 1 is associated with Tag 1
+(1, 2),  -- Question 1 is associated with Tag 2
+(2, 2);  -- Question 2 is associated with Tag 2
+
 -- Populate voteQuestions
 INSERT INTO voteQuestions(updown, usersId, questionId) VALUES
 (TRUE, 3, 1),  -- users3 upvoted Question1
-(FALSE, 4, 2); -- users4 downvoted Question2
+(FALSE, 6, 1);  -- users3 upvoted Question1
 
 
 -- Populate voteComment
 INSERT INTO voteComment(updown, usersId, commentId) VALUES
 (TRUE, 1, 1),  -- users1 upvoted Comment1
-(FALSE, 2, 2); -- users2 downvoted Comment2
+(FALSE, 5, 1); -- users2 downvoted Comment2
 
 
 -- Populate notifications
@@ -287,6 +283,7 @@ CREATE INDEX idx_notification_users ON notification USING btree(usersId);
 
 ALTER TABLE question ADD COLUMN tsvectors TSVECTOR;
 
+DROP FUNCTION IF EXISTS question_search_update() CASCADE;
 CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
@@ -299,17 +296,11 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER question_search_update
- BEFORE INSERT OR UPDATE ON question
- FOR EACH ROW
- EXECUTE PROCEDURE question_search_update();
-
-CREATE INDEX idx_search_question ON question USING GIN (tsvectors);
-
 --users--
 
 ALTER TABLE users ADD COLUMN tsvectors TSVECTOR;
 
+DROP FUNCTION IF EXISTS users_search_update() CASCADE;
 CREATE FUNCTION users_search_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
@@ -319,8 +310,8 @@ BEGIN
         );
     END IF;
     RETURN NEW;
-END $$
-LANGUAGE plpgsql;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER users_search_update
  BEFORE INSERT OR UPDATE ON users
@@ -334,6 +325,7 @@ CREATE INDEX idx_search_users ON users USING GIN (tsvectors);
 
 ALTER TABLE comment ADD COLUMN tsvectors TSVECTOR;
 
+DROP FUNCTION IF EXISTS comment_search_update() CASCADE;
 CREATE FUNCTION comment_search_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
@@ -349,7 +341,6 @@ CREATE TRIGGER comment_search_update
  EXECUTE PROCEDURE comment_search_update();
 
 CREATE INDEX idx_search_comment ON comment USING GIN (tsvectors);
-
 
 --TRIGGERS--
 
@@ -406,42 +397,3 @@ AFTER DELETE ON question
 FOR EACH ROW
 EXECUTE FUNCTION delete_cascade_question();
 
-
---TRANSACTIONS--
-
-
-------TRAN 01------
-
--- Adding a new question
-BEGIN;
-
-WITH inserted_question_content AS (
-    INSERT INTO question_content (content, date)
-    VALUES ('This is the question content', CURRENT_TIMESTAMP)
-    RETURNING id
-)
-
-INSERT INTO question (content_id, upvotes, downvotes)
-SELECT id, 0, 0 FROM inserted_question_content;
-
-COMMIT;
-
-------TRAN 02------
-
--- Adding a new comment to a question
-BEGIN;
-
-WITH inserted_comment_content AS (
-    INSERT INTO comment_content (content, date)
-    VALUES ('This is the comment content', CURRENT_TIMESTAMP)
-    RETURNING id
-)
-
-, captured_question AS (
-    SELECT id FROM question WHERE content_id = (SELECT id FROM question_content WHERE content = 'This is the question content') -- Here, you'd use your actual logic to determine which question to comment on
-)
-
-INSERT INTO comment (content_id, question_id, upvotes, downvotes)
-SELECT inserted_comment_content.id, captured_question.id, 0, 0 FROM inserted_comment_content, captured_question;
-
-COMMIT;
