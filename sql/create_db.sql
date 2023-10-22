@@ -1,0 +1,122 @@
+DROP DATABASE IF EXISTS QandAHub;
+CREATE DATABASE QandAHub;
+USE QandAHub;
+
+ALTER DATABASE QandAHub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS photo;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS question;
+DROP TABLE IF EXISTS comment;
+DROP TABLE IF EXISTS commentOnComment;
+DROP TABLE IF EXISTS voteQuestions;
+DROP TABLE IF EXISTS voteComment;
+DROP TABLE IF EXISTS notification;
+DROP TABLE IF EXISTS commentNotification;
+DROP TABLE IF EXISTS tag;
+DROP TABLE IF EXISTS questionTag;
+DROP TABLE IF EXISTS report;
+
+CREATE TABLE photo(
+    id SERIAL PRIMARY KEY,
+    path TEXT DEFAULT NULL
+);
+
+CREATE TABLE user(
+   id SERIAL PRIMARY KEY,
+   name TEXT NOT NULL,
+   email TEXT NOT NULL CONSTRAINT user_email_uk UNIQUE,
+   password TEXT NOT NULL,
+   rating INT DEFAULT 0,
+   accountCreated TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+   role INT NOT NULL CHECK (role >= 0 AND role <= 3),
+   photoId INTEGER REFERENCES photo (id) ON DELETE SET NULL ON UPDATE CASCADE,
+   isDeleted BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE question(
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    voteCount INT DEFAULT 0,
+    edited BOOLEAN NOT NULL DEFAULT FALSE,
+    userId INTEGER NOT NULL REFERENCES user (id) ON UPDATE CASCADE,
+    isDeleted BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE comment(
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    content TEXT NOT NULL,
+    voteCount INT DEFAULT 0,
+    edited BOOLEAN NOT NULL DEFAULT FALSE,
+    userId INTEGER NOT NULL REFERENCES user (id) ON UPDATE CASCADE,
+    questionId INTEGER NOT NULL REFERENCES question (id) ON UPDATE CASCADE,
+    isDeleted BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE tag (
+    id SERIAL PRIMARY KEY,
+    tagName TEXT NOT NULL CONSTRAINT tag_name_uk UNIQUE
+);
+
+CREATE TABLE questionTag(
+    questionId INTEGER NOT NULL REFERENCES question (id),
+    tagId INTEGER NOT NULL REFERENCES tag (id),
+    PRIMARY KEY (questionId, tagId)
+);
+
+CREATE TABLE commentOnComment(
+    mainCommentId INTEGER NOT NULL REFERENCES comment(id) ON UPDATE CASCADE,
+    subCommentId INTEGER NOT NULL REFERENCES comment (id) ON UPDATE CASCADE,
+    PRIMARY KEY (mainCommentId, subCommentId)
+);
+
+CREATE TABLE voteQuestions(
+    updown BOOLEAN NOT NULL,
+    userId INTEGER NOT NULL REFERENCES user (id) ON UPDATE CASCADE,
+    questionId INTEGER NOT NULL REFERENCES question (id) ON UPDATE CASCADE,
+    PRIMARY KEY (userId, questionId)
+);
+
+CREATE TABLE voteComment(
+    updown BOOLEAN NOT NULL,
+    userId INTEGER NOT NULL REFERENCES user (id) ON UPDATE CASCADE,
+    commentId INTEGER NOT NULL REFERENCES comment (id) ON UPDATE CASCADE,
+    PRIMARY KEY (userId, commentId)
+);
+
+CREATE TABLE notification(
+    id SERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    status BOOLEAN DEFAULT FALSE NOT NULL,
+    userId INTEGER NOT NULL REFERENCES user (id) ON UPDATE CASCADE
+);
+
+CREATE TABLE commentNotification(
+    id SERIAL PRIMARY KEY,
+    notificationId INTEGER NOT NULL REFERENCES notification (id) ON UPDATE CASCADE,
+    commentId INTEGER NOT NULL REFERENCES comment (id) ON UPDATE CASCADE
+);
+
+CREATE TABLE report(
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    reason TEXT NOT NULL,
+    userReporterId INTEGER REFERENCES user (id) ON UPDATE CASCADE,
+    commentId INTEGER REFERENCES comment (id) ON UPDATE CASCADE,
+    questionId INTEGER REFERENCES question (id) ON UPDATE CASCADE
+);
+
+CREATE TABLE voteNotification(
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    status BOOLEAN DEFAULT FALSE NOT NULL,  
+    updown BOOLEAN NOT NULL,             
+    userId INTEGER NOT NULL REFERENCES user (id) ON UPDATE CASCADE, 
+    commentId INTEGER REFERENCES comment (id) ON UPDATE CASCADE,   
+    questionId INTEGER REFERENCES question (id) ON UPDATE CASCADE,  
+    voterId INTEGER NOT NULL REFERENCES user (id) ON UPDATE CASCADE 
+);
