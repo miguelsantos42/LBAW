@@ -189,6 +189,71 @@ INSERT INTO users (name, email, password, role, photoId) VALUES
 
 
 
+-- Populate tags
+INSERT INTO tag(tagName) VALUES
+('Database'),
+('SQL'),
+('Web Development'),
+('Programming'),
+('Python'),
+('JavaScript');
+
+-- Populate questions
+INSERT INTO question(date, title, content, usersId) VALUES
+('2023-10-23 09:00:00', 'How to normalize a database?', 'I need help with database normalization. Any tips?', 1),
+('2023-10-23 10:00:00', 'Best practices for SQL?', 'What are the best practices for writing SQL queries?', 2);
+
+-- Populate comments
+INSERT INTO comment(date, content, usersId, questionId) VALUES
+('2023-10-23 10:30:00', 'You can start with the 1NF, 2NF, and 3NF.', 3, 1),
+('2023-10-23 11:00:00', 'Avoid SELECT *. Always specify your columns.', 4, 2);
+
+-- Populate questionTag
+INSERT INTO questionTag (questionId, tagId) VALUES
+(1, 1),  -- Question 1 is associated with Tag 1
+(1, 2),  -- Question 1 is associated with Tag 2
+(2, 2);  -- Question 2 is associated with Tag 2
+
+-- Populate voteQuestions
+INSERT INTO voteQuestions(updown, usersId, questionId) VALUES
+(TRUE, 3, 1),  -- users3 upvoted Question1
+(FALSE, 6, 1);  -- users3 upvoted Question1
+
+
+-- Populate voteComment
+INSERT INTO voteComment(updown, usersId, commentId) VALUES
+(TRUE, 1, 1),  -- users1 upvoted Comment1
+(FALSE, 5, 1); -- users2 downvoted Comment2
+
+
+-- Populate notifications
+INSERT INTO notification(content, usersId) VALUES
+('Your question received an upvote.', 1),
+('Your comment was downvoted.', 2);
+
+-- Populate commentNotification
+INSERT INTO commentNotification(notificationId, commentId) VALUES
+(1, 1),
+(2, 2);
+
+
+-- Populate reports
+INSERT INTO report(reason, usersReporterId, commentId) VALUES
+('Spam comment', 5, 1),
+('Offensive content', 6, 2);
+
+-- Populate commentOnComment
+INSERT INTO commentOnComment(mainCommentId, subCommentId) VALUES
+(1, 2);
+
+
+INSERT INTO voteNotification(date, updown, usersId, voterId, questionId) VALUES
+('2023-10-23 10:30:00', TRUE, 1, 3, 1),
+('2023-10-23 10:35:00', FALSE, 2, 4, 2),
+('2023-10-23 10:40:00', TRUE, 1, 5, 1),
+('2023-10-23 10:45:00', FALSE, 2, 6, 2);
+
+
 -- INDEXES --
 
 CREATE INDEX idx_users_email ON users USING btree(email);
@@ -218,6 +283,7 @@ CREATE INDEX idx_notification_users ON notification USING btree(usersId);
 
 ALTER TABLE question ADD COLUMN tsvectors TSVECTOR;
 
+DROP FUNCTION IF EXISTS question_search_update() CASCADE;
 CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
@@ -230,17 +296,11 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER question_search_update
- BEFORE INSERT OR UPDATE ON question
- FOR EACH ROW
- EXECUTE PROCEDURE question_search_update();
-
-CREATE INDEX idx_search_question ON question USING GIN (tsvectors);
-
 --users--
 
 ALTER TABLE users ADD COLUMN tsvectors TSVECTOR;
 
+DROP FUNCTION IF EXISTS users_search_update() CASCADE;
 CREATE FUNCTION users_search_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
@@ -250,8 +310,8 @@ BEGIN
         );
     END IF;
     RETURN NEW;
-END $$
-LANGUAGE plpgsql;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER users_search_update
  BEFORE INSERT OR UPDATE ON users
@@ -265,6 +325,7 @@ CREATE INDEX idx_search_users ON users USING GIN (tsvectors);
 
 ALTER TABLE comment ADD COLUMN tsvectors TSVECTOR;
 
+DROP FUNCTION IF EXISTS comment_search_update() CASCADE;
 CREATE FUNCTION comment_search_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
@@ -280,7 +341,6 @@ CREATE TRIGGER comment_search_update
  EXECUTE PROCEDURE comment_search_update();
 
 CREATE INDEX idx_search_comment ON comment USING GIN (tsvectors);
-
 
 --TRIGGERS--
 
@@ -336,30 +396,4 @@ CREATE TRIGGER trigger_delete_cascade_question
 AFTER DELETE ON question
 FOR EACH ROW
 EXECUTE FUNCTION delete_cascade_question();
-
-
---TRANSACTIONS--
-
-
-------TRAN 01------
-
---insert a new question and its tags
-BEGIN;
-INSERT INTO question (date, title, content, usersId) VALUES
-('2023-10-23 09:00:00', 'How to normalize a database?', 'I need help with database normalization. Any tips?', 1);
-INSERT INTO questionTag (questionId, tagId) VALUES
-(1, 1),
-(1, 2);
-COMMIT;
-
-
-------TRAN 02------
-
---insert a new comment and its subcomment
-BEGIN;
-INSERT INTO comment (date, content, usersId, questionId) VALUES
-('2023-10-23 10:30:00', 'You can start with the 1NF, 2NF, and 3NF.', 3, 1);
-INSERT INTO commentOnComment (mainCommentId, subCommentId) VALUES
-(1, 2);
-COMMIT;
 
