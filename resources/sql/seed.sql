@@ -412,36 +412,23 @@ EXECUTE FUNCTION delete_cascade_question();
 
 ------TRAN 01------
 
--- Adding a new question
+--insert a new question and its tags
 BEGIN;
-
-WITH inserted_question_content AS (
-    INSERT INTO question_content (content, date)
-    VALUES ('This is the question content', CURRENT_TIMESTAMP)
-    RETURNING id
-)
-
-INSERT INTO question (content_id, upvotes, downvotes)
-SELECT id, 0, 0 FROM inserted_question_content;
-
+INSERT INTO question (date, title, content, usersId) VALUES
+('2023-10-23 09:00:00', 'How to normalize a database?', 'I need help with database normalization. Any tips?', 1);
+INSERT INTO questionTag (questionId, tagId) VALUES
+(1, 1),
+(1, 2);
 COMMIT;
+
 
 ------TRAN 02------
 
--- Adding a new comment to a question
+--insert a new comment and its subcomment
 BEGIN;
-
-WITH inserted_comment_content AS (
-    INSERT INTO comment_content (content, date)
-    VALUES ('This is the comment content', CURRENT_TIMESTAMP)
-    RETURNING id
-)
-
-, captured_question AS (
-    SELECT id FROM question WHERE content_id = (SELECT id FROM question_content WHERE content = 'This is the question content') -- Here, you'd use your actual logic to determine which question to comment on
-)
-
-INSERT INTO comment (content_id, question_id, upvotes, downvotes)
-SELECT inserted_comment_content.id, captured_question.id, 0, 0 FROM inserted_comment_content, captured_question;
-
+INSERT INTO comment (date, content, usersId, questionId) VALUES
+('2023-10-23 10:30:00', 'You can start with the 1NF, 2NF, and 3NF.', 3, 1);
+INSERT INTO commentOnComment (mainCommentId, subCommentId) VALUES
+(1, 2);
 COMMIT;
+
