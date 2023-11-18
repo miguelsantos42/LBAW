@@ -13,6 +13,9 @@
         <!-- Styles -->
         <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
+        <link href="{{ url('css/home.css') }}" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
+
         <script type="text/javascript">
             // Fix for Firefox autofocus CSS bug
             // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
@@ -27,10 +30,13 @@
                 <nav class="navigation">
                     <a href="about.php">About</a>
                     <a href="faqs.php">FAQ's</a>
+                    <a href="faqs.php">Services</a>
+                    <a href="faqs.php">Contact</a>
+
                     @if (Auth::check())
                         <a class="btnLogout" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
                     @else
-                        <a class="btnLogin" href="{{ route('login') }}">Login</a>
+                    <button class="btnLogin" onclick="location.href='{{ route('login') }}'">Login</button>
                     @endif
                     
                 </nav>

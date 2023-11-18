@@ -26,7 +26,7 @@ blockquote *:last-child{
     background-color: white;
     border:0.1rem solid white;
     border-radius:.4rem;
-    color:#fff;
+    color:black;
     cursor:pointer;
     display:inline-block;
     font-size:1.1rem;

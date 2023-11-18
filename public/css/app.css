@@ -58,15 +58,10 @@ body {
   }
 
   .navigation .btnLogin{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 0;
-
     width: 130px ;
     height: 50px ;
-    background-color: #162938;
-    border: 2px solid #162938;
+    background-color: #4a677c;
+    border: 2px solid #4a677c;
     outline: none;
     border-radius: 6px;  
     cursor: pointer;
@@ -74,7 +69,6 @@ body {
     color: #fff;
     font-weight: 500;
     margin-left: 40px;
-    background-color: #162938;
     transition: 0.5s;
 
   } 
@@ -90,8 +84,8 @@ body {
   .navigation .btnLogout{
     width: 130px;
     height: 50px;
-    background-color: #162938;
-    border: 2px solid #162938;
+    background-color: #4a677c;
+    border: 2px solid #4a677c;
     outline: none;
     border-radius: 6px;  
     cursor: pointer;
@@ -99,7 +93,6 @@ body {
     color: #fff;
     font-weight: 500;
     margin-left: 40px;
-    background-color: #162938;
     transition: 0.5s;
 
   } 
@@ -257,3 +250,4 @@ body {
       border-bottom: 1px solid rgba(96, 108, 118, 0.4);
     }
   }
+}

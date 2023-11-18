@@ -1,0 +1,63 @@
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 10%;
+    max-width: 40%; /* Adjust as per your design */
+    padding: 20px;
+    border-radius: 25px;
+    background-color: #ffffff; /* or any color you prefer */
+    box-shadow: 0px 4px 6px rgba(90, 118, 131, 0.697); /* Adjust the shadow to match your design */
+}
+
+.search-container .question-input {
+    flex-basis: 100%; /* Take the full width */
+    border: none;
+    margin-right: 10px; /* Spacing between the input and the button */
+    padding: 10px 20px;
+    border-radius: 25px; /* Rounded corners */
+    font-size: 1.5em; /* Adjust as needed */
+    margin: 0;
+    padding: 10px;
+}
+
+.additional-fields {
+    display: none; /* Hide by default */
+    flex-basis: 75%; /* Take 75% width */
+    margin-right: 10px; /* Spacing */
+}
+
+.search-container .search-button {
+    flex-basis: 25%;
+    padding: 0px 20px;
+    border: none;
+    border-radius: 25px; /* Rounded corners */
+    background-color: #4a677c; /* Adjust to match your theme */
+    color: white;
+    cursor: pointer;
+    font-size: 1.5em; /* Adjust as needed */
+    margin: 0;
+}
+
+/* Adjust the input placeholder color if needed */
+.search-container input::placeholder {
+    color: #a0a0a0; /* Light grey placeholder text */
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        max-width: 60%;
+    }
+    .search-container .question-input,
+    .search-container .search-button,
+    .additional-fields {
+        margin: 5px 0; /* Adds space between stacked elements */
+        font-size: 1em;
+        flex-basis: auto; /* Auto adjust the width */
+    }
+    .additional-fields {
+        display: none; /* Keep hidden on small screens until activated */
+    }
+}
