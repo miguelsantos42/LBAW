@@ -1,15 +1,119 @@
 body {
-    background-color: #ffffff;
-    color: #9b4dca;
-  }
+  /* Define a radial gradient background that's centered */
+  background: radial-gradient(circle at center, #242c2d 0%, #0b1416 100%);
+  
+  /* Ensure it covers the whole page */
+  min-height: 100vh;
+  
+  /* These ensure the background extends to the whole page */
+  margin: 0;
+  padding: 0;
+  
+  /* Center the content horizontally and vertically */
+  display: grid;
+
+}
+
   main > header {
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
-    background-color: #d2afe7;
-    padding: 1em;
+    padding: 30px 50px;
     margin: 1em;
   }
+  .logo{
+    font-size: 2em;
+    color: #fff;
+    user-select: none;
+    cursor : pointer;
+    font-weight: 700;
+  }
+
+  .navigation a{
+    position: relative;
+    font-size: 1.1em;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 40px;
+  }
+  
+  .navigation a::after{
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    transform-origin: right;
+    transition: transform 0.5s;
+    border-radius: 5px;
+    transform: scaleX(0);
+  }
+  
+  .navigation a:hover::after{ 
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+
+  .navigation .btnLogin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0;
+
+    width: 130px ;
+    height: 50px ;
+    background-color: #162938;
+    border: 2px solid #162938;
+    outline: none;
+    border-radius: 6px;  
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 40px;
+    background-color: #162938;
+    transition: 0.5s;
+
+  } 
+  .navigation .btnLogin:hover{
+    
+    background: rgba(255, 255, 255, 0.5);
+
+    color: #162938;
+    transition: 0.5s;
+
+  }
+
+  .navigation .btnLogout{
+    width: 130px;
+    height: 50px;
+    background-color: #162938;
+    border: 2px solid #162938;
+    outline: none;
+    border-radius: 6px;  
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 40px;
+    background-color: #162938;
+    transition: 0.5s;
+
+  } 
+
+  .navigation .btnLogout:hover{
+    
+    background: rgba(255, 255, 255, 0.5);
+
+    color: #162938;
+    transition: 0.5s;
+
+  }
+
+
   main > header h1 {
     margin: 0;
   }
@@ -21,6 +125,28 @@ body {
     margin: 1em;
     justify-self: center;
   }
+
+  .wrapper{
+    margin: 0 auto;
+    padding: 1em;
+    max-width: 30em;
+    display: grid;
+    width: 30em;
+    height: 30em;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(50px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } 
+
+
+
+
+
   #cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -82,12 +208,7 @@ body {
   #content label {
     font-weight: normal;
   }
-  #content > form {
-    margin: 0 auto;
-    padding: 1em;
-    max-width: 20em;
-    border: 1px solid #d2afe7;
-  }
+  
   #content > form .error {
     font-weight: bold;
     color: #ff3333;
@@ -136,27 +257,3 @@ body {
       border-bottom: 1px solid rgba(96, 108, 118, 0.4);
     }
   }
-  /**
-   * Override milligram colors
-   * Some styles might be missing
-   **/
-  button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
-  }
-  a.button {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
-  }
-  a.button.button-outline {
-    color: #9b4dca;
-  }
-  a {
-    color: #9b4dca;
-  }
-  input[type=text]:focus,
-  input[type=email]:focus,
-  input[type=password]:focus {
-    border-color: #9b4dca;
-  }
-  
