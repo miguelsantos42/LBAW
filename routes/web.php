@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,7 @@ use App\Http\Controllers\Auth\RegisterController;
 
 // Home
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/ask-question', [QuestionController::class, 'store'])->name('ask.question');
 
 // Cards
 Route::controller(CardController::class)->group(function () {

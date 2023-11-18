@@ -48,7 +48,7 @@ CREATE TABLE tag (
     tagName TEXT NOT NULL CONSTRAINT tag_name_uk UNIQUE
 );
 
-CREATE TABLE question(
+CREATE TABLE questions(
     id SERIAL PRIMARY KEY,
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     title TEXT NOT NULL,
