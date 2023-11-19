@@ -20,6 +20,13 @@
         </div>
         <div class="accordion-content" id="content{{ $question->id }}" onclick="openModal(event, {{ $question->id }})">
             <p>{{ $question->content }}</p>
+            <button class="upvote">
+                <i class="bi bi-hand-thumbs-up-fill"></i>
+            </button>
+            <button class="downvote">
+                <i class="bi bi-hand-thumbs-down-fill"></i>
+            </button>
+
         </div>
         @empty
             <p>No questions available.</p>

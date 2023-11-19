@@ -30,7 +30,7 @@
     border-bottom-right-radius: 15px;
     transition:  0.7s;
 
-  }
+}
 
 /* Style the accordion container on hover */
 .accordion-container:hover {
@@ -52,7 +52,7 @@
     width: 98%;
     margin: auto;
     margin-bottom: 2em;
-    
+
 }
 
 /* Style the paragraph inside the accordion content */
@@ -74,29 +74,55 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content */
-  .modal-content {
+}
+
+/* Modal Content */
+.modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 0 auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
-  }
-  
-  /* The Close Button */
-  .close {
+    height: 70%;
+    position: relative; /* Position relative to its parent */
+    top: 15%;
+}
+
+/* The Close Button */
+.close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
+}
+
+.close:hover,
+.close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
-  }
-  
+}
+
+.upvote{
+    padding: 0px 15px;
+    background-color: white;
+    border: 2px solid #4a677cda;
+    font-size: 15px;
+    border-radius: 20px;
+}
+.downvote{
+    padding: 0px 15px;
+    background-color: white;
+    border: 2px solid #4a677cda;
+    font-size: 15px;
+    border-radius: 20px;
+}
+.upvote:hover{
+    transition: 0.5s;
+    background-color: rgba(51, 74, 91, 0.855);
+}
+
+.downvote:hover{
+    transform: 0.5s;
+    background-color: rgba(51, 74, 91, 0.855);
+}
