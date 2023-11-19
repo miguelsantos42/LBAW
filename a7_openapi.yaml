@@ -593,31 +593,31 @@ paths:
 #--'M06: Static Pages'                       
   /contact:
     get:
-        operationId: R501
-        summary: 'R501: View Contact page. (UI03)'
+        operationId: R601
+        summary: 'R601: View Contact page. (UI03)'
         description: 'Page with contacts of the site forum. ACCESS: PUB'
         tags:
-          - 'M05: Static Pages'
+          - 'M06: Static Pages'
         responses:
             '200':
               description: 'Ok. Show Contact page.'
   /faq:
     get:
-      operationId: R502
-      summary: 'R502: View FAQ page. (UI04)'
+      operationId: R602
+      summary: 'R602: View FAQ page. (UI04)'
       description: 'Page with information answers to Frequently asked questions. ACCESS: PUB'
       tags:
-        - 'M05: Static Pages'
+        - 'M06: Static Pages'
       responses:
           '200':
             description: 'Ok. Show FAQ page.'
   /about:
     get:
-      operationId: R503
-      summary: 'R503: View About page. (UI06)'
+      operationId: R603
+      summary: 'R603: View About page. (UI06)'
       description: 'Page with information about the site. ACCESS: PUB'
       tags:
-        - 'M05: Static Pages'
+        - 'M06: Static Pages'
       responses:
           '200':
             description: 'Ok. Show About page.'
