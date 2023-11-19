@@ -37,7 +37,7 @@ paths:
   /login:
     get:    ##GET method
       operationId: R101
-      summary: 'R101: Login Form'
+      summary: 'R101: Login Form (UI09)'
       description: 'Provide login form. Access: PUB'
       tags:
         - 'M01: Authentication'
@@ -103,7 +103,7 @@ paths:
     #-buscar o form
     get:
       operationId: R104
-      summary: 'R104: Register Form'
+      summary: 'R104: Register Form (UI09)'
       description: 'Provide new user registration form. Access: PUB'
       tags:
         - 'M01: Authentication'
@@ -152,7 +152,7 @@ paths:
   /users/{id}:
     get:
       operationId: R201
-      summary: 'R201: View user profile'
+      summary: 'R201: View user profile (UI06)'
       description: 'Show the individual user profile. Access: PUB'
       tags:
         - 'M02: Individual Profile'
@@ -169,8 +169,8 @@ paths:
   /users/{id}/edit:
     get:
       operationId: R202
-      summary: 'R202: View user profile edit form'
-      description: 'Show the edit form. Access: OWN, ADM'
+      summary: 'R202: Edit profile Form (UI14)'
+      description: 'Show the edit form. Access: OWN, ADM' 
       tags:
         - 'M02: Individual Profile'
       parameters:
@@ -186,7 +186,7 @@ paths:
   /users/edit:
     patch:
       operationId: R203
-      summary: 'R203: Edit profile'
+      summary: 'R203: Edit profile Action'
       description: 'Submit user profile changes. Access: OWN, ADM'
       tags:
         - 'M02: Individual Profile'
@@ -229,7 +229,7 @@ paths:
     get:
       operationId: R204
       summary: 'R204: View all questions from a user'
-      description: 'Show the questions of the user with id = {id}. Access: PUB'
+      description: 'Show the questions of user with id = {id}. Access: PUB'
       tags:
         - 'M02: Individual Profile'
       parameters:
@@ -246,7 +246,7 @@ paths:
     get:
       operationId: R205
       summary: 'R205: View all answers from a user'
-      description: 'Show the answers of the user with id = {id}. Access: PUB'
+      description: 'Show the answers of user with id = {id}. Access: PUB'
       tags:
         - 'M02: Individual Profile'
       parameters:
@@ -259,11 +259,28 @@ paths:
         '200':
           description: 'Ok. Show answers from a user'
 
+  /users/{id}/favourites:
+    get:
+      operationId: R206
+      summary: 'R206: View favourite topics from a user (UI07)'
+      description: 'Show the favourite topics of user with id = {id}. Access: PUB'
+      tags:
+        - 'M02: Individual Profile'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show favourites from a user'
+
 #--'M03: Questions, comments and votes'  
   /questions:
     get:
       operationId: R301
-      summary: 'R301: Get all questions'
+      summary: 'R301: View all questions'
       description: 'Return all questions. Questions are paginated. Access: PUB'
       tags:
         - 'M03: Questions, comments and votes' 
@@ -282,7 +299,7 @@ paths:
   /questions/ask:
     get:
       operationId: R302
-      summary: 'R302: Get Page to Ask Question'
+      summary: 'R302: Ask a question Form'
       description: 'Render the page to ask a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -292,7 +309,7 @@ paths:
 
     post:
       operationId: R303
-      summary: 'R303: Post a question'
+      summary: 'R303: Ask a question Action'
       description: 'Post a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -346,10 +363,20 @@ paths:
  
   #answer a question
   /questions/{id}/answer:
-    post:
+    get:
       operationId: R305
-      summary: 'R305: Post an answer to a question'
-      description: 'Post the answer. Access: USR'
+      summary: 'R305: Answer a question Form'
+      description: 'Render the page to ask a question. Access: USR'
+      tags:
+        - 'M03: Questions, comments and votes'
+      responses:
+        '200':
+          description: 'Ok. Show ask question page.'
+
+    post:
+      operationId: R306
+      summary: 'R306: Answer a question Action'
+      description: 'Post the answer to a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
       parameters:
@@ -386,8 +413,8 @@ paths:
                     value: '/questions/{id}'
   /unanswered:
     get:
-      operationId: R306
-      summary: 'R306: Get all the unanswered questions.'
+      operationId: R307
+      summary: 'R307: View all unanswered questions.'
       description: 'Page with all unanswered questions. ACCESS: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -400,8 +427,8 @@ paths:
   /:
     get:
       operationId: R401
-      summary: 'R401: Shows the homepage'
-      description: 'Displays the homepage of the website with a list of the top questions. Access: PUB'
+      summary: 'R401: View Homepage (UI01)'
+      description: 'Display the Homepage of the website with a list of the top questions. Access: PUB'
       tags:
         - 'M04: Users'
       responses:
@@ -422,8 +449,8 @@ paths:
   /home:
     get:
       operationId: R402
-      summary: 'R402: Shows the homepage'
-      description: 'Displays the homepage of the website with a list of the top questions. Access: PUB'
+      summary: 'R402: View Homepage (UI02)'
+      description: 'Display Homepage of the website with a list of the top questions. Access: PUB'
       tags:
         - 'M04: Users'
       responses:
@@ -433,8 +460,8 @@ paths:
   /personal_feed:
     get:
       operationId: R403
-      summary: 'R403: Shows the personal feed.'
-      description: 'Displays with a list of questions based on the preferences of the logged-in user. Access: USR'
+      summary: 'R403: View personal feed. (UI08)'
+      description: 'Display a list of questions based on the preferences of the logged-in user. Access: USR'
       tags:
         - 'M04: Users'
       responses:
@@ -444,8 +471,8 @@ paths:
   /forgot_password:
     get:
       operationId: R404
-      summary: 'R404: Get the forgot password form.'
-      description: 'Page with a form to change password. ACCESS: USR'
+      summary: 'R404: Forgot my password Form.'
+      description: 'Page with a form to change password. Access: USR'
       tags:
         - 'M04: Users'
       responses:
@@ -485,24 +512,99 @@ paths:
                   value: '/forgot_password'
 
 #--'M05: Admins and Moderators'          
-#
-#
+  /admin:
+    get:
+      operationId: R501
+      summary: 'R501: View Admin page.'
+      description: 'Page with user administration and content management. ACCESS: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'
+
+  /admin/manageUsers:
+    get:
+      operationId: R502
+      summary: 'R502: View Admin Manage Users page. (UI11)'
+      description: 'Page with user administration and content management. ACCESS: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'    
+
+  /admin/manageUsers/deleteUser:
+    delete:
+      operationId: R503
+      summary: 'R503: Delete user Action'
+      description: 'Delete user. Access: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                tag_id:
+                  type: integer
+              required:
+                - user_id
+      responses:
+        '302':
+          description: 'Redirect after deleting user.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully deleted user.'
+                  value: '/admin'
+                302Failure:
+                  description: 'Failed to delete user.'
+                  value: '/admin'
+
+  /admin/manageContent:
+    get:
+      operationId: R50
+      summary: 'R50: View admin Manage Content page. (UI12)'
+      description: 'Page with user administration and content management. ACCESS: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'            
+
+
+  /moderator:
+    get:
+      operationId: R50
+      summary: 'R50: View Moderator page. (UI)'
+      description: 'Page with user administration and content management. ACCESS: _?_' #?
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'
 
 #--'M06: Static Pages'                       
   /contact:
     get:
         operationId: R501
-        summary: 'R501: Get the contact page.'
+        summary: 'R501: View Contact page. (UI03)'
         description: 'Page with contacts of the site forum. ACCESS: PUB'
         tags:
           - 'M05: Static Pages'
         responses:
             '200':
-              description: 'Ok. Show contact page.'
+              description: 'Ok. Show Contact page.'
   /faq:
     get:
       operationId: R502
-      summary: 'R502: Get the FAQ page.'
+      summary: 'R502: View FAQ page. (UI04)'
       description: 'Page with information answers to Frequently asked questions. ACCESS: PUB'
       tags:
         - 'M05: Static Pages'
@@ -512,10 +614,10 @@ paths:
   /about:
     get:
       operationId: R503
-      summary: 'R503: Get the about page.'
+      summary: 'R503: View About page. (UI06)'
       description: 'Page with information about the site. ACCESS: PUB'
       tags:
         - 'M05: Static Pages'
       responses:
           '200':
-            description: 'Ok. Show about page.'
+            description: 'Ok. Show About page.'
