@@ -63,7 +63,91 @@
     box-shadow: 0px 4px 6px rgba(90, 118, 131, 0.697); /* Adjust the shadow to match your design */
 
 }
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.3); /* Black w/ opacity */
+    backdrop-filter: blur(2px); /* Blur */
+}
 
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 15% from the top and centered */
+    padding: 15px;
+    border: 2px solid white;
+    width: 50%; /* Could be more or less, depending on screen size */
+    border-radius: 25px;
+    overflow: hidden;
+    height: 50%;
+    box-shadow: 0px 0px 3px rgba(255, 255, 255, 0.3); 
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.submit-post{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 2%;
+    flex-basis: 10%;
+    padding: 0px 15px;
+    border: none;
+    border-radius: 25px; /* Rounded corners */
+    background-color: #4a677c; /* Adjust to match your theme */
+    color: white;
+    cursor: pointer;
+    font-size: 1em; /* Adjust as needed */
+    box-shadow: 0px 4px 6px rgba(90, 118, 131, 0.697); /* Adjust the shadow to match your design */
+}
+
+input[type="text"],
+textarea {
+    width: 100%; /* Full width */
+    padding: 12px 20px; /* Comfortable padding */
+    margin: 8px 0; /* Space between the fields */
+    display: inline-block;
+    border: 1px solid #4a677c; /* Subtle border */
+    border-radius: 25px; /* Rounded corners */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 16px; /* Readable font size */
+    font-family: 'Arial', sans-serif; /* Modern font family */
+    background-color: #f8f8f8; /* Light background color */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus effect */
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #4a677c; /* Highlighted border color on focus */
+    box-shadow: 0 0 8px 0 rgba(74, 103, 124, 0.2); /* Subtle shadow on focus */
+}
+
+textarea {
+    height: 270px;
+}
 
 
 @media (max-width: 768px) {
