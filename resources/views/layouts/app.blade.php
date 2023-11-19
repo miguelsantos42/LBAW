@@ -26,9 +26,15 @@
 
     </head>
     <body>
+        @include('sidebar')
         <main>
             <header>
-                <h2 class="logo"><a href="{{ url('/home') }}">Q&AHub</a></h2>
+                <div class="logo-container">
+                    <h2 class="logo"><a href="{{ url('/home') }}">Q&AHub</a></h2>
+                    <button onclick=toggleSidebar()  id="sidebar" class="house-main" type="">
+                        <i class="bi bi-house-fill"></i>
+                    </button>        
+                </div>
                 <nav class="navigation">
                     <a href="about.php">About</a>
                     <a href="faqs.php">FAQ's</a>
@@ -46,6 +52,17 @@
             <section id="content">
                 @yield('content')
             </section>
+            
         </main>
+        <script>
+            function toggleSidebar() {
+                var sidebar = document.getElementById("sidebar");
+                if (sidebar.style.left === '-250px') {
+                    sidebar.style.left = '0'; // Slide in
+                } else {
+                    sidebar.style.left = '-250px'; // Slide out
+                }
+            }
+        </script>
     </body>
 </html>
