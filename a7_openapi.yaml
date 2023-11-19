@@ -420,8 +420,8 @@ paths:
           description: 'Ok. Show ask question page.'
 
     post:
-      operationId: R305
-      summary: 'R305: Ask a question Action'
+      operationId: R306
+      summary: 'R306: Ask a question Action'
       description: 'Post a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -457,8 +457,8 @@ paths:
   #get a question                
   /questions/{id}:
     get:
-      operationId: R304
-      summary: 'R304: Get Question'
+      operationId: R307
+      summary: 'R307: Get Question'
       description: 'Get a question page. Access: PUB'
       tags:
         - 'M03: Questions, comments and votes'
@@ -477,8 +477,8 @@ paths:
 
   /questions/{id}/comment:
     get:
-      operationId: R305
-      summary: 'R305: Comment a question Form'
+      operationId: R308
+      summary: 'R308: Comment a question Form'
       description: 'Render the page to ask a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -487,8 +487,8 @@ paths:
           description: 'Ok. Show ask question page.'
 
     post:
-      operationId: R305
-      summary: 'R305: Comment a question Action'
+      operationId: R309
+      summary: 'R309: Comment a question Action'
       description: 'Post the answer to a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -526,8 +526,8 @@ paths:
                     value: '/questions/{id}'
   /unanswered:
     get:
-      operationId: R307
-      summary: 'R307: View all unanswered questions.'
+      operationId: R310
+      summary: 'R310: View all unanswered questions.'
       description: 'Page with all unanswered questions. ACCESS: USR'
       tags:
         - 'M03: Questions, comments and votes'
