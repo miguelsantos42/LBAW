@@ -12,15 +12,22 @@ class FeedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch all questions that are not marked as deleted
-        $questions = Question::where('isDeleted', false)->get();
+        $orderType = $request->get('order', 'random'); // 'random' is the default
 
-        // Return the view with the questions data
-        return view('pages.feed', compact('questions'));    
+        if ($orderType == 'top') {
+            $questions = Question::where('isdeleted', false)
+                                ->orderBy('votecount', 'desc')
+                                ->get();
+        } else { // Default to random
+            $questions = Question::where('isdeleted', false)
+                                ->inRandomOrder()
+                                ->get();
+        }
+
+        return view('pages.feed', compact('questions'));
     }
-
 
 
     /**

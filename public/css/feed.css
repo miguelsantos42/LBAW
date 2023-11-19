@@ -126,3 +126,11 @@
     transform: 0.5s;
     background-color: rgba(51, 74, 91, 0.855);
 }
+
+
+.vote-count{
+    font-weight: 700;
+    font-size: 1.2em;
+    margin: 0px 10px;
+    color: black;
+}

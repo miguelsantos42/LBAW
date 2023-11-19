@@ -26,6 +26,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/ask-question', [QuestionController::class, 'store'])->name('ask.question');
 Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 Route::get('/feed/{id}', [FeedController::class, 'show'])->name('feed.show');
+Route::get('/feed', 'FeedController@index');
+
 // Cards
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');
