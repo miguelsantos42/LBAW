@@ -1,0 +1,623 @@
+openapi: 3.0.0
+
+info: 
+  version: '1.0'
+  title: 'LBAW Q&AHub Web API'
+  description: 'Web Resources Specification (A7) for Q&AHub'
+
+servers:
+- url: https://lbaw2362.lbaw.fe.up.pt
+  description: Production server
+
+externalDocs:
+ description: Find more info here.
+ url: https://git.fe.up.pt/lbaw/lbaw2324/lbaw2362/-/wikis/eap
+
+tags:
+  - name: 'M01: Authentication'                  # For login/logout, registration, view and edit personal profile information.
+  - name: 'M02: Individual Profile'              # For user profiles, edit profile, individual questions and answers.
+  - name: 'M03: Questions, comments and votes'   # For questions comments and votes
+  - name: 'M04: Users'                           # For homepage, profile, password recovery, notifications, and other user-centric actions
+  - name: 'M05: Admins and Moderators'           # For admin and moderator specific actions, banning, unbanning, etc..
+  - name: 'M06: Static Pages'                    # For about, FAQ, and other static informational pages.
+
+#tags:
+ #- name: 'M01: Authentication'    # For login, logout, registration, password recovery etc.
+ #- name: 'M02: Users'             # For user profiles, homepage, edit profile, and other user-centric actions.
+ #- name: 'M03: Admins and Moderators'  # For admin and moderator specific actions, banning, unbanning, etc.
+ #- name: 'M04: Static Pages'      # For about, FAQ, and other static informational pages.
+ #- name: 'M05: Comments'          # For actions related to comments: creation, deletion, editing, liking, etc.
+ #- name: 'M06: Articles'          # For actions related to articles or questions: creation, deletion, editing, voting, etc.
+ #- name: 'M07: Notifications'     # For actions related to user notifications.
+ #- name: 'M08: User Interactions' # For follow, unfollow, remove follower, etc.
+ #- name: 'M09: Search'            # For search functionalities.
+
+#--'M01: Authentication'
+paths:
+  /login:
+    get:    ##GET method
+      operationId: R101
+      summary: 'R101: Login Form (UI09)'
+      description: 'Provide login form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show log-in UI'
+
+    post:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      requestBody:   #-acepted parameters
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:  #-paginas de ação- redirects
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+  /logout: #-action page--Logout
+    post:
+      operationId: R103
+      summary: 'R103: Logout Action'    
+      description: 'Logout the current authenticated used. Access: USR, MOD'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '302':
+          description: 'Redirect after processing logout.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+  /register:
+    #-buscar o form
+    get:
+      operationId: R104
+      summary: 'R104: Register Form (UI09)'
+      description: 'Provide new user registration form. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      responses:
+        '200':
+          description: 'Ok. Show sign-up UI'
+    #-escreve p bd
+    post:
+      operationId: R105
+      summary: 'R105: Register Action'
+      description: 'Processes the new user registration form submission. Access: PUB'
+      tags:
+        - 'M01: Authentication'
+      #-parametros aceites
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              required:
+                - email
+                - password
+      #-redirect
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+#--'M02: Individual Profile' 
+  /users/{id}:
+    get:
+      operationId: R201
+      summary: 'R201: View user profile (UI06)'
+      description: 'Show the individual user profile. Access: PUB'
+      tags:
+        - 'M02: Individual Profile'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show User Profile UI'
+
+  /users/{id}/edit:
+    get:
+      operationId: R202
+      summary: 'R202: Edit profile Form (UI14)'
+      description: 'Show the edit form. Access: OWN, ADM' 
+      tags:
+        - 'M02: Individual Profile'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+          '200':
+            description: 'Ok. Show edit form UI'
+
+  /users/edit:
+    patch:
+      operationId: R203
+      summary: 'R203: Edit profile Action'
+      description: 'Submit user profile changes. Access: OWN, ADM'
+      tags:
+        - 'M02: Individual Profile'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                username:
+                  type: string
+                email:
+                  type: string
+                profile_picture:
+                  type: string
+                  format: binary
+                personal_text:
+                  type: string
+              required:
+                - user_id
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edition. Redirect to user profile.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed edition. Redirect to edit form.'
+                  value: '/users/{id}/edit'
+
+  /users/{id}/questions:
+    get:
+      operationId: R204
+      summary: 'R204: View all questions from a user'
+      description: 'Show the questions of user with id = {id}. Access: PUB'
+      tags:
+        - 'M02: Individual Profile'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show questions from a user'
+
+  /users/{id}/answers:
+    get:
+      operationId: R205
+      summary: 'R205: View all answers from a user'
+      description: 'Show the answers of user with id = {id}. Access: PUB'
+      tags:
+        - 'M02: Individual Profile'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show answers from a user'
+
+  /users/{id}/favourites:
+    get:
+      operationId: R206
+      summary: 'R206: View favourite topics from a user (UI07)'
+      description: 'Show the favourite topics of user with id = {id}. Access: PUB'
+      tags:
+        - 'M02: Individual Profile'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show favourites from a user'
+
+#--'M03: Questions, comments and votes'  
+  /questions:
+    get:
+      operationId: R301
+      summary: 'R301: View all questions'
+      description: 'Return all questions. Questions are paginated. Access: PUB'
+      tags:
+        - 'M03: Questions, comments and votes' 
+      parameters:
+        - in: query
+          name: page
+          description: Pagination number
+          schema:
+            type: integer
+          required: false
+      responses:
+        '200':
+          description: 'Ok. Show questions.'
+
+  #--ask a question
+  /questions/ask:
+    get:
+      operationId: R302
+      summary: 'R302: Ask a question Form'
+      description: 'Render the page to ask a question. Access: USR'
+      tags:
+        - 'M03: Questions, comments and votes'
+      responses:
+        '200':
+          description: 'Ok. Show ask question page.'
+
+    post:
+      operationId: R303
+      summary: 'R303: Ask a question Action'
+      description: 'Post a question. Access: USR'
+      tags:
+        - 'M03: Questions, comments and votes'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                text_body:
+                  type: string
+              required:
+                    - title
+                    - text_body
+      responses:
+        '302':
+          description: 'Redirect after processing the question.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully posted a question. Redirect to page of the created question.'
+                  value: '/questions/{question_id}'
+                302Failure:
+                  description: 'Failed posting. Redirect to ask question page.'
+                  value: '/questions/ask'
+
+  #get a question                
+  /questions/{id}:
+    get:
+      operationId: R304
+      summary: 'R304: Get Question'
+      description: 'Get a question page. Access: PUB'
+      tags:
+        - 'M03: Questions, comments and votes'
+      parameters:
+        - in: path
+          name: id
+          description: Question id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show question page.'
+ 
+  #answer a question
+  /questions/{id}/answer:
+    get:
+      operationId: R305
+      summary: 'R305: Answer a question Form'
+      description: 'Render the page to ask a question. Access: USR'
+      tags:
+        - 'M03: Questions, comments and votes'
+      responses:
+        '200':
+          description: 'Ok. Show ask question page.'
+
+    post:
+      operationId: R306
+      summary: 'R306: Answer a question Action'
+      description: 'Post the answer to a question. Access: USR'
+      tags:
+        - 'M03: Questions, comments and votes'
+      parameters:
+        - in: path
+          name: id
+          description: Question id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                required:
+                      - text
+      responses:
+          '302':
+            description: 'Redirect after processing the answer.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  302Success:
+                    description: 'Successfully posted an answer. Redirect to question page.'
+                    value: '/questions/{id}'
+                  302Failure:
+                    description: 'Failed posting. Redirect to question page.'
+                    value: '/questions/{id}'
+  /unanswered:
+    get:
+      operationId: R307
+      summary: 'R307: View all unanswered questions.'
+      description: 'Page with all unanswered questions. ACCESS: USR'
+      tags:
+        - 'M03: Questions, comments and votes'
+      responses:
+          '200':
+            description: 'Ok. Show unsanswered questions page.'                  
+
+
+#--'M04: Users'                           
+  /:
+    get:
+      operationId: R401
+      summary: 'R401: View Homepage (UI01)'
+      description: 'Display the Homepage of the website with a list of the top questions. Access: PUB'
+      tags:
+        - 'M04: Users'
+      responses:
+        '308':
+          description: 'Redirect immediately to the homepage.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Redirect to the homepage.'
+                  value: '/home'
+                302Failure:
+                  description: 'Failed to reach the page. Redirect to the homepage.'
+                  value: '/home'
+
+  /home:
+    get:
+      operationId: R402
+      summary: 'R402: View Homepage (UI02)'
+      description: 'Display Homepage of the website with a list of the top questions. Access: PUB'
+      tags:
+        - 'M04: Users'
+      responses:
+        '200':
+          description: 'Ok. Show Top Questions'
+
+  /personal_feed:
+    get:
+      operationId: R403
+      summary: 'R403: View personal feed. (UI08)'
+      description: 'Display a list of questions based on the preferences of the logged-in user. Access: USR'
+      tags:
+        - 'M04: Users'
+      responses:
+        '200':
+          description: 'Ok. Show Personal Feed'
+
+  /forgot_password:
+    get:
+      operationId: R404
+      summary: 'R404: Forgot my password Form.'
+      description: 'Page with a form to change password. Access: USR'
+      tags:
+        - 'M04: Users'
+      responses:
+          '200':
+            description: 'Ok. Show forgot password form.'
+   
+    post:
+      operationId: R405
+      summary: 'R405: Send reset password link'
+      description: 'Send the password link. Access: USR'
+      tags:
+        - 'M04: Users'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+                    - email
+      responses:
+        '302':
+          description: 'Redirect after sending reset password link.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully sent link. Redirect to previous page.'
+                  value: '/forgot_password'
+                302Failure:
+                  description: 'Failed sending link. Redirect to previous page with error message.'
+                  value: '/forgot_password'
+
+#--'M05: Admins and Moderators'          
+  /admin:
+    get:
+      operationId: R501
+      summary: 'R501: View Admin page.'
+      description: 'Page with user administration and content management. ACCESS: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'
+
+  /admin/manageUsers:
+    get:
+      operationId: R502
+      summary: 'R502: View Admin Manage Users page. (UI11)'
+      description: 'Page with user administration and content management. ACCESS: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'    
+
+  /admin/manageUsers/deleteUser:
+    delete:
+      operationId: R503
+      summary: 'R503: Delete user Action'
+      description: 'Delete user. Access: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                tag_id:
+                  type: integer
+              required:
+                - user_id
+      responses:
+        '302':
+          description: 'Redirect after deleting user.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully deleted user.'
+                  value: '/admin'
+                302Failure:
+                  description: 'Failed to delete user.'
+                  value: '/admin'
+
+  /admin/manageContent:
+    get:
+      operationId: R50
+      summary: 'R50: View admin Manage Content page. (UI12)'
+      description: 'Page with user administration and content management. ACCESS: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'            
+
+
+  /moderator:
+    get:
+      operationId: R50
+      summary: 'R50: View Moderator page. (UI)'
+      description: 'Page with user administration and content management. ACCESS: _?_' #?
+      tags:
+        - 'M05: Admins and Moderators'
+      responses:
+          '200':
+            description: 'Ok. Show user search page.'
+
+#--'M06: Static Pages'                       
+  /contact:
+    get:
+        operationId: R501
+        summary: 'R501: View Contact page. (UI03)'
+        description: 'Page with contacts of the site forum. ACCESS: PUB'
+        tags:
+          - 'M05: Static Pages'
+        responses:
+            '200':
+              description: 'Ok. Show Contact page.'
+  /faq:
+    get:
+      operationId: R502
+      summary: 'R502: View FAQ page. (UI04)'
+      description: 'Page with information answers to Frequently asked questions. ACCESS: PUB'
+      tags:
+        - 'M05: Static Pages'
+      responses:
+          '200':
+            description: 'Ok. Show FAQ page.'
+  /about:
+    get:
+      operationId: R503
+      summary: 'R503: View About page. (UI06)'
+      description: 'Page with information about the site. ACCESS: PUB'
+      tags:
+        - 'M05: Static Pages'
+      responses:
+          '200':
+            description: 'Ok. Show About page.'
