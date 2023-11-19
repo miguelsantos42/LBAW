@@ -22,11 +22,13 @@
         </script>
         <script type="text/javascript" src={{ url('js/app.js') }} defer>
         </script>
+        <script type="text/javascript" src={{ url('js/home_question_bar.js') }} defer>        </script>
+
     </head>
     <body>
         <main>
             <header>
-                <h2 class="logo"><a href="{{ url('/home') }}">Q&AHub!</a></h2>
+                <h2 class="logo"><a href="{{ url('/home') }}">Q&AHub</a></h2>
                 <nav class="navigation">
                     <a href="about.php">About</a>
                     <a href="faqs.php">FAQ's</a>
