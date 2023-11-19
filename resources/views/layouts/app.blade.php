@@ -22,6 +22,8 @@
         </script>
         <script type="text/javascript" src={{ url('js/app.js') }} defer>
         </script>
+        <script type="text/javascript" src={{ url('js/home_question_bar.js') }} defer>        </script>
+
     </head>
     <body>
         <main>

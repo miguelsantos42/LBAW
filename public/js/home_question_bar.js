@@ -1,12 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
   var titleInput = document.getElementById('question-title');
-  var additionalFields = document.getElementById('additional-fields');
+  var contentTextarea = document.getElementById('question-content');
 
-  titleInput.addEventListener('click', function() {
-      // Check if the additional fields are already shown
-      if (additionalFields.style.display === 'none') {
-          additionalFields.style.display = 'flex'; // Show the additional fields
-          this.style.flexBasis = '25%'; // Reduce the width of the title input
-      }
+  titleInput.addEventListener('focus', function() {
+      console.log('Focused on title input'); // Test if the event is triggered
+      contentTextarea.style.display = 'block'; // Show the content textarea
   });
 });
