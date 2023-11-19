@@ -328,11 +328,11 @@ paths:
   #get a question                
   /questions/{id}:
     get:
-      operationId: R202
-      summary: 'R202: Get Question'
+      operationId: R304
+      summary: 'R304: Get Question'
       description: 'Get a question page. Access: PUB'
       tags:
-        - 'M02: Questions'
+        - 'M03: Questions, comments and votes'
       parameters:
         - in: path
           name: id
@@ -347,11 +347,11 @@ paths:
   #answer a question
   /questions/{id}/answer:
     post:
-      operationId: R203
-      summary: 'R203: Post an answer to a question'
+      operationId: R305
+      summary: 'R305: Post an answer to a question'
       description: 'Post the answer. Access: USR'
       tags:
-        - 'M02: Questions'
+        - 'M03: Questions, comments and votes'
       parameters:
         - in: path
           name: id
@@ -384,11 +384,105 @@ paths:
                   302Failure:
                     description: 'Failed posting. Redirect to question page.'
                     value: '/questions/{id}'
-                  
+  /unanswered:
+    get:
+      operationId: R306
+      summary: 'R306: Get all the unanswered questions.'
+      description: 'Page with all unanswered questions. ACCESS: USR'
+      tags:
+        - 'M03: Questions, comments and votes'
+      responses:
+          '200':
+            description: 'Ok. Show unsanswered questions page.'                  
+
 
 #--'M04: Users'                           
-#
-#
+  /:
+    get:
+      operationId: R401
+      summary: 'R401: Shows the homepage'
+      description: 'Displays the homepage of the website with a list of the top questions. Access: PUB'
+      tags:
+        - 'M04: Users'
+      responses:
+        '308':
+          description: 'Redirect immediately to the homepage.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Redirect to the homepage.'
+                  value: '/home'
+                302Failure:
+                  description: 'Failed to reach the page. Redirect to the homepage.'
+                  value: '/home'
+
+  /home:
+    get:
+      operationId: R402
+      summary: 'R402: Shows the homepage'
+      description: 'Displays the homepage of the website with a list of the top questions. Access: PUB'
+      tags:
+        - 'M04: Users'
+      responses:
+        '200':
+          description: 'Ok. Show Top Questions'
+
+  /personal_feed:
+    get:
+      operationId: R403
+      summary: 'R403: Shows the personal feed.'
+      description: 'Displays with a list of questions based on the preferences of the logged-in user. Access: USR'
+      tags:
+        - 'M04: Users'
+      responses:
+        '200':
+          description: 'Ok. Show Personal Feed'
+
+  /forgot_password:
+    get:
+      operationId: R404
+      summary: 'R404: Get the forgot password form.'
+      description: 'Page with a form to change password. ACCESS: USR'
+      tags:
+        - 'M04: Users'
+      responses:
+          '200':
+            description: 'Ok. Show forgot password form.'
+   
+    post:
+      operationId: R405
+      summary: 'R405: Send reset password link'
+      description: 'Send the password link. Access: USR'
+      tags:
+        - 'M04: Users'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+                    - email
+      responses:
+        '302':
+          description: 'Redirect after sending reset password link.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully sent link. Redirect to previous page.'
+                  value: '/forgot_password'
+                302Failure:
+                  description: 'Failed sending link. Redirect to previous page with error message.'
+                  value: '/forgot_password'
 
 #--'M05: Admins and Moderators'          
 #
