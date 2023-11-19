@@ -62,15 +62,9 @@ paths:
                   type: string
                 password:
                   type: string
-                confirm_password:
-                  type: string
-                photoId:
-                  type: integer
               required:
-                - name
                 - email
                 - password
-                - confirm_password
 
       responses:  #-paginas de ação- redirects
         '302':
@@ -136,9 +130,15 @@ paths:
                   type: string
                 email:
                   type: string
+                password: 
+                  type: string
+                confirm_password:
+                  type: string
               required:
+                - name
                 - email
                 - password
+                - confirm_password
       #-redirect
       responses:
         '302':
@@ -328,7 +328,6 @@ paths:
 
               required:
                   - id
-                  - title
                   - content
 
       responses:
@@ -506,10 +505,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  text:
+                  content:
                     type: string
                 required:
-                      - text
+                      - content
       responses:
           '302':
             description: 'Redirect after processing the answer.'
@@ -729,10 +728,10 @@ paths:
             schema:
               type: object
               properties:
-                tag_id:
+                id:
                   type: integer
               required:
-                - user_id
+                - id
       responses:
         '302':
           description: 'Redirect after deleting user.'
