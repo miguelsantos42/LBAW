@@ -668,7 +668,104 @@ paths:
           '200':
             description: 'Ok. Show notifications.'
 
+
+  #--tags 
+  /tags/{id_tag}: 
+    get:
+      operationId: R409
+      summary: 'R409: Get a specific tag.'
+      description: 'Show a specific tag. ACCESS: USR'
+      tags:
+        - 'M04: Users'
+      parameters:
+        - in: path
+          name: id_tag
+          description: id of the specific tag
+          schema:
+            type: integer
+          required: true
+      responses:
+          '200':
+            description: 'Ok. Show notifications.'
   
+  /tags/{id_tag}/follow:
+    parameters:
+      - in: path
+        name: id_tag
+        required: true
+        schema:
+          type: integer
+    post:
+      operationId: R410
+      summary: 'R410: Follow Tag'
+      description: 'User Follows other tag Access: USR'
+      tags:
+        - 'M04: Users'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_tag:
+                  type: integer
+              required:
+                - id_tag
+      responses:
+        '302':
+          description: 'Redirect after following tag.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully following tag.'
+                  value: '/tags/{id_tag}'
+                302Failure:
+                  description: 'Failed to follow tag.'
+                  value: '/tags/{id_tag}' 
+  
+  /tags/{id_tag}/unfollow:
+    parameters:
+      - in: path
+        name: id_tag
+        required: true
+        schema:
+          type: integer
+    post:  
+      operationId: R411
+      summary: 'R411: Unfollow tag'
+      description: 'User now does not follow a specific tag anymore. Access: USR'
+      tags:
+        - 'M04: UserS'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_tag:
+                  type: integer
+              required:
+                - id_tag
+      responses:
+        '302':
+          description: 'Redirect after Unfollow tag.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successfully unfollow tag.'
+                  value: '/tags/{id_tag}'
+                302Failure:
+                  description: 'Failed to unfollow tag.'
+                  value: '/tags/{id_tag}'
+                  
 #--'M05: Admins and Moderators'          
   /admin:
     get:
