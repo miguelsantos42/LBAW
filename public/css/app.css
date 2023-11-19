@@ -156,29 +156,30 @@ main > header {
 }
 
 .sidebar {
-  position: fixed; /* Fixed position */
-  top: 0; /* Align to the top */
-  left: -250px; /* Start off-screen to the left */
-  width: 250px; /* Sidebar width */
-  height: 100%; /* Full viewport height */
-  background: #333; /* Sidebar background color */
-  overflow-x: hidden; /* Hide horizontal overflow */
-  transition: 0.5s; /* Smooth transition for the slide effect */
-  padding-top: 60px; /* Padding from the top */
-  z-index: 2; /* Ensure the sidebar stacks above other content */
+    position: fixed; /* Fixed position */
+    top: -500px; /* Align to the top */
+    left: 70px;
+    width: 250px; /* Sidebar width */
+    height: 50%; /* Full viewport height */
+    background: #fff; /* Sidebar background color */
+    overflow-x: hidden; /* Hide horizontal overflow */
+    transition: 0.5s; /* Smooth transition for the slide effect */
+    padding-top: 60px; /* Padding from the top */
+    border-radius: 25px;
 }
 
+
 .sidebar a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
+    padding: 8px 8px 18px 18px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
 }
 
 .sidebar a:hover {
-  color: #f1f1f1;
+    color: #4a677c;
 }
 
 

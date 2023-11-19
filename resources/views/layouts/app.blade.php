@@ -13,7 +13,9 @@
         <!-- Styles -->
         <link href="{{ url('css/milligram.min.css') }}" rel="stylesheet">
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
-        <link href="{{ url('css/home.css') }}" rel="stylesheet">
+        <link href="{{ url('css/home.css') }}" rel="stylesheet">        <link href="{{ url('css/home.css') }}" rel="stylesheet">
+        <link href="{{ url('css/feed.css') }}" rel="stylesheet">
+
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
 
         <script type="text/javascript">
@@ -57,10 +59,10 @@
         <script>
             function toggleSidebar() {
                 var sidebar = document.getElementById("sidebar");
-                if (sidebar.style.left === '-250px') {
-                    sidebar.style.left = '0'; // Slide in
+                if (sidebar.style.top === '-500px') {
+                    sidebar.style.top = '180px'; // Slide in
                 } else {
-                    sidebar.style.left = '-250px'; // Slide out
+                    sidebar.style.top = '-500px'; // Slide out
                 }
             }
         </script>
