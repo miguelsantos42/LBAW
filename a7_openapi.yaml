@@ -34,9 +34,6 @@ tags:
 
 #--'M01: Authentication'
 paths:
-
-### LOGIN ###
-
   /login:
     get:    ##GET method
       operationId: R101
@@ -83,9 +80,6 @@ paths:
                   description: 'Failed authentication. Redirect to login form.'
                   value: '/login'
 
-
-### LOGOUT ###
-
   /logout: #-action page--Logout
     post:
       operationId: R103
@@ -104,8 +98,6 @@ paths:
                 302Success:
                   description: 'Successful logout. Redirect to login form.'
                   value: '/login'
-
-### REGISTER ###
 
   /register:
     #-buscar o form
@@ -137,17 +129,9 @@ paths:
                   type: string
                 email:
                   type: string
-                password:
-                  type: string
-                confirm_password:
-                  type: string
-                photoId:
-                  type: integer
               required:
-                - name
                 - email
                 - password
-                - confirm_password
       #-redirect
       responses:
         '302':
@@ -213,16 +197,19 @@ paths:
             schema:
               type: object
               properties:
-                id:
+                user_id:
                   type: integer
-                name:
+                username:
                   type: string
                 email:
                   type: string
-                photoId:
-                  type: integer
+                profile_picture:
+                  type: string
+                  format: binary
+                personal_text:
+                  type: string
               required:
-                - id
+                - user_id
       responses:
         '302':
           description: 'Redirect after processing the new user information.'
@@ -289,8 +276,6 @@ paths:
         '200':
           description: 'Ok. Show favourites from a user'
 
-######### QUESTIONS, COMMENTS AND VOTES #########
-
 #--'M03: Questions, comments and votes'  
   /questions:
     get:
@@ -310,121 +295,11 @@ paths:
         '200':
           description: 'Ok. Show questions.'
 
-
-  ######### EDIT QUESTION #########
-
-  /question/edit:
-
-    question:
-      operationId: R302
-      summary: 'R302: Edit question action'
-      description: 'Edit question. Access: OWN'
-      tags:
-        - 'M03: Questions, comments and votes'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                title:
-                  type: string
-                content:
-                  type: string
-
-              required:
-                  - id
-                  - title
-                  - content
-
-      responses:
-        '200':
-          description: 'Edited successfully.'
-        '403':
-          description: 'Forbiden action.'
-
-  ######### REMOVE QUESTION #########
-
-  /question/remove:
-
-    question:
-      operationId: R303
-      summary: 'R303: Remove question action'
-      description: 'Remove question. Access: OWN'
-      tags:
-        - 'M03: Questions, comments and votes'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                isDeleted:
-                  type: boolean
-                
-
-              required:
-                  - id
-                  - isDeleted
-
-      responses:
-        '200':
-          description: 'Removed successfully.'
-        '403':
-          description: 'Forbiden action.'
-
-
-######### QUESTION VOTE #########
-
-  /question/vote:
-
-    post:
-      operationId: R304
-      summary: 'R304: Upvote or Downvote question action'
-      description: 'Vote question. Access: OWN, USR, MOD, ADM'
-      tags:
-        - 'M03: Questions, comments and votes'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                updown:
-                  type: boolean
-                usersId:
-                  type: integer
-                questionId:
-                  type: integer
-
-              required:
-                  - updown
-                  - usersId
-                  - questionId
-  
-      responses:
-        '200':
-          description: 'Voted successfully.'
-        '403':
-          description: 'Forbiden action.'
-
-
-   ######### QUESTION ASK #########
-
+  #--ask a question
   /questions/ask:
     get:
-      operationId: R305
-      summary: 'R305: Ask a question Form'
+      operationId: R302
+      summary: 'R302: Ask a question Form'
       description: 'Render the page to ask a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -433,8 +308,8 @@ paths:
           description: 'Ok. Show ask question page.'
 
     post:
-      operationId: R305
-      summary: 'R305: Ask a question Action'
+      operationId: R303
+      summary: 'R303: Ask a question Action'
       description: 'Post a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -447,11 +322,11 @@ paths:
               properties:
                 title:
                   type: string
-                content:
+                text_body:
                   type: string
               required:
                     - title
-                    - content
+                    - text_body
       responses:
         '302':
           description: 'Redirect after processing the question.'
@@ -462,7 +337,7 @@ paths:
               examples:
                 302Success:
                   description: 'Successfully posted a question. Redirect to page of the created question.'
-                  value: '/questions/{questionId}'
+                  value: '/questions/{question_id}'
                 302Failure:
                   description: 'Failed posting. Redirect to ask question page.'
                   value: '/questions/ask'
@@ -486,12 +361,11 @@ paths:
         '200':
           description: 'Ok. Show question page.'
  
-  ######### COMMENT QUESTION #########
-
-  /questions/{id}/comment:
+  #answer a question
+  /questions/{id}/answer:
     get:
       operationId: R305
-      summary: 'R305: Comment a question Form'
+      summary: 'R305: Answer a question Form'
       description: 'Render the page to ask a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -636,6 +510,74 @@ paths:
                 302Failure:
                   description: 'Failed sending link. Redirect to previous page with error message.'
                   value: '/forgot_password'
+
+  /reset_password/{token}:
+    get:
+      operationId: R406
+      summary: 'R406: Reset password Form.'
+      description: 'Page with a form to change password. ACCESS: USR'
+      tags:
+        
+    'M04: Users'
+      - parameters:
+      in: path
+          name: token
+          description: random token for changing password
+          schema:
+          type: integer
+          required: true
+      responses:'200':
+          description: 'Ok. Show reset password form.'
+    post:
+      operationId: R407
+      summary: 'R407: Changing password'
+      description: 'Changes the password. Access: USR'
+      tags:
+        - 'M04: Users'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: integer
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+        token
+          email
+            password
+      responses:'302':
+        description: 'Redirect after changing password.'
+        headers:
+          Location:
+            schema:
+              type: string
+            examples:
+              302Success:
+                description: 'Successfully changed password. Redirect to login page.'
+                value: '/login'
+              302Failure:
+                description: 'Failed when changing password. Redirect to previous page.'
+                value: '/reset_password/{token}'
+
+  #--notifications
+  /notifications:
+    get:
+      operationId: R407
+      summary: 'R407: Get notifications.'
+      description: 'Show all notifications of a user. ACCESS: USR'
+      tags:
+        - 'M04: Users'
+      responses:
+          '200':
+            description: 'Ok. Show notifications.'
+
+  
 
 #--'M05: Admins and Moderators'          
   /admin:
