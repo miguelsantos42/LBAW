@@ -6,6 +6,8 @@ info:
   description: 'Web Resources Specification (A7) for Q&AHub'
 
 servers:
+- url: https://localhost:8000
+  description: Local dev server
 - url: https://lbaw2362.lbaw.fe.up.pt
   description: Production server
 
@@ -21,21 +23,11 @@ tags:
   - name: 'M05: Admins and Moderators'           # For admin and moderator specific actions, banning, unbanning, etc..
   - name: 'M06: Static Pages'                    # For about, FAQ, and other static informational pages.
 
-#tags:
- #- name: 'M01: Authentication'    # For login, logout, registration, password recovery etc.
- #- name: 'M02: Users'             # For user profiles, homepage, edit profile, and other user-centric actions.
- #- name: 'M03: Admins and Moderators'  # For admin and moderator specific actions, banning, unbanning, etc.
- #- name: 'M04: Static Pages'      # For about, FAQ, and other static informational pages.
- #- name: 'M05: Comments'          # For actions related to comments: creation, deletion, editing, liking, etc.
- #- name: 'M06: Articles'          # For actions related to articles or questions: creation, deletion, editing, voting, etc.
- #- name: 'M07: Notifications'     # For actions related to user notifications.
- #- name: 'M08: User Interactions' # For follow, unfollow, remove follower, etc.
- #- name: 'M09: Search'            # For search functionalities.
 
 #--'M01: Authentication'
 paths:
   /login:
-    get:    ##GET method
+    get: 
       operationId: R101
       summary: 'R101: Login Form (UI09)'
       description: 'Provide login form. Access: PUB'
@@ -51,7 +43,7 @@ paths:
       description: 'Processes the login form submission. Access: PUB'
       tags:
         - 'M01: Authentication'
-      requestBody:   #-accepted parameters
+      requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -62,11 +54,16 @@ paths:
                   type: string
                 password:
                   type: string
+                confirm_password:
+                  type: string
+                photoId:
+                  type: integer
               required:
+                - name
                 - email
                 - password
-
-      responses:  #-paginas de ação- redirects
+                - confirm_password
+      responses:
         '302':
           description: 'Redirect after processing the login credentials.'
           headers:
@@ -81,7 +78,7 @@ paths:
                   description: 'Failed authentication. Redirect to login form.'
                   value: '/login'
 
-  /logout: #-action page--Logout
+  /logout:
     post:
       operationId: R103
       summary: 'R103: Logout Action'    
@@ -101,7 +98,6 @@ paths:
                   value: '/login'
 
   /register:
-    #-buscar o form
     get:
       operationId: R104
       summary: 'R104: Register Form (UI09)'
@@ -111,14 +107,12 @@ paths:
       responses:
         '200':
           description: 'Ok. Show sign-up UI'
-    #-escreve p bd
     post:
       operationId: R105
       summary: 'R105: Register Action'
       description: 'Processes the new user registration form submission. Access: PUB'
       tags:
         - 'M01: Authentication'
-      #-parametros aceites
       requestBody:
         required: true
         content:
@@ -130,16 +124,9 @@ paths:
                   type: string
                 email:
                   type: string
-                password: 
-                  type: string
-                confirm_password:
-                  type: string
               required:
-                - name
                 - email
                 - password
-                - confirm_password
-      #-redirect
       responses:
         '302':
           description: 'Redirect after processing the new user information.'
@@ -154,6 +141,7 @@ paths:
                 302Failure:
                   description: 'Failed authentication. Redirect to login form.'
                   value: '/login'
+
 
 #--'M02: Individual Profile' 
   /users/{id}:
@@ -281,7 +269,6 @@ paths:
         '200':
           description: 'Ok. Show favourites from a user'
 
-######### QUESTIONS, COMMENTS AND VOTES #########
 
 #--'M03: Questions, comments and votes'  
   /questions:
@@ -303,7 +290,6 @@ paths:
           description: 'Ok. Show questions.'
 
   ######### EDIT QUESTION #########
-
   /question/edit:
     post:
       operationId: R302
@@ -311,7 +297,6 @@ paths:
       description: 'Edit question. Access: OWN'
       tags:
         - 'M03: Questions, comments and votes'
-
       requestBody:
         required: true
         content:
@@ -325,11 +310,10 @@ paths:
                   type: string
                 content:
                   type: string
-
               required:
                   - id
+                  - title
                   - content
-
       responses:
         '200':
           description: 'Edited successfully.'
@@ -337,7 +321,6 @@ paths:
           description: 'Forbiden action.'
 
   ######### DELETE QUESTION #########
-
   /question/delete:
     post:
         operationId: R303
@@ -345,7 +328,6 @@ paths:
         description: 'Delete question. Access: OWN'
         tags:
           - 'M03: Questions, comments and votes'
-
         requestBody:
           required: true
           content:
@@ -357,12 +339,9 @@ paths:
                     type: integer
                   isDeleted:
                     type: boolean
-                
-
                 required:
                     - id
                     - isDeleted
-
         responses:
           '200':
             description: 'Deleted successfully.'
@@ -370,16 +349,13 @@ paths:
             description: 'Forbiden action.'
 
 ######### QUESTION VOTE #########
-
   /question/vote:
-
     post:
       operationId: R304
       summary: 'R304: Upvote or Downvote question action'
       description: 'Vote question. Access: OWN, USR, MOD, ADM'
       tags:
         - 'M03: Questions, comments and votes'
-
       requestBody:
         required: true
         content:
@@ -393,20 +369,17 @@ paths:
                   type: integer
                 questionId:
                   type: integer
-
               required:
                   - updown
                   - usersId
                   - questionId
-  
       responses:
         '200':
           description: 'Voted successfully.'
         '403':
           description: 'Forbiden action.'
 
-   ######### QUESTION ASK #########
-
+  ######### QUESTION ASK #########
   /questions/ask:
     get:
       operationId: R305
@@ -473,8 +446,14 @@ paths:
           description: 'Ok. Show question page.'
  
   ######### COMMENT QUESTION #########
-
   /questions/{id}/comment:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the question
+        schema:
+          type: integer  # Substitua pelo tipo correto do ID
     get:
       operationId: R308
       summary: 'R308: Comment a question Form'
@@ -505,10 +484,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  content:
+                  text:
                     type: string
                 required:
-                      - content
+                      - text
       responses:
           '302':
             description: 'Redirect after processing the answer.'
@@ -624,22 +603,24 @@ paths:
                   value: '/forgot_password'
 
   /reset_password/{token}:
+    parameters:
+      - in: path
+        name: token
+        description: Random token for changing password
+        schema:
+          type: integer
+        required: true
+
     get:
       operationId: R406
       summary: 'R406: Reset password Form.'
       description: 'Page with a form to change password. ACCESS: USR'
       tags:
         - 'M04: Users'
-      parameters:
-        - in: path
-          name: token
-          description: random token for changing password
-          schema:
-            type: integer
-          required: true
       responses:
-          '200':
-            description: 'Ok. Show reset password form.'
+        '200':
+          description: 'Ok. Show reset password form.'
+
     post:
       operationId: R407
       summary: 'R407: Changing password'
@@ -653,16 +634,13 @@ paths:
             schema:
               type: object
               properties:
-                token:
-                  type: integer
                 email:
                   type: string
                 password:
                   type: string
               required:
-                    - token
-                    - email
-                    - password
+                - email
+                - password
       responses:
         '302':
           description: 'Redirect after changing password.'
@@ -677,6 +655,7 @@ paths:
                 302Failure:
                   description: 'Failed when changing password. Redirect to previous page.'
                   value: '/reset_password/{token}'
+
   #--notifications
   /notifications:
     get:
@@ -690,7 +669,6 @@ paths:
             description: 'Ok. Show notifications.'
 
   
-
 #--'M05: Admins and Moderators'          
   /admin:
     get:
@@ -721,17 +699,6 @@ paths:
       description: 'Delete user. Access: ADM'
       tags:
         - 'M05: Admins and Moderators'
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-              required:
-                - id
       responses:
         '302':
           description: 'Redirect after deleting user.'
@@ -749,8 +716,8 @@ paths:
 
   /admin/manageContent:
     get:
-      operationId: R50
-      summary: 'R50: View admin Manage Content page. (UI12)'
+      operationId: R504
+      summary: 'R504: View admin Manage Content page. (UI12)'
       description: 'Page with user administration and content management. ACCESS: ADM'
       tags:
         - 'M05: Admins and Moderators'
@@ -758,17 +725,17 @@ paths:
           '200':
             description: 'Ok. Show user search page.'            
 
-
   /moderator:
     get:
-      operationId: R50
-      summary: 'R50: View Moderator page. (UI)'
+      operationId: R505
+      summary: 'R505: View Moderator page. (UI)'
       description: 'Page with user administration and content management. ACCESS: _?_' #?
       tags:
         - 'M05: Admins and Moderators'
       responses:
           '200':
             description: 'Ok. Show user search page.'
+
 
 #--'M06: Static Pages'                       
   /contact:
@@ -781,6 +748,7 @@ paths:
         responses:
             '200':
               description: 'Ok. Show Contact page.'
+
   /faq:
     get:
       operationId: R602
@@ -791,10 +759,22 @@ paths:
       responses:
           '200':
             description: 'Ok. Show FAQ page.'
+            
   /about:
     get:
       operationId: R603
       summary: 'R603: View About page. (UI06)'
+      description: 'Page with information about the site. ACCESS: PUB'
+      tags:
+        - 'M06: Static Pages'
+      responses:
+          '200':
+            description: 'Ok. Show About page.'
+
+  /services:
+    get:
+      operationId: R604
+      summary: 'R604: View About page.'
       description: 'Page with information about the site. ACCESS: PUB'
       tags:
         - 'M06: Static Pages'
