@@ -306,7 +306,6 @@ paths:
 
   /question/edit:
     post:
-      question:
       operationId: R302
       summary: 'R302: Edit question action'
       description: 'Edit question. Access: OWN'
@@ -342,7 +341,6 @@ paths:
 
   /question/delete:
     post:
-      question:
         operationId: R303
         summary: 'R303: Delete question action'
         description: 'Delete question. Access: OWN'
