@@ -34,6 +34,9 @@ tags:
 
 #--'M01: Authentication'
 paths:
+
+### LOGIN ###
+
   /login:
     get:    ##GET method
       operationId: R101
@@ -80,6 +83,9 @@ paths:
                   description: 'Failed authentication. Redirect to login form.'
                   value: '/login'
 
+
+### LOGOUT ###
+
   /logout: #-action page--Logout
     post:
       operationId: R103
@@ -98,6 +104,8 @@ paths:
                 302Success:
                   description: 'Successful logout. Redirect to login form.'
                   value: '/login'
+
+### REGISTER ###
 
   /register:
     #-buscar o form
@@ -281,6 +289,8 @@ paths:
         '200':
           description: 'Ok. Show favourites from a user'
 
+######### QUESTIONS, COMMENTS AND VOTES #########
+
 #--'M03: Questions, comments and votes'  
   /questions:
     get:
@@ -300,11 +310,121 @@ paths:
         '200':
           description: 'Ok. Show questions.'
 
-  #--ask a question
+
+  ######### EDIT QUESTION #########
+
+  /question/edit:
+
+    question:
+      operationId: R302
+      summary: 'R302: Edit question action'
+      description: 'Edit question. Access: OWN'
+      tags:
+        - 'M03: Questions, comments and votes'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                content:
+                  type: string
+
+              required:
+                  - id
+                  - title
+                  - content
+
+      responses:
+        '200':
+          description: 'Edited successfully.'
+        '403':
+          description: 'Forbiden action.'
+
+  ######### REMOVE QUESTION #########
+
+  /question/remove:
+
+    question:
+      operationId: R303
+      summary: 'R303: Remove question action'
+      description: 'Remove question. Access: OWN'
+      tags:
+        - 'M03: Questions, comments and votes'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                isDeleted:
+                  type: boolean
+                
+
+              required:
+                  - id
+                  - isDeleted
+
+      responses:
+        '200':
+          description: 'Removed successfully.'
+        '403':
+          description: 'Forbiden action.'
+
+
+######### QUESTION VOTE #########
+
+  /question/vote:
+
+    post:
+      operationId: R304
+      summary: 'R304: Upvote or Downvote question action'
+      description: 'Vote question. Access: OWN, USR, MOD, ADM'
+      tags:
+        - 'M03: Questions, comments and votes'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                updown:
+                  type: boolean
+                usersId:
+                  type: integer
+                questionId:
+                  type: integer
+
+              required:
+                  - updown
+                  - usersId
+                  - questionId
+  
+      responses:
+        '200':
+          description: 'Voted successfully.'
+        '403':
+          description: 'Forbiden action.'
+
+
+   ######### QUESTION ASK #########
+
   /questions/ask:
     get:
-      operationId: R302
-      summary: 'R302: Ask a question Form'
+      operationId: R305
+      summary: 'R305: Ask a question Form'
       description: 'Render the page to ask a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -313,8 +433,8 @@ paths:
           description: 'Ok. Show ask question page.'
 
     post:
-      operationId: R303
-      summary: 'R303: Ask a question Action'
+      operationId: R305
+      summary: 'R305: Ask a question Action'
       description: 'Post a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
@@ -327,11 +447,11 @@ paths:
               properties:
                 title:
                   type: string
-                text_body:
+                content:
                   type: string
               required:
                     - title
-                    - text_body
+                    - content
       responses:
         '302':
           description: 'Redirect after processing the question.'
@@ -342,7 +462,7 @@ paths:
               examples:
                 302Success:
                   description: 'Successfully posted a question. Redirect to page of the created question.'
-                  value: '/questions/{question_id}'
+                  value: '/questions/{questionId}'
                 302Failure:
                   description: 'Failed posting. Redirect to ask question page.'
                   value: '/questions/ask'
@@ -366,11 +486,12 @@ paths:
         '200':
           description: 'Ok. Show question page.'
  
-  #answer a question
-  /questions/{id}/answer:
+  ######### COMMENT QUESTION #########
+
+  /questions/{id}/comment:
     get:
       operationId: R305
-      summary: 'R305: Answer a question Form'
+      summary: 'R305: Comment a question Form'
       description: 'Render the page to ask a question. Access: USR'
       tags:
         - 'M03: Questions, comments and votes'
