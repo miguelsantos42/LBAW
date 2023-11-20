@@ -18,7 +18,7 @@
         <ul>
             @foreach ($users as $user)
                 <li>
-                    <strong>{{ $user->name }}</strong> (Role: {{ $user->role }})
+                    <strong>{{ $user->name }}</strong> (Role: {{ $user->role }}) Email: {{ $user->email }}
                     <form method="post" action="{{ route('admin.update', ['id' => $user->id]) }}">
                         @csrf
                         @method('put')
