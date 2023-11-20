@@ -1,18 +1,12 @@
 {{-- resources/views/pages/feed.blade.php --}}
 
+
 @extends('layouts.app')
 
 @section('content')
 <div class="feed">
     <div class="container">
         <h1 class="title">Questions Feed</h1>
-        <div id="questionModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <p id="modalQuestionContent"></p>
-            </div>
-        </div>
         <div class="accordion">
             @forelse ($questions as $question)
             <div class="accordion-container" id="container{{ $question->id }}"
@@ -32,6 +26,31 @@
                     <button class="downvote" data-question-id="{{ $question->id }}">
                         <i class="bi bi-hand-thumbs-down-fill"></i>
                     </button>
+                </div>
+
+            </div>
+
+            {{-- Modal for editing the question --}}
+            <div id="questionModal{{ $question->id }}" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal({{ $question->id }})">&times;</span>
+                    {{-- Check if the authenticated user is the author of the question --}}
+                    {{-- Form for updating the question --}}
+                    @if (auth()->id() === $question->usersid)
+                    <form method="POST" action="{{ route('questions.update', $question->id) }}">
+                        @csrf
+                        @method('PUT') {{-- Specify the method to be PUT for update --}}
+                        <div class="modal-header">
+                            <input type="text" name="title" value="{{ $question->title }}" required />
+                        </div>
+                        <div class="modal-body">
+                            <textarea name="content" required>{{ $question->content }}</textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn-save">Save Changes</button>
+                        </div>
+                    </form>
+                    @endif
                 </div>
             </div>
             @empty
@@ -57,30 +76,30 @@ function toggleAccordion(contentId, containerId) {
 }
 
 function openModal(event, questionId) {
-    var content = document.getElementById('content' + questionId);
-    var modal = document.getElementById('questionModal');
-    var modalContent = document.getElementById('modalQuestionContent');
-
-    modalContent.innerHTML = content.innerHTML; // Transfer content to modal
-    modal.style.display = "block"; // Display the modal
-
-    event.stopPropagation(); // Prevents the accordion from toggling when the content is clicked
+    var modal = document.getElementById('questionModal' + questionId);
+    modal.style.display = "block";
+    event.stopPropagation(); // Prevents further propagation of the current event in the capturing and bubbling phases
 }
 
 
-function closeModal() {
-    var modal = document.getElementById('questionModal');
-    modal.style.display = "none";
+function closeModal(questionId) {
+    var modal = document.getElementById('questionModal' + questionId);
+    if (modal) {
+        modal.style.display = "none";
+    }
 }
+
 
 // Close modal when clicking on the close button
-document.querySelector('.close').onclick = closeModal;
-
+document.querySelectorAll('.close').forEach(function(closeButton) {
+    closeButton.onclick = function() {
+        closeButton.closest('.modal').style.display = 'none';
+    };
+});
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    var modal = document.getElementById('questionModal');
-    if (event.target == modal) {
-        closeModal();
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
     }
 }
 </script>
