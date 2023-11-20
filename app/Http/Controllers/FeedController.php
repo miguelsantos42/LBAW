@@ -12,15 +12,26 @@ class FeedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
     {
+        $userId = auth()->id();
         $orderType = $request->get('order', 'random'); // 'random' is the default
 
         if ($orderType == 'top') {
             $questions = Question::where('isdeleted', false)
                                 ->orderBy('votecount', 'desc')
                                 ->get();
-        } else { // Default to random
+        } elseif ($orderType == 'recent') { // This should be an 'else if'
+            $questions = Question::where('isdeleted', false)
+                                ->orderBy('date', 'desc')
+                                ->get();
+        }elseif ($orderType == 'myquestions') {
+            $questions = Question::where('isdeleted', false)
+                                 ->where('usersid', $userId)
+                                 ->get();
+        }
+        else { // Default to random
             $questions = Question::where('isdeleted', false)
                                 ->inRandomOrder()
                                 ->get();
@@ -28,6 +39,8 @@ class FeedController extends Controller
 
         return view('pages.feed', compact('questions'));
     }
+
+
 
 
     /**

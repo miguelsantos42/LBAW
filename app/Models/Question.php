@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     /**
      * Get the comments for the question.

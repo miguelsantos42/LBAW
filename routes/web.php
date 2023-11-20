@@ -27,6 +27,7 @@ Route::post('/ask-question', [QuestionController::class, 'store'])->name('ask.qu
 Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 Route::get('/feed/{id}', [FeedController::class, 'show'])->name('feed.show');
 Route::get('/feed', 'FeedController@index');
+Route::post('/question/{id}/delete', 'QuestionController@destroy')->middleware('auth');
 
 // Cards
 Route::controller(CardController::class)->group(function () {
