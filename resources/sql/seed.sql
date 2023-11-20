@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS voteComment;
 DROP TABLE IF EXISTS voteQuestions;
 DROP TABLE IF EXISTS commentOnComment;
-DROP TABLE IF EXISTS comment;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS questionTag;
 DROP TABLE IF EXISTS questions;
 DROP TABLE IF EXISTS tag;
@@ -65,7 +65,7 @@ CREATE TABLE questionTag(
     PRIMARY KEY (questionId, tagId)
 );
 
-CREATE TABLE comment(
+CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     content TEXT NOT NULL,
@@ -77,8 +77,8 @@ CREATE TABLE comment(
 );
 
 CREATE TABLE commentOnComment(
-    mainCommentId INTEGER NOT NULL REFERENCES comment(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    subCommentId INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    mainCommentId INTEGER NOT NULL REFERENCES comments(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    subCommentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (mainCommentId, subCommentId)
 );
 
@@ -92,7 +92,7 @@ CREATE TABLE voteQuestions(
 CREATE TABLE voteComment(
     updown BOOLEAN NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    commentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (usersId, commentId)
 );
 
@@ -108,7 +108,7 @@ CREATE TABLE notification(
 CREATE TABLE commentNotification(
     id SERIAL PRIMARY KEY,
     notificationId INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE
+    commentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE report(
@@ -116,7 +116,7 @@ CREATE TABLE report(
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     reason TEXT NOT NULL,
     usersReporterId INTEGER REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    commentId INTEGER REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     questionId INTEGER REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -126,7 +126,7 @@ CREATE TABLE voteNotification(
     status BOOLEAN DEFAULT FALSE NOT NULL,
     updown BOOLEAN NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    commentId INTEGER REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     questionId INTEGER REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
     voterId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -204,7 +204,7 @@ INSERT INTO questions(date, title, content, usersId) VALUES
 ('2023-10-23 10:00:00', 'Best practices for SQL?', 'What are the best practices for writing SQL queries?', 2);
 
 -- Populate comments
-INSERT INTO comment(date, content, usersId, questionId) VALUES
+INSERT INTO comments(date, content, usersId, questionId) VALUES
 ('2023-10-23 10:30:00', 'You can start with the 1NF, 2NF, and 3NF.', 3, 1),
 ('2023-10-23 11:00:00', 'Avoid SELECT *. Always specify your columns.', 4, 2);
 
@@ -266,10 +266,10 @@ CLUSTER questions USING idx_question_date;
 
 CREATE INDEX idx_question_title ON questions USING btree(title);
 
-CREATE INDEX idx_comment_date ON comment USING btree(date);
-CLUSTER comment USING idx_comment_date;
+CREATE INDEX idx_comment_date ON comments USING btree(date);
+CLUSTER comments USING idx_comment_date;
 
-CREATE INDEX idx_comment_questionId ON comment USING btree(questionId);
+CREATE INDEX idx_comment_questionId ON comments USING btree(questionId);
 
 CREATE INDEX idx_notification_date ON notification USING btree(date);
 CLUSTER notification USING idx_notification_date;
@@ -323,7 +323,7 @@ CREATE INDEX idx_search_users ON users USING GIN (tsvectors);
 
 --comment--
 
-ALTER TABLE comment ADD COLUMN tsvectors TSVECTOR;
+ALTER TABLE comments ADD COLUMN tsvectors TSVECTOR;
 
 DROP FUNCTION IF EXISTS comment_search_update() CASCADE;
 CREATE FUNCTION comment_search_update() RETURNS TRIGGER AS $$
@@ -336,11 +336,11 @@ END $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER comment_search_update
- BEFORE INSERT OR UPDATE ON comment
+ BEFORE INSERT OR UPDATE ON comments
  FOR EACH ROW
  EXECUTE PROCEDURE comment_search_update();
 
-CREATE INDEX idx_search_comment ON comment USING GIN (tsvectors);
+CREATE INDEX idx_search_comment ON comments USING GIN (tsvectors);
 
 --TRIGGERS--
 
@@ -369,9 +369,9 @@ CREATE OR REPLACE FUNCTION update_comment_votes()
 RETURNS TRIGGER AS $$
 BEGIN
    IF NEW.vote = TRUE THEN
-      UPDATE comment SET votes = votes + 1 WHERE id = NEW.comment_id;
+      UPDATE comments SET votes = votes + 1 WHERE id = NEW.comment_id;
    ELSE
-      UPDATE comment SET votes = votes - 1 WHERE id = NEW.comment_id;
+      UPDATE comments SET votes = votes - 1 WHERE id = NEW.comment_id;
    END IF;
    RETURN NEW;
 END;

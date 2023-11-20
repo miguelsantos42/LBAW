@@ -38,6 +38,15 @@ class QuestionController extends Controller
         return back()->with('message', 'Question updated successfully!');
     }
 
+    public function index()
+    {
+        // Eager load questions with comments
+        $questions = Question::with('comments')->get();
+
+        // Pass questions to the view
+        return view('pages.feed', compact('questions'));
+    }
+
 }
 
 

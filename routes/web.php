@@ -13,6 +13,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
 Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');

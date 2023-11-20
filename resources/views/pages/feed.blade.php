@@ -51,6 +51,34 @@
                         </div>
                     </form>
                     @endif
+
+
+                    {{-- Display existing comments --}}
+                    @if ($question->comments->count() > 0)
+                    <div class="existing-comments">
+                        @foreach ($question->comments as $comment)
+                        <div class="comment">
+                            <p>{{ $comment->content }}</p>
+                            {{-- Add other comment details here if needed --}}
+                        </div>
+                        @endforeach
+                    </div>
+                    @else
+                    <p>No answers yet.</p>
+                    @endif
+
+                    {{-- Form for adding a new comment --}}
+                    <form method="POST" action="{{ route('comments.store') }}">
+                        @csrf
+                        <input type="hidden" name="questionid" value="{{ $question->id }}" />
+                        <div class="modal-body">
+                            <textarea name="content" placeholder="Your answer..." required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn-save">Submit Answer</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
             @empty
