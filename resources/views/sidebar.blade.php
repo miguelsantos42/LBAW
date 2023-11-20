@@ -3,7 +3,7 @@
     <a href="/feed?order=top">Top Questions</a>
     <a href="/feed?order=recent">Recent Questions</a>
     <a href="/feed?order=myquestions">My Questions</a>
-    <a href="/feed?order=myquestions">My Questions</a>
+    <a href="/feed?order=myanswers">My Answers</a>
 
     <!-- Add more links or content as needed -->
 </div>

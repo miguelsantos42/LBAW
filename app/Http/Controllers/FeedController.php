@@ -31,11 +31,12 @@ class FeedController extends Controller
                                  ->where('usersid', $userId)
                                  ->get();
         }elseif ($orderType == 'myanswers') {
-            $questions = Question::whereHas('answers', function ($query) use ($userId) {
-                $query->where('user_id', $userId); // assuming the column name is 'user_id' in the answers table
+            $questions = Question::whereHas('comments', function ($query) use ($userId) {
+                $query->where('usersid', $userId); // Make sure the column name matches the schema
             })->where('isdeleted', false)
               ->get();
         }
+                                
         else { // Default to random
             $questions = Question::where('isdeleted', false)
                                 ->inRandomOrder()

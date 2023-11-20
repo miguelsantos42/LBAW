@@ -16,8 +16,7 @@ class Comment extends Model
     // Comment model
     public function question()
     {
-        // The second parameter is the foreign key column name in the 'comment' table.
-        return $this->belongsTo(Question::class, 'question_id'); // change 'questionId' to 'question_id'
+        return $this->belongsTo(Question::class, 'questionid');
     }
 
 }
