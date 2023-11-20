@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Auth\LoginController;
@@ -41,8 +40,6 @@ Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');    
     Route::get('/cards/{id}', 'show');
 });
-
-
 
 
 // Authentication
