@@ -12,6 +12,7 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,12 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
+
+Route::middleware(['checkRole:2'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+});
 
 
 // Cards
