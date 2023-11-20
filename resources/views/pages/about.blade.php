@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Seu conteúdo personalizado aqui -->
 <style>
     .content-background {
         background-color: rgba(255, 255, 255, 0.95); /* Branco com 80% de opacidade */
