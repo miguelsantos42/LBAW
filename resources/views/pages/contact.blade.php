@@ -22,11 +22,11 @@
 <div class="container">
         <section>
             <h2>Get in touch with our team:</h2>
-            <ol>
+            <ul>
                 <li><strong>Administration Desk:</strong> Elon Muska | Email: tesla@hotmail.com</li>
                 <li><strong>Senior Dev leader:</strong> Mark Zucchini | Email: metamark@yahoo.com</li>
                 <li><strong>Human relations:</strong> Claus Schwab | Email: whf@gmail.com</li>
-            </ol>
+            </ul>
         </section>
 </div>
 

@@ -44,6 +44,10 @@
                     <p>"The diversity of topics is what keeps me coming back. Always something new to learn!" - Jim Morisson</p>
                 </blockquote>
             </div>
+            <p>
+            <strong>Join Us!</strong>
+            Ready to explore? Sign up now to become a part of our ever-growing community or explore more of what we have to offer.
+            <p>
         </div>
     </section>
 
