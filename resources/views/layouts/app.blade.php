@@ -15,6 +15,7 @@
         <link href="{{ url('css/app.css') }}" rel="stylesheet">
         <link href="{{ url('css/home.css') }}" rel="stylesheet">        <link href="{{ url('css/home.css') }}" rel="stylesheet">
         <link href="{{ url('css/feed.css') }}" rel="stylesheet">
+        <link href="{{ url('css/profile.css') }}" rel="stylesheet">
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
 
@@ -44,7 +45,8 @@
                     <a href="{{ url('/contact') }}">Contact</a>
 
                     @if (Auth::check())
-                        <a class="btnLogout" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
+                        <button class="btnLogout" onclick="location.href='{{ url('/logout') }}'"> Logout </button> 
+                        <button class="btnLogin"  onclick="location.href='{{ url('/profile') }}'">{{ Auth::user()->name }}</button>
                     @else
                     <button class="btnLogin" onclick="location.href='{{ route('login') }}'">Login</button>
                     @endif
