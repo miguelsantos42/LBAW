@@ -60,7 +60,7 @@ CREATE TABLE questions(
 );
 
 CREATE TABLE questionTag(
-    questionId INTEGER NOT NULL REFERENCES question (id),
+    questionId INTEGER NOT NULL REFERENCES questions (id),
     tagId INTEGER NOT NULL REFERENCES tag (id),
     PRIMARY KEY (questionId, tagId)
 );
@@ -72,8 +72,8 @@ CREATE TABLE comment(
     voteCount INT DEFAULT 0,
     edited BOOLEAN NOT NULL DEFAULT FALSE,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    questionId INTEGER NOT NULL REFERENCES question (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    isDeleted BOOLEAN DEFAULT FALSE
+    questionId INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    isDeleted BOOLEAN DEFAULT FALSE 
 );
 
 CREATE TABLE commentOnComment(
@@ -85,7 +85,7 @@ CREATE TABLE commentOnComment(
 CREATE TABLE voteQuestions(
     updown BOOLEAN NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    questionId INTEGER NOT NULL REFERENCES question (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    questionId INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (usersId, questionId)
 );
 
@@ -102,7 +102,7 @@ CREATE TABLE notification(
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     status BOOLEAN DEFAULT FALSE NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    questionId INTEGER REFERENCES question (id) ON DELETE CASCADE ON UPDATE CASCADE
+    questionId INTEGER REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE commentNotification(
@@ -117,7 +117,7 @@ CREATE TABLE report(
     reason TEXT NOT NULL,
     usersReporterId INTEGER REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     commentId INTEGER REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    questionId INTEGER REFERENCES question (id) ON DELETE CASCADE ON UPDATE CASCADE
+    questionId INTEGER REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE voteNotification(
@@ -127,7 +127,7 @@ CREATE TABLE voteNotification(
     updown BOOLEAN NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     commentId INTEGER REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    questionId INTEGER REFERENCES question (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    questionId INTEGER REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
     voterId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -199,7 +199,7 @@ INSERT INTO tag(tagName) VALUES
 ('JavaScript');
 
 -- Populate questions
-INSERT INTO question(date, title, content, usersId) VALUES
+INSERT INTO questions(date, title, content, usersId) VALUES
 ('2023-10-23 09:00:00', 'How to normalize a database?', 'I need help with database normalization. Any tips?', 1),
 ('2023-10-23 10:00:00', 'Best practices for SQL?', 'What are the best practices for writing SQL queries?', 2);
 
@@ -261,10 +261,10 @@ CLUSTER users USING idx_users_email;
 
 CREATE INDEX idx_users_rating ON users USING btree(rating);
 
-CREATE INDEX idx_question_date ON question USING btree(date);
-CLUSTER question USING idx_question_date;
+CREATE INDEX idx_question_date ON questions USING btree(date);
+CLUSTER questions USING idx_question_date;
 
-CREATE INDEX idx_question_title ON question USING btree(title);
+CREATE INDEX idx_question_title ON questions USING btree(title);
 
 CREATE INDEX idx_comment_date ON comment USING btree(date);
 CLUSTER comment USING idx_comment_date;
@@ -281,7 +281,7 @@ CREATE INDEX idx_notification_users ON notification USING btree(usersId);
 
 --question--
 
-ALTER TABLE question ADD COLUMN tsvectors TSVECTOR;
+ALTER TABLE questions ADD COLUMN tsvectors TSVECTOR;
 
 DROP FUNCTION IF EXISTS question_search_update() CASCADE;
 CREATE FUNCTION question_search_update() RETURNS TRIGGER AS $$
@@ -350,9 +350,9 @@ CREATE OR REPLACE FUNCTION update_question_votes()
 RETURNS TRIGGER AS $$
 BEGIN
    IF NEW.vote = TRUE THEN
-      UPDATE question SET votes = votes + 1 WHERE id = NEW.question_id;
+      UPDATE questions SET votes = votes + 1 WHERE id = NEW.question_id;
    ELSE
-      UPDATE question SET votes = votes - 1 WHERE id = NEW.question_id;
+      UPDATE questions SET votes = votes - 1 WHERE id = NEW.question_id;
    END IF;
    RETURN NEW;
 END;
@@ -393,7 +393,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trigger_delete_cascade_question
-AFTER DELETE ON question
+AFTER DELETE ON questions
 FOR EACH ROW
 EXECUTE FUNCTION delete_cascade_question();
 

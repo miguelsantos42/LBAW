@@ -17,8 +17,19 @@ class QuestionController extends Controller
         $question = new Question;
         $question->title = $validatedData['title'];
         $question->content = $validatedData['content'];
-        $question->usersId = auth()->id(); // Assuming you have user authentication in place
+        // Change 'usersId' to 'usersid' to match the database column name case
+        $question->usersid = auth()->id(); // Assuming you have user authentication in place
         $question->save();
         return back()->with('success', 'Your question has been posted.');
     }
+
+    public function destroy($id)
+    {
+        $question = Question::where('id', $id)->where('usersid', auth()->id())->firstOrFail();
+        $question->delete();
+        return response()->json(['success' => 'Question deleted successfully']);
+    }
+
+
+
 }
