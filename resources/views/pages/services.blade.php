@@ -14,13 +14,15 @@
 <div class="container">
     <section>
         <h1>Our Services</h1>
-        <p>
-        Post questions on various topics and get insightful answers from our diverse community of members.
-        Collaboration: 
-        Engage in a collaborative environment where users can contribute with answers, vote on the best responses, and comment on posts.
-        Diverse Topics: 
-        Explore a wide array of topics, ensuring there's something for everyone's interests and expertise.
-        </p>
+        <p>Welcome to our collaborative Q&A platform! We're here to provide you with a dynamic space for sharing knowledge, seeking advice, and engaging with a vibrant community.</p>
+        <p><strong>Questions & Answers:</strong>
+         Post questions on various topics and get insightful answers from our diverse community of members.
+        <p><strong>Collaboration:</strong>
+         Engage in a collaborative environment where users can contribute with answers, vote on the best responses, and comment on posts.
+        </p> 
+        <p><strong>Diverse Topics:</strong> 
+         Explore a wide array of topics, ensuring there's something for everyone's interests and expertise.
+        </p>        
         </div>
     </section>
     <section>
@@ -32,6 +34,12 @@
                 <li><strong>Comments & Voting:</strong> Interact with content and contribute by commenting and voting on answers you find helpful.</li>
             </ol>
         </div>
+    </section>
+    <section>
+        <div class="container">
+            <p><strong>User Benefits:</strong></p>
+            <p><strong>Collaborative Learning:</strong> Learn and grow by leveraging the collective knowledge of our community members.</p>
+            <p><strong>Help & Problem-Solving:</strong> Find solutions and get valuable help by tapping into the wisdom of the crowd.</p>
     </section>
     <section>
         <div class="container">
