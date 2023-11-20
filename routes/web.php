@@ -31,6 +31,8 @@ Route::get('/feed/{id}', [FeedController::class, 'show'])->name('feed.show');
 Route::post('/question/{id}/delete', 'QuestionController@destroy')->middleware('auth');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+Route::get('/services', [ServicesController::class, 'index'])->name('services');
+
 // Cards
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');    
