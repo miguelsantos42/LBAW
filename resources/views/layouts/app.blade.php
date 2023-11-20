@@ -40,8 +40,8 @@
                 <nav class="navigation">
                     <a href="{{ url('/about') }}">About</a>
                     <a href="{{ url('/faq') }}">FAQ</a>
-                    <a href="faqs.php">Services</a>
-                    <a href="faqs.php">Contact</a>
+                    <a href="{{ url('/services') }}">Services</a>
+                    <a href="{{ url('/contact') }}">Contact</a>
 
                     @if (Auth::check())
                         <a class="btnLogout" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
