@@ -44,7 +44,8 @@
                     <a href="faqs.php">Contact</a>
 
                     @if (Auth::check())
-                        <a class="btnLogout" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
+                        <button class="btnLogout" onclick="location.href='{{ url('/logout') }}'"> Logout </button> 
+                        <button class="btnLogin"  onclick="location.href='{{ url('/profile') }}'">{{ Auth::user()->name }}</button>
                     @else
                     <button class="btnLogin" onclick="location.href='{{ route('login') }}'">Login</button>
                     @endif

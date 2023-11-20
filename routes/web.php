@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,8 @@ Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 Route::get('/feed/{id}', [FeedController::class, 'show'])->name('feed.show');
 Route::get('/feed', 'FeedController@index');
 Route::post('/question/{id}/delete', 'QuestionController@destroy')->middleware('auth');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
 
 // Cards
 Route::controller(CardController::class)->group(function () {
