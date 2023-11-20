@@ -13,7 +13,7 @@
 
 <div class="content-background">
     <h2>Frequently Asked Questions</h2>
-    <p>Welcome to our Q&A platform! Below are some common questions to help you get started:</p>
+    <p>Welcome to our Q&A platform! Below are some common questions to help you get started.</p>
 
     <h3>1. How do I create an account?</h3>
     <p>Creating an account is easy! Click on the "Login" button and then the "Register" button. Follow the prompts to set up your profile.</p>
