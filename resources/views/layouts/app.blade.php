@@ -38,8 +38,8 @@
                     </button>        
                 </div>
                 <nav class="navigation">
-                    <a href="about.php">About</a>
-                    <a href="faqs.php">FAQ's</a>
+                    <a href="{{ url('/about') }}">About</a>
+                    <a href="{{ url('/faq') }}">FAQ</a>
                     <a href="faqs.php">Services</a>
                     <a href="faqs.php">Contact</a>
 

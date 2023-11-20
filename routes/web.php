@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\AboutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,9 +28,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/ask-question', [QuestionController::class, 'store'])->name('ask.question');
 Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 Route::get('/feed/{id}', [FeedController::class, 'show'])->name('feed.show');
-Route::get('/feed', 'FeedController@index');
 Route::post('/question/{id}/delete', 'QuestionController@destroy')->middleware('auth');
-
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 // Cards
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');
