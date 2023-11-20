@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\Auth\LoginController;
@@ -11,6 +10,9 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\ContactController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,14 +34,13 @@ Route::post('/question/{id}/delete', 'QuestionController@destroy')->middleware('
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 Route::get('/services', [ServicesController::class, 'index'])->name('services');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 // Cards
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');    
     Route::get('/cards/{id}', 'show');
 });
-
-
 
 
 // Authentication
