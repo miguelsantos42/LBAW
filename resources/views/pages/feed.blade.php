@@ -57,8 +57,6 @@ function toggleAccordion(contentId, containerId) {
 }
 
 function openModal(event, questionId) {
-    // Corrected from 'content{{ $question->id }}' to 'content' + questionId
-    console.log('content' + questionId);
     var content = document.getElementById('content' + questionId);
     var modal = document.getElementById('questionModal');
     var modalContent = document.getElementById('modalQuestionContent');

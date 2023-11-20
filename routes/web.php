@@ -27,7 +27,6 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/ask-question', [QuestionController::class, 'store'])->name('ask.question');
 Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 Route::get('/feed/{id}', [FeedController::class, 'show'])->name('feed.show');
-Route::get('/feed', 'FeedController@index');
 Route::post('/question/{id}/delete', 'QuestionController@destroy')->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 
