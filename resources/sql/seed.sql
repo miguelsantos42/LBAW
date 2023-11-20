@@ -164,28 +164,28 @@ INSERT INTO role(id, roleName) VALUES
 (2, 'admin');
 
 
--- Populate userss
+-- Populate userss //password for all users is "password"
 INSERT INTO users (name, email, password, role, photoId) VALUES 
-('users 1', 'users1@example.com', 'password1', 0, 1),  -- normal users
-('users 2', 'users2@example.com', 'password2', 0, 2),  -- normal users
-('users 3', 'users3@example.com', 'password3', 0, 3),  -- normal users
-('users 4', 'users4@example.com', 'password4', 0, 4),  -- normal users
-('users 5', 'users5@example.com', 'password5', 0, 5),  -- normal users
-('users 6', 'users6@example.com', 'password6', 0, 6),  -- normal users
-('users 7', 'users7@example.com', 'password7', 0, 7),  -- normal users
-('users 8', 'users8@example.com', 'password8', 0, 8),  -- normal users
-('users 9', 'users9@example.com', 'password9', 0, 9),  -- normal users
-('users 10', 'users10@example.com', 'password10', 0, 10),  -- normal users
-('Admin 1', 'admin1@example.com', 'password11', 2, 11),  -- admin users
-('Admin 2', 'admin2@example.com', 'password12', 2, 12),  -- admin users
-('Admin 3', 'admin3@example.com', 'password13', 2, 13),  -- admin users
-('Admin 4', 'admin4@example.com', 'password14', 2, 14),  -- admin users
-('Admin 5', 'admin5@example.com', 'password15', 2, 15),  -- admin users
-('Moderator 1', 'mod1@example.com', 'password16', 1, 16),  -- moderator
-('Moderator 2', 'mod2@example.com', 'password17', 1, 17),  -- moderator
-('Moderator 3', 'mod3@example.com', 'password18', 1, 18),  -- moderator
-('Moderator 4', 'mod4@example.com', 'password19', 1, 19),  -- moderator
-('Moderator 5', 'mod5@example.com', 'password20', 1, 20);  -- moderator
+('users 1', 'users1@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 1),  -- normal users
+('users 2', 'users2@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 2),  -- normal users
+('users 3', 'users3@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 3),  -- normal users
+('users 4', 'users4@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 4),  -- normal users
+('users 5', 'users5@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 5),  -- normal users
+('users 6', 'users6@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 6),  -- normal users
+('users 7', 'users7@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 7),  -- normal users
+('users 8', 'users8@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 8),  -- normal users
+('users 9', 'users9@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 9),  -- normal users
+('users 10', 'users10@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 10),  -- normal users
+('Admin 1', 'admin1@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 11),  -- admin users
+('Admin 2', 'admin2@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 12),  -- admin users
+('Admin 3', 'admin3@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 13),  -- admin users
+('Admin 4', 'admin4@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 14),  -- admin users
+('Admin 5', 'admin5@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 15),  -- admin users
+('Moderator 1', 'mod1@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 16),  -- moderator
+('Moderator 2', 'mod2@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 17),  -- moderator
+('Moderator 3', 'mod3@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 18),  -- moderator
+('Moderator 4', 'mod4@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 19),  -- moderator
+('Moderator 5', 'mod5@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 20);  -- moderator
 
 
 
