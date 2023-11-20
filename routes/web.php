@@ -29,6 +29,7 @@ Route::get('/feed', [FeedController::class, 'index'])->name('feed.index');
 Route::get('/feed/{id}', [FeedController::class, 'show'])->name('feed.show');
 Route::post('/question/{id}/delete', 'QuestionController@destroy')->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 
 // Cards
