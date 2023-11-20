@@ -34,6 +34,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
 
 
 // Cards
