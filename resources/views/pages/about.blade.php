@@ -1,3 +1,7 @@
+{{-- resources/views/pages/about.blade.php --}}
+@extends('layouts.app')
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
