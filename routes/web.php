@@ -33,7 +33,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 // Cards
 Route::controller(CardController::class)->group(function () {
-    Route::get('/cards', 'list')->name('cards');
+    Route::get('/cards', 'list')->name('cards');    
     Route::get('/cards/{id}', 'show');
 });
 
