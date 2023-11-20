@@ -15,7 +15,6 @@ class Question extends Model
      */
     public function comments()
     {
-        // The second parameter is the foreign key column name in the 'comment' table.
-        return $this->hasMany(Comment::class, 'question_id'); // Ensure this matches the column name in the database.
+        return $this->hasMany(Comment::class, 'questionid'); // Ensure 'questionId' matches the foreign key in your comments table
     }
 }

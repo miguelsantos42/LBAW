@@ -30,7 +30,13 @@ class FeedController extends Controller
             $questions = Question::where('isdeleted', false)
                                  ->where('usersid', $userId)
                                  ->get();
+        }elseif ($orderType == 'myanswers') {
+            $questions = Question::whereHas('comments', function ($query) use ($userId) {
+                $query->where('usersid', $userId); // Make sure the column name matches the schema
+            })->where('isdeleted', false)
+              ->get();
         }
+                                
         else { // Default to random
             $questions = Question::where('isdeleted', false)
                                 ->inRandomOrder()
