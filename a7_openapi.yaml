@@ -739,7 +739,7 @@ paths:
       summary: 'R411: Unfollow tag'
       description: 'User now does not follow a specific tag anymore. Access: USR'
       tags:
-        - 'M04: UserS'
+        - 'M04: Users'
       requestBody:
         required: true
         content:
@@ -811,10 +811,76 @@ paths:
                   description: 'Failed to delete user.'
                   value: '/admin'
 
+  /admin/manageUsers/makeAdmin:
+    post:
+      operationId: R504
+      summary: 'R504: Make admin'
+      description: 'Promote a user so he has admin acess. Access: ADM'
+      tags:
+        - 'M05: Admins and Moderators'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+              required:
+                - user_id
+      responses:
+        '302':
+          description: 'Redirect after processing the make admin request.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'The user is now an admin.'
+                  value: '/users/{id}'
+                302Failure:
+                  description: 'Failed to promote to admin.'
+                  value: '/admin'
+                  
+  /admin/manageUsers/makeModerator:
+    post:
+        operationId: R505
+        summary: 'R505: Make moderator'
+        description: 'Promote a user so he has moderator acess. Access: ADM'
+        tags:
+          - 'M05: Admins and Moderators'
+        requestBody:
+          required: true
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                required:
+                  - user_id
+        responses:
+          '302':
+            description: 'Redirect after processing the make moderator request.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  302Success:
+                    description: 'The user is now a moderator.'
+                    value: '/users/{id}'
+                  302Failure:
+                    description: 'Failed to promote to moderator.'
+                    value: '/admin'
+
   /admin/manageContent:
     get:
-      operationId: R504
-      summary: 'R504: View admin Manage Content page. (UI12)'
+      operationId: R506
+      summary: 'R506: View admin Manage Content page. (UI12)'
       description: 'Page with user administration and content management. ACCESS: ADM'
       tags:
         - 'M05: Admins and Moderators'
@@ -824,8 +890,8 @@ paths:
 
   /moderator:
     get:
-      operationId: R505
-      summary: 'R505: View Moderator page. (UI)'
+      operationId: R507
+      summary: 'R507: View Moderator page. (UI)'
       description: 'Page with user administration and content management. ACCESS: _?_' #?
       tags:
         - 'M05: Admins and Moderators'
