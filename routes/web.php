@@ -14,6 +14,7 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
+Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');

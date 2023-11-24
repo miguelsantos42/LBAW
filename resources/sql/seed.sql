@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS voteComment;
 DROP TABLE IF EXISTS voteQuestions;
 DROP TABLE IF EXISTS commentOnComment;
-DROP TABLE IF EXISTS comment;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS questionTag;
 DROP TABLE IF EXISTS questions;
 DROP TABLE IF EXISTS tag;
@@ -65,7 +65,7 @@ CREATE TABLE questionTag(
     PRIMARY KEY (questionId, tagId)
 );
 
-CREATE TABLE comment(
+CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     content TEXT NOT NULL,
@@ -77,8 +77,8 @@ CREATE TABLE comment(
 );
 
 CREATE TABLE commentOnComment(
-    mainCommentId INTEGER NOT NULL REFERENCES comment(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    subCommentId INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    mainCommentId INTEGER NOT NULL REFERENCES comments(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    subCommentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (mainCommentId, subCommentId)
 );
 
@@ -92,7 +92,7 @@ CREATE TABLE voteQuestions(
 CREATE TABLE voteComment(
     updown BOOLEAN NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    commentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (usersId, commentId)
 );
 
@@ -108,7 +108,7 @@ CREATE TABLE notification(
 CREATE TABLE commentNotification(
     id SERIAL PRIMARY KEY,
     notificationId INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE
+    commentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE report(
@@ -116,7 +116,7 @@ CREATE TABLE report(
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     reason TEXT NOT NULL,
     usersReporterId INTEGER REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    commentId INTEGER REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     questionId INTEGER REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -126,7 +126,7 @@ CREATE TABLE voteNotification(
     status BOOLEAN DEFAULT FALSE NOT NULL,
     updown BOOLEAN NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    commentId INTEGER REFERENCES comment (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    commentId INTEGER REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
     questionId INTEGER REFERENCES questions (id) ON DELETE CASCADE ON UPDATE CASCADE,
     voterId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -164,28 +164,28 @@ INSERT INTO role(id, roleName) VALUES
 (2, 'admin');
 
 
--- Populate userss
+-- Populate userss //password for all users is "password"
 INSERT INTO users (name, email, password, role, photoId) VALUES 
-('users 1', 'users1@example.com', 'password1', 0, 1),  -- normal users
-('users 2', 'users2@example.com', 'password2', 0, 2),  -- normal users
-('users 3', 'users3@example.com', 'password3', 0, 3),  -- normal users
-('users 4', 'users4@example.com', 'password4', 0, 4),  -- normal users
-('users 5', 'users5@example.com', 'password5', 0, 5),  -- normal users
-('users 6', 'users6@example.com', 'password6', 0, 6),  -- normal users
-('users 7', 'users7@example.com', 'password7', 0, 7),  -- normal users
-('users 8', 'users8@example.com', 'password8', 0, 8),  -- normal users
-('users 9', 'users9@example.com', 'password9', 0, 9),  -- normal users
-('users 10', 'users10@example.com', 'password10', 0, 10),  -- normal users
-('Admin 1', 'admin1@example.com', 'password11', 2, 11),  -- admin users
-('Admin 2', 'admin2@example.com', 'password12', 2, 12),  -- admin users
-('Admin 3', 'admin3@example.com', 'password13', 2, 13),  -- admin users
-('Admin 4', 'admin4@example.com', 'password14', 2, 14),  -- admin users
-('Admin 5', 'admin5@example.com', 'password15', 2, 15),  -- admin users
-('Moderator 1', 'mod1@example.com', 'password16', 1, 16),  -- moderator
-('Moderator 2', 'mod2@example.com', 'password17', 1, 17),  -- moderator
-('Moderator 3', 'mod3@example.com', 'password18', 1, 18),  -- moderator
-('Moderator 4', 'mod4@example.com', 'password19', 1, 19),  -- moderator
-('Moderator 5', 'mod5@example.com', 'password20', 1, 20);  -- moderator
+('users 1', 'users1@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 1),  -- normal users
+('users 2', 'users2@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 2),  -- normal users
+('users 3', 'users3@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 3),  -- normal users
+('users 4', 'users4@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 4),  -- normal users
+('users 5', 'users5@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 5),  -- normal users
+('users 6', 'users6@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 6),  -- normal users
+('users 7', 'users7@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 7),  -- normal users
+('users 8', 'users8@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 8),  -- normal users
+('users 9', 'users9@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 9),  -- normal users
+('users 10', 'users10@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 0, 10),  -- normal users
+('Admin 1', 'admin1@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 11),  -- admin users
+('Admin 2', 'admin2@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 12),  -- admin users
+('Admin 3', 'admin3@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 13),  -- admin users
+('Admin 4', 'admin4@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 14),  -- admin users
+('Admin 5', 'admin5@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 2, 15),  -- admin users
+('Moderator 1', 'mod1@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 16),  -- moderator
+('Moderator 2', 'mod2@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 17),  -- moderator
+('Moderator 3', 'mod3@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 18),  -- moderator
+('Moderator 4', 'mod4@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 19),  -- moderator
+('Moderator 5', 'mod5@example.com', '$2y$10$g7ugnGOMxDduMpd0hj4zve5ZSsX9yHOP0OTjppJCdkt5MI89FdlFy', 1, 20);  -- moderator
 
 
 
@@ -204,7 +204,7 @@ INSERT INTO questions(date, title, content, usersId) VALUES
 ('2023-10-23 10:00:00', 'Best practices for SQL?', 'What are the best practices for writing SQL queries?', 2);
 
 -- Populate comments
-INSERT INTO comment(date, content, usersId, questionId) VALUES
+INSERT INTO comments(date, content, usersId, questionId) VALUES
 ('2023-10-23 10:30:00', 'You can start with the 1NF, 2NF, and 3NF.', 3, 1),
 ('2023-10-23 11:00:00', 'Avoid SELECT *. Always specify your columns.', 4, 2);
 
@@ -266,10 +266,10 @@ CLUSTER questions USING idx_question_date;
 
 CREATE INDEX idx_question_title ON questions USING btree(title);
 
-CREATE INDEX idx_comment_date ON comment USING btree(date);
-CLUSTER comment USING idx_comment_date;
+CREATE INDEX idx_comment_date ON comments USING btree(date);
+CLUSTER comments USING idx_comment_date;
 
-CREATE INDEX idx_comment_questionId ON comment USING btree(questionId);
+CREATE INDEX idx_comment_questionId ON comments USING btree(questionId);
 
 CREATE INDEX idx_notification_date ON notification USING btree(date);
 CLUSTER notification USING idx_notification_date;
@@ -323,7 +323,7 @@ CREATE INDEX idx_search_users ON users USING GIN (tsvectors);
 
 --comment--
 
-ALTER TABLE comment ADD COLUMN tsvectors TSVECTOR;
+ALTER TABLE comments ADD COLUMN tsvectors TSVECTOR;
 
 DROP FUNCTION IF EXISTS comment_search_update() CASCADE;
 CREATE FUNCTION comment_search_update() RETURNS TRIGGER AS $$
@@ -336,11 +336,11 @@ END $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER comment_search_update
- BEFORE INSERT OR UPDATE ON comment
+ BEFORE INSERT OR UPDATE ON comments
  FOR EACH ROW
  EXECUTE PROCEDURE comment_search_update();
 
-CREATE INDEX idx_search_comment ON comment USING GIN (tsvectors);
+CREATE INDEX idx_search_comment ON comments USING GIN (tsvectors);
 
 --TRIGGERS--
 
@@ -369,9 +369,9 @@ CREATE OR REPLACE FUNCTION update_comment_votes()
 RETURNS TRIGGER AS $$
 BEGIN
    IF NEW.vote = TRUE THEN
-      UPDATE comment SET votes = votes + 1 WHERE id = NEW.comment_id;
+      UPDATE comments SET votes = votes + 1 WHERE id = NEW.comment_id;
    ELSE
-      UPDATE comment SET votes = votes - 1 WHERE id = NEW.comment_id;
+      UPDATE comments SET votes = votes - 1 WHERE id = NEW.comment_id;
    END IF;
    RETURN NEW;
 END;
