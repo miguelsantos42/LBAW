@@ -20,5 +20,8 @@ class Question extends Model
         return $this->hasMany(Comment::class, 'questionid'); // Use 'questionid' instead of 'questionId'
     }
 
-    // Other model methods...
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'usersid');
+    }
 }

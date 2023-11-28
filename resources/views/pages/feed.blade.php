@@ -11,7 +11,7 @@
             @forelse ($questions as $question)
             <div class="accordion-container" id="container{{ $question->id }}"
                 onclick="toggleAccordion('content{{ $question->id }}', 'container{{ $question->id }}')">
-                {{ $question->title }}
+                <strong>{{ $question->title }}</strong> by {{ $question->user->name }}
             </div>
             <div class="accordion-content" id="content{{ $question->id }}"
                 onclick="openModal(event, {{ $question->id }})">
@@ -87,6 +87,7 @@
         </div>
     </div>
 </div>
+
 <script>
 function toggleAccordion(contentId, containerId) {
     var content = document.getElementById(contentId);
