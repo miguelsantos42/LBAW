@@ -13,10 +13,14 @@
 
 <div class="content-background">
 
+        <form action= "{{ route('admin.search') }}" method= "GET"> 
+            <input type="text" name="search" placeholder="Search user..." value="{{ request()->query('search') }}">
+            <button type="submit">Search</button>
+        </form>
 
         <h2>Admin Page - User List</h2>
         <ul>
-            @foreach ($users as $user)
+            @forelse ($users as $user)
                 <li>
                     <strong>{{ $user->name }}</strong> (Role: {{ $user->role }}) Email: {{ $user->email }}
                     <form method="post" action="{{ route('admin.update', ['id' => $user->id]) }}">
@@ -36,8 +40,9 @@
                         <button type="submit">Update</button>
                     </form>
                 </li>
-            @endforeach
+            @empty
+                <li>No users found.</li>
+            @endforelse 
         </ul>
-
 </div>
 @endsection

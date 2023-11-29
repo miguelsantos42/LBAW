@@ -26,4 +26,20 @@ class AdminController extends Controller
 
         return redirect()->route('admin')->with('success', 'User updated successfully');
     }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        if(!empty($searchTerm)) {
+            $users = User::query()
+                ->where('name','LIKE',"%{$searchTerm}%")
+                ->orWhere("email","LIKE","%{$searchTerm}%")
+                ->orWhere("role","LIKE","%{$searchTerm}%")
+                ->get();
+        } else {
+            $users = User::all();
+        }
+        return view('pages.admin', compact('users'));
+    }
 }
