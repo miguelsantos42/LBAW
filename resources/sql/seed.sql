@@ -256,6 +256,8 @@ INSERT INTO voteNotification(date, updown, usersId, voterId, questionId) VALUES
 
 -- INDEXES --
 
+
+
 CREATE INDEX idx_users_email ON users USING btree(email);
 CLUSTER users USING idx_users_email;
 
