@@ -70,3 +70,7 @@ Route::controller(RegisterController::class)->group(function () {
 
 // Delete an user (ONLY) -> Do it by an Admin
 Route::delete('/admin/user/{id}/delete', [AdminController::class, 'destroy'])->name('admin.destroy');
+
+
+Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
