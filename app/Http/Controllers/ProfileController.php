@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 use Illuminate\View\View;
 
@@ -17,18 +18,30 @@ class ProfileController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-        ]);
+{
+    $user = Auth::user();
 
-        $user = Auth::user();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
+    $request->validate([
+        'name' => [
+        'required',
+        'max:255',
+        Rule::unique('users')->ignore($user->id), // Use the rule here
 
-        // Redirect back to the profile page
-        return redirect()->route('profile.index'); // Make sure you have a route named 'profile.index'
-    }
+    ],
+        'email' => [
+            'required',
+            'email',
+            'max:255',
+            Rule::unique('users')->ignore($user->id), // Use the rule here
+        ],
+    ]);
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->save();
+
+    // Redirect back to the profile page
+    return redirect()->route('profile.index'); // Make sure you have a route named 'profile.index'
+}
+
 }
