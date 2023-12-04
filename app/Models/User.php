@@ -53,6 +53,12 @@ class User extends Authenticatable
     /**
      * Get the cards for a user.
      */
+
+     public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class, 'usersid');
+    }
+
     public function cards(): HasMany
     {
         return $this->hasMany(Card::class);

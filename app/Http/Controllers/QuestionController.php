@@ -30,6 +30,23 @@ class QuestionController extends Controller
         return response()->json(['success' => 'Question deleted successfully']);
     }
 
+    public function update(Request $request, Question $question)
+    {
+        $question->title = $request->title;
+        $question->content = $request->content;
+        $question->save();
+        return back()->with('message', 'Question updated successfully!');
+    }
 
+    public function index()
+    {
+        // Eager load questions with comments
+        $questions = Question::with('comments')->get();
+
+        // Pass questions to the view
+        return view('pages.feed', compact('questions'));
+    }
 
 }
+
+

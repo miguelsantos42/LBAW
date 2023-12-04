@@ -14,6 +14,7 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
