@@ -32,6 +32,7 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
 Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search');
+Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
 
 
 Route::middleware(['checkRole:2'])->group(function () {

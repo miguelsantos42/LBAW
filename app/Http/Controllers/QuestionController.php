@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Question; // Import your Question model
+use App\Models\Question;
 
 class QuestionController extends Controller
 {
@@ -17,7 +17,6 @@ class QuestionController extends Controller
         $question = new Question;
         $question->title = $validatedData['title'];
         $question->content = $validatedData['content'];
-        // Change 'usersId' to 'usersid' to match the database column name case
         $question->usersid = auth()->id(); // Assuming you have user authentication in place
         $question->save();
         return back()->with('success', 'Your question has been posted.');
@@ -46,6 +45,12 @@ class QuestionController extends Controller
         // Pass questions to the view
         return view('pages.feed', compact('questions'));
     }
+    public function show($id)
+    {
+        $question = Question::with('comments')->findOrFail($id);
+        return view('pages.question', compact('question'));
+    }
+
 
 }
 
