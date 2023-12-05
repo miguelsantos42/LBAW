@@ -16,6 +16,7 @@
         <link href="{{ url('css/home.css') }}" rel="stylesheet">        <link href="{{ url('css/home.css') }}" rel="stylesheet">
         <link href="{{ url('css/feed.css') }}" rel="stylesheet">
         <link href="{{ url('css/profile.css') }}" rel="stylesheet">
+        <link href="{{ url('css/question.css') }}" rel="stylesheet">
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
 

@@ -67,6 +67,7 @@ CREATE TABLE questionTag(
 
 CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
+    parent_id INTEGER REFERENCES comments(id) ON DELETE CASCADE ON UPDATE CASCADE,
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     content TEXT NOT NULL,
     voteCount INT DEFAULT 0,
@@ -76,11 +77,6 @@ CREATE TABLE comments(
     isDeleted BOOLEAN DEFAULT FALSE 
 );
 
-CREATE TABLE commentOnComment(
-    mainCommentId INTEGER NOT NULL REFERENCES comments(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    subCommentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY (mainCommentId, subCommentId)
-);
 
 CREATE TABLE voteQuestions(
     updown BOOLEAN NOT NULL,

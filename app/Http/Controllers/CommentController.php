@@ -14,15 +14,16 @@ class CommentController extends Controller
         $request->validate([
             'content' => 'required',
             'questionid' => 'required|exists:questions,id',
+            'parent_id' => 'nullable|exists:comments,id', 
         ]);
 
         $comment = new Comment;
         $comment->content = $request->content;
         $comment->usersid = Auth::id();
-        $comment->questionid = $request->questionid;  // This should match your form input name
+        $comment->questionid = $request->questionid;
+        $comment->parent_id = $request->parent_id;
         $comment->save();
 
         return back()->with('message', 'Answer submitted successfully!');
     }
-
 }
