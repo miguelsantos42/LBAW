@@ -42,6 +42,12 @@
                             <label for="newName">Change Name:</label>
                             <input type="text" id="newName" name="newName" value="{{ old('newName', $user->name) }}">
 
+                            <label for="newEmail">Change Email:</label>
+                            <input type="email" id="newEmail" name="newEmail" value="{{ old('newEmail', $user->email) }}">
+
+                                <label for="newPassword">Change Password:</label>
+                                <input type="text" id="newPassword" name="newPassword" placeholder="Choose a new password">
+
                             <label for="newRole">Change Role:</label>
                             <select id="newRole" name="newRole">
                                 <option value="0" {{ old('newRole', $user->role) == 0 ? 'selected' : '' }}>User</option>
