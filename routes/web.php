@@ -33,9 +33,9 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
 Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search');
 
-
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+    Route::post('/admin/users', [AdminController::class,'storeUser'])->name('admin.store-user');
 });
 
 

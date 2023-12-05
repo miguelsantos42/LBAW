@@ -19,7 +19,7 @@
     .user-actions form {
         margin: 0;
     }
-
+    
 </style>
 
 <div class="content-background">
@@ -28,6 +28,11 @@
             <input type="text" name="search" placeholder="Search user..." value="{{ request()->query('search') }}">
             <button type="submit">Search</button>
         </form>
+ 
+        
+        <a href="{{ route('register') }}" class = "btn btn-primary">
+            <button type="button" class="btn btn-primary">Create User</button>
+        </a>
 
         <h2>Admin Page - User List</h2>
         <ul>

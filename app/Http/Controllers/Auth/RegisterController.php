@@ -40,8 +40,8 @@ class RegisterController extends Controller
             'role' => 0, // Ensure this is a valid role ID in your `role` table
         ]);
         
-        Auth::login($user); // Log the user in
-        $request->session()->regenerate(); // Regenerate the session
+        //Auth::login($user); // Log the user in
+        //$request->session()->regenerate(); // Regenerate the session
 
         // Redirect to a route that you know exists. For example, to a 'dashboard' or 'home'.
         return redirect()->route('home') // Replace 'home' with the name of the route you wish to redirect to.
