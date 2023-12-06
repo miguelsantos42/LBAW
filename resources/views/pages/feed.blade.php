@@ -15,7 +15,6 @@
                 <div class="accordion-content" id="content{{ $question->id }}">
                     <p>{{ Str::limit($question->content, 150) }}</p>
                     <a href="{{ route('questions.show', $question->id) }}">Read more...</a>
-                    {{-- Vote controls and other content can remain the same --}}
                 </div>
             @empty
                 <p>No questions available.</p>

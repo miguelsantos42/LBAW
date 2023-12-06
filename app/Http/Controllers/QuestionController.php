@@ -45,12 +45,10 @@ class QuestionController extends Controller
     }
     public function show($id)
 {
-    // Load the question along with top-level comments and nested replies, including the user who made the comment
     $question = Question::with(['comments' => function ($query) {
-        $query->whereNull('parent_id'); // Only load top-level comments
-    }, 'comments.replies', 'comments.user'])->findOrFail($id); // Add 'comments.user' to the eager loading
+        $query->whereNull('parent_id'); 
+    }, 'comments.replies', 'comments.user'])->findOrFail($id);
 
-    // You can pass additional data to the view if needed, for example, a flag to indicate that the comments should be displayed in a nested manner
     $nestedComments = true;
 
     return view('pages.question', compact('question', 'nestedComments'));
