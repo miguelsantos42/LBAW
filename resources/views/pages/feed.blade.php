@@ -8,16 +8,28 @@
         <h1 class="title">Questions Feed</h1>
         <div class="accordion">
             @forelse ($questions as $question)
-                <div class="accordion-container" id="container{{ $question->id }}"
-                    onclick="toggleAccordion('content{{ $question->id }}', 'container{{ $question->id }}')">
-                    <strong>{{ $question->title }}</strong> by {{ $question->user->name }}
+            <div class="accordion-container" id="container{{ $question->id }}"
+                onclick="toggleAccordion('content{{ $question->id }}', 'container{{ $question->id }}')">
+                <strong>{{ $question->title }}</strong> Posted by {{ $question->user->name }} <span
+                    class="date">{{ \Carbon\Carbon::parse($question->date)->diffForHumans() }}</span>
+            </div>
+            <div class="accordion-content" id="content{{ $question->id }}">
+                <p>{{ Str::limit($question->content, 500) }}</p>
+                <div class="vote-controls">
+                    <button class="upvote">
+                        <i class="bi-arrow-up-square"></i>
+                    </button>
+                    {{ $question->votecount }}
+                    <button class="downvote">
+                        <i class="bi-arrow-down-square"></i>
+                    </button>
                 </div>
-                <div class="accordion-content" id="content{{ $question->id }}">
-                    <p>{{ Str::limit($question->content, 150) }}</p>
-                    <a href="{{ route('questions.show', $question->id) }}">Read more...</a>
-                </div>
+                <a href="{{ route('questions.show', $question->id) }}">Read more...</a>
+
+            </div>
+
             @empty
-                <p>No questions available.</p>
+            <p>No questions available.</p>
             @endforelse
         </div>
     </div>

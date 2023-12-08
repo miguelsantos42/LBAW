@@ -34,6 +34,8 @@ Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.updat
 Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search');
 Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::post('/comments/{comment}/upvote', [CommentController::class, 'upvoteComment'])->name('comments.upvote');
+Route::post('/comments/{comment}/downvote', [CommentController::class, 'downvoteComment'])->name('comments.downvote');
 
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');

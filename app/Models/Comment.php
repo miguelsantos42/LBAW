@@ -32,8 +32,11 @@ class Comment extends Model
         return $this->belongsTo(Comment::class, 'parent_id');
     }
     public function user()
-{
-    return $this->belongsTo(User::class, 'usersid'); 
-}
+    {
+        return $this->belongsTo(User::class, 'usersid'); 
+    }
+    public function votes() {
+        return $this->hasMany(Vote::class, 'commentid');
+    }
 }
 

@@ -43,7 +43,6 @@ class AdminController extends Controller
         return view('pages.admin', compact('users'));
     }
 
-    //// Delete an user (ONLY) -> Do it by an Admin
     public function destroy($id){
         $user = User::findOrFail($id);
         $user->delete();

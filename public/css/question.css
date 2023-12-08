@@ -16,7 +16,6 @@
 }
 
 .comment {
-    background-color: #f9f9f9;
     margin-bottom: 15px;
     padding: 20px;
     color: #000;
@@ -55,9 +54,9 @@
 }
 
 .nested-comments {
-    margin-left: 5px;
+    margin-left: 0px;
     border-left: 4px solid #e3e3e3;
-    padding-left: 5px;
+    padding-left: 0px;
     border-radius: 7px 0px 0px 0px;
 
 }
@@ -72,4 +71,30 @@
 .escrever-texto{
     height: 50px;
     border: none;
+}
+
+.upvote{
+    padding: 0px 15px;
+    font-size: 20px;
+}
+.downvote{
+    padding: 0px 15px;
+    font-size: 20px;
+}
+
+.upvote:hover{
+    transition: 0.5s;
+    color: blue;
+}
+
+.downvote:hover{
+    transition: 0.5s;
+    color: orange;
+}
+
+.vote-count{
+    font-weight: 700;
+    font-size: 1.2em;
+    margin: 0px 10px;
+    color: black;
 }

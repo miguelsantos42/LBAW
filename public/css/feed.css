@@ -102,35 +102,3 @@
     text-decoration: none;
     cursor: pointer;
 }
-
-.upvote{
-    padding: 0px 15px;
-    background-color: white;
-    border: 2px solid #4a677cda;
-    font-size: 15px;
-    border-radius: 20px;
-}
-.downvote{
-    padding: 0px 15px;
-    background-color: white;
-    border: 2px solid #4a677cda;
-    font-size: 15px;
-    border-radius: 20px;
-}
-.upvote:hover{
-    transition: 0.5s;
-    background-color: rgba(51, 74, 91, 0.855);
-}
-
-.downvote:hover{
-    transform: 0.5s;
-    background-color: rgba(51, 74, 91, 0.855);
-}
-
-
-.vote-count{
-    font-weight: 700;
-    font-size: 1.2em;
-    margin: 0px 10px;
-    color: black;
-}
