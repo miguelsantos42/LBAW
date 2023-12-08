@@ -43,19 +43,13 @@ class QuestionController extends Controller
 
         return view('pages.feed', compact('questions'));
     }
-    
     public function show($id)
 {
-    $question = Question::with([
-        'comments' => function ($query) {
-            $query->whereNull('parent_id')
-                  ->with('userVote', 'replies.userVote'); // Load the userVote relationship for comments and their replies
-        }, 
-        'comments.replies', // Load replies
-        'comments.user' // Load the user who made the comment
-    ])->findOrFail($id);
+    $question = Question::with(['comments' => function ($query) {
+        $query->whereNull('parent_id'); 
+    }, 'comments.replies', 'comments.user'])->findOrFail($id);
 
-    $nestedComments = true; // This variable seems to be controlling whether to show nested comments or not
+    $nestedComments = true;
 
     return view('pages.question', compact('question', 'nestedComments'));
 }

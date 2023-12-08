@@ -2,7 +2,6 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-@foreach($question->comments as $comment) {{-- Use $question->comments here instead of $comments --}}
 <div class="comment" data-comment-id="{{ $comment->id }}">
     <div class="comment-metadata">
         <span class="comment-user">{{ $comment->user->name }}</span>
@@ -37,7 +36,6 @@
     </form>
     @endif
 </div>
-@endforeach
 
 <script>
 function voteComment(commentid, isupvote) {
