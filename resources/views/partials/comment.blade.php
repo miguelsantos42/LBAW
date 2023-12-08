@@ -2,6 +2,7 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+@foreach($question->comments as $comment) {{-- Use $question->comments here instead of $comments --}}
 <div class="comment" data-comment-id="{{ $comment->id }}">
     <div class="comment-metadata">
         <span class="comment-user">{{ $comment->user->name }}</span>
@@ -9,11 +10,11 @@
     </div>
     <div class="comment-content">{{ $comment->content }}</div>
     <div class="vote-controls">
-        <button class="upvote" onclick="voteComment({{ $comment->id }}, true)">
+        <button class="upvote @if(optional($comment->userVote)->updown === true) upvote-active @endif" onclick="voteComment({{ $comment->id }}, true)">
             <i class="bi bi-arrow-up-square"></i>
         </button>
         <span class="vote-count">{{ $comment->votecount }}</span>
-        <button class="downvote" onclick="voteComment({{ $comment->id }}, false)">
+        <button class="downvote @if(optional($comment->userVote)->updown === false) downvote-active @endif" onclick="voteComment({{ $comment->id }}, false)">
             <i class="bi bi-arrow-down-square"></i>
         </button>
     </div>
@@ -36,6 +37,7 @@
     </form>
     @endif
 </div>
+@endforeach
 
 <script>
 function voteComment(commentid, isupvote) {
@@ -57,12 +59,24 @@ function voteComment(commentid, isupvote) {
     })
     .then(response => response.json())
     .then(data => {
-    let voteCountElement = document.querySelector(`.comment[data-comment-id="${commentid}"] .vote-count`);
+        let voteCountElement = document.querySelector(`.comment[data-comment-id="${commentid}"] .vote-count`);
+        let upvoteButton = document.querySelector(`.comment[data-comment-id="${commentid}"] .upvote`);
+        let downvoteButton = document.querySelector(`.comment[data-comment-id="${commentid}"] .downvote`);
+
         if(voteCountElement){
             voteCountElement.textContent = data.votecount;
         }
-    })
 
+        // Toggle button active state
+        if(isupvote){
+            upvoteButton.classList.toggle('upvote-active');
+            downvoteButton.classList.remove('downvote-active');
+        } else {
+            downvoteButton.classList.toggle('downvote-active');
+            upvoteButton.classList.remove('upvote-active');
+        }
+    })
     .catch(error => console.error('Error:', error));
 }
+
 </script>

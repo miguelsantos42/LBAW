@@ -38,5 +38,10 @@ class Comment extends Model
     public function votes() {
         return $this->hasMany(Vote::class, 'commentid');
     }
+    public function userVote() {
+        return $this->hasOne(VoteComment::class, 'commentid', 'id')
+                    ->where('usersid', auth()->id());
+    }
+    
 }
 

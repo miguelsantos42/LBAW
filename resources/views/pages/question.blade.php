@@ -19,7 +19,7 @@
         <div class="comments-section">
             @if($nestedComments)
             @foreach ($question->comments as $comment)
-            @include('partials.comment', ['comment' => $comment])
+                @include('partials.comment', ['comment' => $comment])
             @endforeach
             @else
             @endif

@@ -98,3 +98,11 @@
     margin: 0px 10px;
     color: black;
 }
+
+.upvote-active {
+    color: blue;
+}
+
+.downvote-active {
+    color: orange;
+}
