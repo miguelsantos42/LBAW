@@ -17,6 +17,20 @@
             <i class="bi bi-arrow-down-square"></i>
         </button>
     </div>
+    @if(auth()->check() && auth()->id() === $comment->usersid)
+    <div class="comment-actions">
+        <button class="edit-comment" onclick="editComment({{ $comment->id }})">
+            <i class="bi bi-pencil-square"></i>
+        </button>
+        <form method="POST" action="{{ route('comments.destroy', $comment->id) }}">
+            @csrf
+            @method('DELETE')
+            <button class="delete-comment" type="submit">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
+    </div>
+    @endif
     @if($comment->replies && count($comment->replies) > 0)
     <div class="nested-comments">
         @foreach($comment->replies as $reply)
@@ -35,6 +49,7 @@
         <button class="submit-answer" type="submit">Reply</button>
     </form>
     @endif
+    
 </div>
 
 <script>

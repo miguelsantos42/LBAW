@@ -36,6 +36,9 @@ Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::post('/comments/{comment}/upvote', [CommentController::class, 'upvoteComment'])->name('comments.upvote');
 Route::post('/comments/{comment}/downvote', [CommentController::class, 'downvoteComment'])->name('comments.downvote');
+Route::post('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
 
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');

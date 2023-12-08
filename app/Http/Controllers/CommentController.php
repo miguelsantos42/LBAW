@@ -108,7 +108,18 @@ public function downvoteComment(Request $request, $commentid) {
     return response()->json(['votecount' => $comment->votecount]);
 }
 
-    
-    
+    public function destroy($id)
+    {
+        $comment = Comment::findOrFail($id);
 
+        // Check if the authenticated user can delete this comment
+        if (auth()->id() === $comment->usersid) {
+            $comment->delete();
+            return redirect()->route('feed.index')->with('success', 'Comment deleted successfully.');
+        } else {
+            // Optionally, you might want to abort with a 403 if the user is not authorized
+            // abort(403, 'Unauthorized action.');
+            return redirect()->route('feed.index')->with('error', 'You cannot delete this comment.');
+        }
+    }
 }

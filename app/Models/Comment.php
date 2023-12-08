@@ -42,6 +42,5 @@ class Comment extends Model
         return $this->hasOne(VoteComment::class, 'commentid', 'id')
                     ->where('usersid', auth()->id());
     }
-    
 }
 
