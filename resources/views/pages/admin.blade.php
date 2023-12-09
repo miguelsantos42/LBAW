@@ -27,10 +27,15 @@
 
 <div class="content-background">
 
-    <form action="{{ route('admin.search') }}" method="GET">
-        <input type="text" name="search" placeholder="Search user..." value="{{ request()->query('search') }}">
-        <button type="submit">Search</button>
-    </form>
+        <form action= "{{ route('admin.search') }}" method= "GET"> 
+            <input type="text" name="search" placeholder="Search user..." value="{{ request()->query('search') }}">
+            <button type="submit">Search</button>
+        </form>
+ 
+        
+        <a href="{{ route('register') }}" class = "btn btn-primary">
+            <button type="button" class="btn btn-primary">Create User</button>
+        </a>
 
     <h2>Admin Page - User List</h2>
     <ul>

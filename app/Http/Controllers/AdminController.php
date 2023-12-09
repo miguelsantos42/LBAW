@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -63,4 +64,5 @@ class AdminController extends Controller
 
         return redirect()->route('admin')->with('success','User deleted sucessfully');
     }
+
 }
