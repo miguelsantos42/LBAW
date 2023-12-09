@@ -65,20 +65,24 @@
 
                     <button type="submit" class="btn">Update</button>
 
-                </form>
+                        <form method="post" action="{{ route('admin.destroy', ['id' => $user->id]) }}" onsubmit="return confirm('Are you sure do you want to delete this user?');">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
 
-                <form method="post" action="{{ route('admin.destroy', ['id' => $user->id]) }}"
-                    onsubmit="return confirm('Are you sure do you want to delete this user?');">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-
-            </div>
-        </li>
-        @empty
-        <li>No users found.</li>
-        @endforelse
-    </ul>
+                        <form method="post" action="{{ $user->isblocked ? route('admin.unblockuser', $user->id) : route('admin.blockuser', $user->id) }}">
+                            @csrf
+                            <button type="submit" class="btn {{ $user->is_blocked ? 'btn-sucess' : 'btn-warning' }}">
+                                {{ $user->isblocked ? 'Unblock' : 'Block'}}
+                            </button>
+                        </form>
+                        
+                    </div>
+                </li>
+            @empty
+                <li>No users found.</li>
+            @endforelse 
+        </ul>
 </div>
 @endsection

@@ -64,4 +64,21 @@ class AdminController extends Controller
         return redirect()->route('admin')->with('success','User deleted sucessfully');
     }
 
+    public function blockUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->blocked = true;
+        $user->save();
+
+        return back()->with('success','User has been blocked');
+    }
+
+    public function unblockUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->blocked = false;
+        $user->save();
+
+        return back()->with('success','User has been unblocked');
+    }
 }
