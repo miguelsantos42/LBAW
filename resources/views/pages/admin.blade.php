@@ -62,6 +62,13 @@
                             @method('delete')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+
+                        <form method="post" action="{{ $user->isblocked ? route('admin.unblockuser', $user->id) : route('admin.blockuser', $user->id) }}">
+                            @csrf
+                            <button type="submit" class="btn {{ $user->is_blocked ? 'btn-sucess' : 'btn-warning' }}">
+                                {{ $user->isblocked ? 'Unblock' : 'Block'}}
+                            </button>
+                        </form>
                         
                     </div>
                 </li>

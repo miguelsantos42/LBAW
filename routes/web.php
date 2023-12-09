@@ -65,3 +65,8 @@ Route::delete('/admin/user/{id}/delete', [AdminController::class, 'destroy'])->n
 
 Route::put('/questions/{question}', [QuestionController::class, 'update'])->name('questions.update');
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+//Admin block or unblock some user
+
+Route::post('/admin/users/{id}/block', [AdminController::class,'blockUser'])->name('admin.blockuser');
+Route::post('/admin/users/{id}/unblock', [AdminController::class,'unblockUser'])->name('admin.unblockuser');
