@@ -45,12 +45,18 @@
                     <label for="newName">Change Name:</label>
                     <input type="text" id="newName" name="newName" value="{{ old('newName', $user->name) }}">
 
-                    <label for="newRole">Change Role:</label>
-                    <select id="newRole" name="newRole">
-                        <option value="0" {{ old('newRole', $user->role) == 0 ? 'selected' : '' }}>User</option>
-                        <option value="1" {{ old('newRole', $user->role) == 1 ? 'selected' : '' }}>Moderator</option>
-                        <option value="2" {{ old('newRole', $user->role) == 2 ? 'selected' : '' }}>Admin</option>
-                    </select>
+                            <label for="newEmail">Change Email:</label>
+                            <input type="email" id="newEmail" name="newEmail" value="{{ old('newEmail', $user->email) }}">
+
+                                <label for="newPassword">Change Password:</label>
+                                <input type="text" id="newPassword" name="newPassword" placeholder="Choose a new password">
+
+                            <label for="newRole">Change Role:</label>
+                            <select id="newRole" name="newRole">
+                                <option value="0" {{ old('newRole', $user->role) == 0 ? 'selected' : '' }}>User</option>
+                                <option value="1" {{ old('newRole', $user->role) == 1 ? 'selected' : '' }}>Moderator</option>
+                                <option value="2" {{ old('newRole', $user->role) == 2 ? 'selected' : '' }}>Admin</option>
+                            </select>
 
                     <button type="submit" class="btn">Update</button>
 

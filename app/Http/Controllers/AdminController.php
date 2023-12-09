@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -20,8 +21,21 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
 
+        $request->validate([
+            'newName' => 'required|string|max:250',
+            'newEmail' => 'required|email|max:250|unique:users,email,' . $id,
+            'newPassword' => 'nullable|min:8',
+            'newRole' => 'required',
+        ]);
+
         $user->name = $request->input('newName');
+        $user->email = $request->input('newEmail');
         $user->role = $request->input('newRole');
+
+        if ($request->filled('newPassword')) {
+            $user->password = Hash::make($request->input('newPassword'));
+        }
+
         $user->save();
 
         return redirect()->route('admin')->with('success', 'User updated successfully');
