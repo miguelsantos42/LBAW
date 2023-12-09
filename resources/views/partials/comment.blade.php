@@ -8,29 +8,29 @@
         <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
     </div>
     <div class="comment-content">{{ $comment->content }}</div>
-    <div class="vote-controls">
-        <button class="upvote @if(optional($comment->userVote)->updown === true) upvote-active @endif" onclick="voteComment({{ $comment->id }}, true)">
-            <i class="bi bi-arrow-up-square"></i>
-        </button>
-        <span class="vote-count">{{ $comment->votecount }}</span>
-        <button class="downvote @if(optional($comment->userVote)->updown === false) downvote-active @endif" onclick="voteComment({{ $comment->id }}, false)">
-            <i class="bi bi-arrow-down-square"></i>
-        </button>
-    </div>
-    @if(auth()->check() && auth()->id() === $comment->usersid)
     <div class="comment-actions">
-        <button class="edit-comment" onclick="editComment({{ $comment->id }})">
-            <i class="bi bi-pencil-square"></i>
-        </button>
-        <form method="POST" action="{{ route('comments.destroy', $comment->id) }}">
-            @csrf
-            @method('DELETE')
-            <button class="delete-comment" type="submit">
-                <i class="bi bi-trash"></i>
+        <div class="vote-controls">
+            <button class="upvote @if(optional($comment->userVote)->updown === true) upvote-active @endif" onclick="voteComment({{ $comment->id }}, true)">
+                <i class="bi bi-arrow-up-square"></i>
             </button>
-        </form>
+            <span class="vote-count">{{ $comment->votecount }}</span>
+            <button class="downvote @if(optional($comment->userVote)->updown === false) downvote-active @endif" onclick="voteComment({{ $comment->id }}, false)">
+                <i class="bi bi-arrow-down-square"></i>
+            </button>
+        </div>
+        @if(auth()->check() && auth()->id() === $comment->usersid)
+        <div class="comment-actions">
+            
+            <form method="POST" action="{{ route('comments.destroy', $comment->id) }}">
+                @csrf
+                @method('DELETE')
+                <button class="delete-comment" type="submit">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </div>
+        @endif
     </div>
-    @endif
     @if($comment->replies && count($comment->replies) > 0)
     <div class="nested-comments">
         @foreach($comment->replies as $reply)

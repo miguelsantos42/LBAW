@@ -106,3 +106,14 @@
 .downvote-active {
     color: orange;
 }
+
+.delete-comment{
+    color:red;
+    font-size: 1em;
+}
+
+.comment-actions{
+    display: flex;
+    flex-direction: row;
+    
+}
