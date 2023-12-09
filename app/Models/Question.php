@@ -16,8 +16,7 @@ class Question extends Model
     // Relationship with comments
     public function comments()
     {
-        // Ensure the foreign key is specified exactly as it is in the database
-        return $this->hasMany(Comment::class, 'questionid'); // Use 'questionid' instead of 'questionId'
+        return $this->hasMany(Comment::class, 'questionid'); 
     }
 
     public function user()

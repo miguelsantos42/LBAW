@@ -7,9 +7,8 @@ DROP TABLE IF EXISTS voteNotification;
 DROP TABLE IF EXISTS report;
 DROP TABLE IF EXISTS commentNotification;
 DROP TABLE IF EXISTS notification;
-DROP TABLE IF EXISTS voteComment;
+DROP TABLE IF EXISTS voteComments;
 DROP TABLE IF EXISTS voteQuestions;
-DROP TABLE IF EXISTS commentOnComment;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS questionTag;
 DROP TABLE IF EXISTS questions;
@@ -67,6 +66,7 @@ CREATE TABLE questionTag(
 
 CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
+    parent_id INTEGER REFERENCES comments(id) ON DELETE CASCADE ON UPDATE CASCADE,
     date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     content TEXT NOT NULL,
     voteCount INT DEFAULT 0,
@@ -76,11 +76,6 @@ CREATE TABLE comments(
     isDeleted BOOLEAN DEFAULT FALSE 
 );
 
-CREATE TABLE commentOnComment(
-    mainCommentId INTEGER NOT NULL REFERENCES comments(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    subCommentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY (mainCommentId, subCommentId)
-);
 
 CREATE TABLE voteQuestions(
     updown BOOLEAN NOT NULL,
@@ -89,7 +84,7 @@ CREATE TABLE voteQuestions(
     PRIMARY KEY (usersId, questionId)
 );
 
-CREATE TABLE voteComment(
+CREATE TABLE voteComments(
     updown BOOLEAN NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     commentId INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -221,7 +216,7 @@ INSERT INTO voteQuestions(updown, usersId, questionId) VALUES
 
 
 -- Populate voteComment
-INSERT INTO voteComment(updown, usersId, commentId) VALUES
+INSERT INTO voteComments(updown, usersId, commentId) VALUES
 (TRUE, 1, 1),  -- users1 upvoted Comment1
 (FALSE, 5, 1); -- users2 downvoted Comment2
 
@@ -242,9 +237,8 @@ INSERT INTO report(reason, usersReporterId, commentId) VALUES
 ('Spam comment', 5, 1),
 ('Offensive content', 6, 2);
 
--- Populate commentOnComment
-INSERT INTO commentOnComment(mainCommentId, subCommentId) VALUES
-(1, 2);
+
+
 
 
 INSERT INTO voteNotification(date, updown, usersId, voterId, questionId) VALUES
@@ -370,17 +364,17 @@ EXECUTE FUNCTION update_question_votes();
 CREATE OR REPLACE FUNCTION update_comment_votes()
 RETURNS TRIGGER AS $$
 BEGIN
-   IF NEW.vote = TRUE THEN
-      UPDATE comments SET votes = votes + 1 WHERE id = NEW.comment_id;
+   IF NEW.updown = TRUE THEN -- Changed from NEW.vote to NEW.updown
+      UPDATE comments SET voteCount = voteCount + 1 WHERE id = NEW.commentId;
    ELSE
-      UPDATE comments SET votes = votes - 1 WHERE id = NEW.comment_id;
+      UPDATE comments SET voteCount = voteCount - 1 WHERE id = NEW.commentId;
    END IF;
    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trigger_update_comment_votes
-AFTER INSERT OR UPDATE ON voteComment
+AFTER INSERT OR UPDATE ON voteComments
 FOR EACH ROW
 EXECUTE FUNCTION update_comment_votes();
 

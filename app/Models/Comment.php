@@ -6,23 +6,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User; 
 
 class Comment extends Model
 {
     use HasFactory;
 
-    // Specify the primary key and foreign key names explicitly if they do not follow Laravel's naming conventions
-    protected $primaryKey = 'id'; // This is probably already correct
-    protected $foreignKey = 'questionid'; // This should match your database column name exactly
-
-    protected $fillable = ['content', 'usersId', 'questionid', 'voteCount', 'edited', 'isDeleted']; // Make sure 'questionid' is lowercase here if it is lowercase in your database
+    protected $fillable = ['content', 'usersId', 'questionId', 'voteCount', 'edited', 'isDeleted', 'parent_id'];
+    protected $dates = ['date']; 
 
     public $timestamps = false;
 
-    // Relationship back to the question
     public function question()
     {
-        // Ensure the foreign key is specified exactly as it is in the database
-        return $this->belongsTo(Question::class, 'questionid'); // Use 'questionid' instead of 'questionId'
+        return $this->belongsTo(Question::class, 'questionid');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'usersid'); 
+    }
+    public function votes() {
+        return $this->hasMany(Vote::class, 'commentid');
+    }
+    public function userVote() {
+        return $this->hasOne(VoteComment::class, 'commentid', 'id')
+                    ->where('usersid', auth()->id());
     }
 }
+

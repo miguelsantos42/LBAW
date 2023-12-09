@@ -1,0 +1,108 @@
+.question-container{
+    background-color: white;
+    margin-left: 15%;
+    margin-right: 15%;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+/* Add your CSS styles here */
+.question-details {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment {
+    margin-bottom: 15px;
+    padding: 20px;
+    color: #000;
+
+}
+.comment-content{
+    margin-left: 5px;
+}
+
+.comment-metadata {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.comment-user {
+    font-weight: bold;
+}
+
+.comment-date {
+    margin-left: 10px;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.nested-comments {
+    margin-left: 0px;
+    border-left: 4px solid #e3e3e3;
+    padding-left: 0px;
+    border-radius: 7px 0px 0px 0px;
+
+}
+
+.submit-answer{
+    background-color: grey;
+    border-radius: 15px;
+    padding: 0 1.5em;
+    margin-left: 15px;
+}
+
+.escrever-texto{
+    height: 50px;
+    border: none;
+}
+
+.upvote{
+    padding: 0px 15px;
+    font-size: 20px;
+}
+.downvote{
+    padding: 0px 15px;
+    font-size: 20px;
+}
+
+.upvote:hover{
+    transition: 0.5s;
+    color: blue;
+}
+
+.downvote:hover{
+    transition: 0.5s;
+    color: orange;
+}
+
+.vote-count{
+    font-weight: 700;
+    font-size: 1.2em;
+    margin: 0px 10px;
+    color: black;
+}
+
+.upvote-active {
+    color: blue;
+}
+
+.downvote-active {
+    color: orange;
+}
