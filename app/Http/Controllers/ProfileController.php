@@ -44,4 +44,12 @@ class ProfileController extends Controller
     return redirect()->route('profile.index'); // Make sure you have a route named 'profile.index'
 }
 
+public function delete()
+{
+    $user = Auth::user();
+    $user->delete();
+
+    return redirect()->route('home');
+}
+
 }
