@@ -26,6 +26,12 @@ class Question extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class); //(Tag::class, 'questionTag')
+        return $this->belongsToMany(Tag::class, 'questionTag', 'questionId', 'tagId');
     }
+   
+   /* public function tags()
+	{
+		return $this->belongsToMany(Tag::class, 'question_tag', 'id_question', 'id_tag');
+	} */
+
 }
