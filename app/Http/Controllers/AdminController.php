@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -43,11 +45,12 @@ class AdminController extends Controller
         return view('pages.admin', compact('users'));
     }
 
-    //// Delete an user (ONLY) -> Do it by an Admin
     public function destroy($id){
         $user = User::findOrFail($id);
-        $user->delete();
-
-        return redirect()->route('admin')->with('success','User deleted sucessfully');
+        $user->name = "Anonymous";
+        $user->email = "anonymous" . $user->id . "@example.com";
+        $user->password = Hash::make(Str::random(40)); 
+        $user->save();
+        return redirect()->route('admin')->with('success', 'User anonymized successfully');
     }
 }
