@@ -65,25 +65,5 @@ class AdminController extends Controller
         $user->password = Hash::make(Str::random(40)); 
         $user->save();
         return redirect()->route('admin')->with('success', 'User anonymized successfully');
-
-    }
-
-    
-    public function blockUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->blocked = true;
-        $user->save();
-
-        return back()->with('success','User has been blocked');
-    }
-
-    public function unblockUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->blocked = false;
-        $user->save();
-
-        return back()->with('success','User has been unblocked');
     }
 }
