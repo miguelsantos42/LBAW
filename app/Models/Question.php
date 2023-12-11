@@ -23,4 +23,9 @@ class Question extends Model
     {
         return $this->belongsTo(User::class, 'usersid');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class); //(Tag::class, 'questionTag')
+    }
 }
