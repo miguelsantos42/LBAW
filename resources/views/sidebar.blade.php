@@ -3,7 +3,9 @@
     <a href="/feed?order=top">Top Questions</a>
     <a href="/feed?order=recent">Recent Questions</a>
     <a href="/feed?order=myquestions">My Questions</a>
+    <a href="/feed?order=followedquestions">Followed Questions</a>
     <a href="/feed?order=myanswers">My Answers</a>
+
 
 
     <?php
@@ -12,9 +14,12 @@
     if ($user) {
     $userRole = $user->role;
 
-    // Check if the user's role is equal to 2 or above
-    if ($userRole >= 2) {
+    if ($userRole == 2) {
         echo '<a href="/admin">Admin</a>';
+    }
+    if ($userRole == 1) {
+        echo '<a href="/admin">Moderator</a>';
+
     }
     }
     ?>

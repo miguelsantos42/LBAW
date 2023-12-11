@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use Illuminate\View\View;
 
@@ -40,16 +42,19 @@ class ProfileController extends Controller
     $user->email = $request->email;
     $user->save();
 
-    // Redirect back to the profile page
-    return redirect()->route('profile.index'); // Make sure you have a route named 'profile.index'
+    
+    return redirect()->route('profile.index');
 }
 
-public function delete()
-{
-    $user = Auth::user();
-    $user->delete();
-
-    return redirect()->route('home');
-}
+    public function delete()
+    {
+        $user = Auth::user();
+        $user->name = "Anonymous";
+        $user->email = "anonymous" . $user->id . "@example.com";
+        $user->password = Hash::make(Str::random(40)); 
+        $user->save();
+        Auth::logout();
+        return redirect()->route('home');
+    }
 
 }

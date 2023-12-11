@@ -37,9 +37,11 @@ class QuestionController extends Controller
 
     public function destroy($id)
     {
+        
         $question = Question::where('id', $id)->where('usersid', auth()->id())->firstOrFail();
         $question->delete();
         return response()->json(['success' => 'Question deleted successfully']);
+
     }
 
     public function update(Request $request, Question $question)
@@ -56,16 +58,17 @@ class QuestionController extends Controller
 
         return view('pages.feed', compact('questions'));
     }
+
     public function show($id)
-{
-    $question = Question::with(['comments' => function ($query) {
-        $query->whereNull('parent_id'); 
-    }, 'comments.replies', 'comments.user'])->findOrFail($id);
+    {
+        $question = Question::with(['comments' => function ($query) {
+            $query->whereNull('parent_id'); 
+        }, 'comments.replies', 'comments.user'])->findOrFail($id);
 
-    $nestedComments = true;
+        $nestedComments = true;
 
-    return view('pages.question', compact('question', 'nestedComments'));
-}
+        return view('pages.question', compact('question', 'nestedComments'));
+    }
 
 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -59,26 +60,34 @@ class AdminController extends Controller
 
     public function destroy($id){
         $user = User::findOrFail($id);
-        $user->delete();
-
-        return redirect()->route('admin')->with('success','User deleted sucessfully');
+        $user->name = "Anonymous";
+        $user->email = "anonymous" . $user->id . "@example.com";
+        $user->password = Hash::make(Str::random(40)); 
+        $user->save();
+        return redirect()->route('admin')->with('success', 'User anonymized successfully');
     }
 
     public function blockUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->blocked = true;
-        $user->save();
+{
+    // Retrieve the user by the given id and block them
+    $user = User::findOrFail($id);
+    $user->blocked = true; // Set the blocked field to true
+    $user->save(); // Save the changes to the database
 
-        return back()->with('success','User has been blocked');
-    }
+    // Redirect back to the admin page with a success message
+    return back()->with('success', 'User has been blocked successfully.');
+}
 
-    public function unblockUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->blocked = false;
-        $user->save();
+public function unblockUser($id)
+{
+    // Retrieve the user by the given id and unblock them
+    $user = User::findOrFail($id);
+    $user->blocked = false; // Set the blocked field to false
+    $user->save(); // Save the changes to the database
 
-        return back()->with('success','User has been unblocked');
-    }
+    // Redirect back to the admin page with a success message
+    return back()->with('success', 'User has been unblocked successfully.');
+}
+
+
 }

@@ -8,18 +8,12 @@ use App\Models\User;
 
 class FeedController extends Controller
 {
-    /**
-     * Display a listing of the questions.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
      public function index(Request $request)
      {
          $userId = auth()->id();
-         $orderType = $request->get('order', 'random'); // 'random' is the default
+         $orderType = $request->get('order', 'random');
      
-         // Add with('user') to each query to eager load the user relationship
          if ($orderType == 'top') {
              $questions = Question::with('user')
                                  ->where('isdeleted', false)
@@ -40,7 +34,13 @@ class FeedController extends Controller
                  $query->where('usersid', $userId);
              })->where('isdeleted', false)
                ->get();
-         } else { // Default to random
+         } elseif($orderType == 'followedquestions') {
+            $questions = Question::with('user')->whereHas('follows', function ($query) use ($userId) {
+                $query->where('usersid', $userId);
+            })->where('isdeleted', false)
+              ->get();
+
+        } else { // Default to random
              $questions = Question::with('user')
                                  ->where('isdeleted', false)
                                  ->inRandomOrder()
@@ -51,30 +51,12 @@ class FeedController extends Controller
      }
      
 
-    public function users()
-    {
-        // Fetch all users from the User model
-        $users = User::all();
-
-        // Pass the $users data to the 'pages.admin' view
-        return view('pages.feed', ['users' => $users]);
-    }
-
-
-    /**
-     * Display the specified question and its answers.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        // Find the question by ID and load its comments (answers)
         $question = Question::with(['comments' => function ($query) {
             $query->where('isDeleted', false);
         }])->findOrFail($id);
 
-        // Return the view with the question and comments data
         return view('question.show', compact('question'));
     }
 

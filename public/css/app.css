@@ -159,13 +159,14 @@ main > header {
     position: fixed; 
     top: -500px; 
     left: 70px;
-    width: 250px; 
+    width: 280px; 
     height: 50%; 
     background: rgba(255, 255, 255, 1); 
     overflow-x: hidden;
     transition: 0.5s; 
-    padding-top: 60px;
+    padding-top: 25px;
     border-radius: 25px;
+    overflow: hidden;
 }
 
 
