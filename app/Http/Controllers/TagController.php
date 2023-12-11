@@ -10,12 +10,21 @@ class TagController extends Controller
     public function index()
     {
         $tags = Tag::all();
-        return view('pages.tags ', compact('tags'));
+        return view('pages.tags ', ['tags' => $tags]);
+        //return view('pages.tags ', compact('tags'));
+    }
+
+    public function showTag($id){
+        $tag = Tag::find($id);
+        return view('pages.tag', ['tag' => $tag]);
+
     }
 
     public function create()
     {
-        return view('tags.create');
+        Tag::create(['tagName' => $req->tag]);
+        return redirect()->back();
+        //return view('tags.create');
     }
 
     public function store(Request $request)
@@ -44,7 +53,6 @@ class TagController extends Controller
     {
         $validatedData = $request->validate([
             'tagName' => 'required|unique:tags|max:255',
-            //'description' => 'nullable|max:255',
         ]);
 
         $tag->update($validatedData);

@@ -13,16 +13,16 @@ class Tag extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = ['tagName']; //por agora fica assim; mas sq adicionar descrição
-    
+    /*
     public function questions()
     {
         return $this->belongsToMany(Question::class);
     }
-
-    /*
+    */
+    
     public function questions()
 	{
 		return $this->belongsToMany(Question::class, 'questionTag', 'questionId', 'tagId');
-	}*/
+	}
 
 }
