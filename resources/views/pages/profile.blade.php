@@ -39,6 +39,17 @@
                                         </button>
                                     </div>
                                 </form>
+
+                                <form method="POST" action="{{ route('profile.delete') }}" onsubmit="return confirm('Are you sure you want to delete your account?')">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <div class="profile-actions">
+                                        <button type="submit" class="profile-delete">
+                                            Delete Account
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
 
