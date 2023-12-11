@@ -76,10 +76,14 @@
 .upvote{
     padding: 0px 15px;
     font-size: 20px;
+    padding: 0 1rem;
+
 }
 .downvote{
     padding: 0px 15px;
     font-size: 20px;
+    padding: 0 1rem;
+
 }
 
 .upvote:hover{
@@ -95,8 +99,9 @@
 .vote-count{
     font-weight: 700;
     font-size: 1.2em;
-    margin: 0px 10px;
+    margin: 0px 0px;
     color: black;
+
 }
 
 .upvote-active {
@@ -108,12 +113,43 @@
 }
 
 .delete-comment{
-    color:red;
-    font-size: 1em;
+    color: black;
+    font-size: 20px;
+    padding: 0 1rem;
+
+}
+.delete-comment:hover{
+    transition: 0.5s;
+    color: rgba(255, 26, 26, 1);
 }
 
-.comment-actions{
+
+.comment-actions {
     display: flex;
-    flex-direction: row;
-    
+    align-items: center;
+    gap: 0.5rem;
+}
+.vote-controls,
+.delete-form {
+    display: flex;
+    align-items: center;
+}
+
+.reply-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 1rem;
+}
+
+.reply-button:hover {
+    color: #007bff; /* Change as needed */
+}
+
+/* Ensure this class is added to style the delete button within the form */
+.delete-form .delete-comment {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 1rem;
 }
