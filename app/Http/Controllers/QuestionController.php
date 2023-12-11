@@ -23,7 +23,7 @@ class QuestionController extends Controller
             'content' => 'required',
         ]);
 
-        dd($request->tags);  //tags
+       // dd($request->tags);  //tags
 
         $question = new Question;
         $question->title = $validatedData['title'];

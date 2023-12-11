@@ -26,17 +26,33 @@ class TagController extends Controller
         
         //return redirect()->back();
     }
+
+    /*
+    public function store(Request $request)
+    {
+        $request->validate(['tagName' => 'required',]);
+
+        Tag::create(['tagName' => $request->tagName]);
+
+        return redirect()->route('pages.tags')->with('success', 'Tag created successfully');
+        //return redirect()->route('tags.index')->with('success', 'Tag created successfully');
+    }
+    */
+
     
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'tagName' => 'required|unique:tags|max:255',
-            //'description' => 'nullable|max:255',
         ]);
-
+    
         $tag = Tag::create($validatedData);
-        return redirect()->route('tags.index')->with('success', 'Tag created successfully');
+
+        return redirect()->route('pages.tags')->with('success', 'Tag created successfully');
+        //return redirect()->route('tags.index')->with('success', 'Tag created successfully');
     }
+    
+
 
     public function search(Request $request)
     {
