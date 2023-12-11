@@ -10,16 +10,21 @@ class TagController extends Controller
     public function index()
     {
         $tags = Tag::all();
-        return view('pages.tags ', ['tags' => $tags]);
-        //return view('pages.tags ', compact('tags'));
+
+        return view('pages.tags ', compact('tags'));
+        
+        //return view('tags.index ', compact('tags'));
+
+        //return view('pages.tags ', ['tags' => $tags]);
     }
 
     
     public function create()
     {
-        Tag::create(['tagName' => $req->tag]);
-        return redirect()->back();
-        //return view('tags.create');
+       
+        return view('tags.create');
+        
+        //return redirect()->back();
     }
     
     public function store(Request $request)
@@ -49,9 +54,10 @@ class TagController extends Controller
 
     public function showTag($id){
         $tag = Tag::find($id);
+       
         return view('pages.tag', ['tag' => $tag]);
-
     }
+    
     public function edit(Tag $tag)
     {
         return view('tags.edit', compact('tag'));
