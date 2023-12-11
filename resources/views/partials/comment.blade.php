@@ -8,7 +8,9 @@
         <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
     </div>
     <div class="comment-content">{{ $comment->content }}</div>
+    
     <div class="comment-actions">
+        <!-- Voting controls -->
         <div class="vote-controls">
             <button class="upvote @if(optional($comment->userVote)->updown === true) upvote-active @endif" onclick="voteComment({{ $comment->id }}, true)">
                 <i class="bi bi-arrow-up-square"></i>
@@ -18,38 +20,45 @@
                 <i class="bi bi-arrow-down-square"></i>
             </button>
         </div>
+
         @if(auth()->check() && auth()->id() === $comment->usersid)
-        <div class="comment-actions">
-            
-            <form method="POST" action="{{ route('comments.destroy', $comment->id) }}">
+            <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" class="delete-form">
                 @csrf
                 @method('DELETE')
                 <button class="delete-comment" type="submit">
                     <i class="bi bi-trash"></i>
                 </button>
             </form>
-        </div>
+        @endif
+
+        <!-- Reply button -->
+        @if(auth()->check())
+            <button class="reply-button" onclick="toggleReplyForm({{ $comment->id }})">
+                <i class="bi bi-chat"></i> Reply
+            </button>
         @endif
     </div>
+
     @if($comment->replies && count($comment->replies) > 0)
-    <div class="nested-comments">
-        @foreach($comment->replies as $reply)
-        @include('partials.comment', ['comment' => $reply])
-        @endforeach
-
-    </div>
-
+        <div class="nested-comments">
+            @foreach($comment->replies as $reply)
+                @include('partials.comment', ['comment' => $reply])
+            @endforeach
+        </div>
     @endif
-    @if(auth()->check()) {{-- Check if the user is authenticated --}}
-    <form method="POST" action="{{ route('comments.store') }}">
-        @csrf
-        <input type="hidden" name="questionid" value="{{ $comment->question->id }}" />
-        <input type="hidden" name="parent_id" value="{{ $comment->id }}" />
-        <textarea class="escrever-texto" name="content" placeholder="Reply to this comment..." required></textarea>
-        <button class="submit-answer" type="submit">Reply</button>
-    </form>
+
+    <!-- Hidden reply form -->
+    @if(auth()->check())
+        <div class="reply-form-container" id="reply-form-{{ $comment->id }}" style="display: none;">
+            <form method="POST" action="{{ route('comments.store') }}">
+                @csrf
+                <input type="hidden" name="questionid" value="{{ $comment->question->id }}" />
+                <input type="hidden" name "parent_id" value="{{ $comment->id }}" />
+                <textarea class="escrever-texto" name="content" placeholder="Reply to this comment..." required></textarea>
+                <button class="submit-answer" type="submit">Reply</button>
+            </form>
+        </div>
     @endif
-    
 </div>
 
 <script>
@@ -91,5 +100,15 @@ function voteComment(commentid, isupvote) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+function toggleReplyForm(commentId) {
+    var replyForm = document.getElementById('reply-form-' + commentId);
+    if (replyForm.style.display === 'none' || replyForm.style.display === '') {
+        replyForm.style.display = 'block';
+    } else {
+        replyForm.style.display = 'none';
+    }
+}
+
 
 </script>

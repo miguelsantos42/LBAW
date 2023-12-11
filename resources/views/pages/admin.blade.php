@@ -27,15 +27,15 @@
 
 <div class="content-background">
 
-        <form action= "{{ route('admin.search') }}" method= "GET"> 
-            <input type="text" name="search" placeholder="Search user..." value="{{ request()->query('search') }}">
-            <button type="submit">Search</button>
-        </form>
- 
-        
-        <a href="{{ route('register') }}" class = "btn btn-primary">
-            <button type="button" class="btn btn-primary">Create User</button>
-        </a>
+    <form action="{{ route('admin.search') }}" method="GET">
+        <input type="text" name="search" placeholder="Search user..." value="{{ request()->query('search') }}">
+        <button type="submit">Search</button>
+    </form>
+
+
+    <a href="{{ route('register') }}" class="btn btn-primary">
+        <button type="button" class="btn btn-primary">Create User</button>
+    </a>
 
     <h2>Admin Page - User List</h2>
     <ul>
@@ -50,39 +50,41 @@
                     <label for="newName">Change Name:</label>
                     <input type="text" id="newName" name="newName" value="{{ old('newName', $user->name) }}">
 
-                            <label for="newEmail">Change Email:</label>
-                            <input type="email" id="newEmail" name="newEmail" value="{{ old('newEmail', $user->email) }}">
+                    <label for="newEmail">Change Email:</label>
+                    <input type="email" id="newEmail" name="newEmail" value="{{ old('newEmail', $user->email) }}">
 
-                                <label for="newPassword">Change Password:</label>
-                                <input type="text" id="newPassword" name="newPassword" placeholder="Choose a new password">
+                    <label for="newPassword">Change Password:</label>
+                    <input type="text" id="newPassword" name="newPassword" placeholder="Choose a new password">
 
-                            <label for="newRole">Change Role:</label>
-                            <select id="newRole" name="newRole">
-                                <option value="0" {{ old('newRole', $user->role) == 0 ? 'selected' : '' }}>User</option>
-                                <option value="1" {{ old('newRole', $user->role) == 1 ? 'selected' : '' }}>Moderator</option>
-                                <option value="2" {{ old('newRole', $user->role) == 2 ? 'selected' : '' }}>Admin</option>
-                            </select>
+                    <label for="newRole">Change Role:</label>
+                    <select id="newRole" name="newRole">
+                        <option value="0" {{ old('newRole', $user->role) == 0 ? 'selected' : '' }}>User</option>
+                        <option value="1" {{ old('newRole', $user->role) == 1 ? 'selected' : '' }}>Moderator</option>
+                        <option value="2" {{ old('newRole', $user->role) == 2 ? 'selected' : '' }}>Admin</option>
+                    </select>
 
                     <button type="submit" class="btn">Update</button>
 
-                        <form method="post" action="{{ route('admin.destroy', ['id' => $user->id]) }}" onsubmit="return confirm('Are you sure do you want to delete this user?');">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                    <form method="post" action="{{ route('admin.destroy', ['id' => $user->id]) }}"
+                        onsubmit="return confirm('Are you sure do you want to delete this user?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
 
-                        <form method="post" action="{{ $user->isblocked ? route('admin.unblockuser', $user->id) : route('admin.blockuser', $user->id) }}">
-                            @csrf
-                            <button type="submit" class="btn {{ $user->is_blocked ? 'btn-sucess' : 'btn-warning' }}">
-                                {{ $user->isblocked ? 'Unblock' : 'Block'}}
-                            </button>
-                        </form>
-                        
-                    </div>
-                </li>
-            @empty
-                <li>No users found.</li>
-            @endforelse 
-        </ul>
+                    <form method="post"
+                        action="{{ $user->isblocked ? route('admin.unblockuser', $user->id) : route('admin.blockuser', $user->id) }}">
+                        @csrf
+                        <button type="submit" class="btn {{ $user->is_blocked ? 'btn-sucess' : 'btn-warning' }}">
+                            {{ $user->isblocked ? 'Unblock' : 'Block'}}
+                        </button>
+                    </form>
+
+            </div>
+        </li>
+        @empty
+        <li>No users found.</li>
+        @endforelse
+    </ul>
 </div>
 @endsection
