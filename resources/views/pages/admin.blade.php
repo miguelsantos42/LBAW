@@ -64,14 +64,16 @@
                     </select>
 
                     <button type="submit" class="btn">Update</button>
-
+                </form>
+                <div>
                     <form method="post" action="{{ route('admin.destroy', ['id' => $user->id]) }}"
                         onsubmit="return confirm('Are you sure do you want to delete this user?');">
                         @csrf
-                        @method('DELETE')
+                        @method('delete')
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
-
+                </div>
+                <div>
                     <form method="post"
                         action="{{ $user->isblocked ? route('admin.unblockuser', $user->id) : route('admin.blockuser', $user->id) }}">
                         @csrf
@@ -79,7 +81,7 @@
                             {{ $user->isblocked ? 'Unblock' : 'Block'}}
                         </button>
                     </form>
-
+                </div>
             </div>
         </li>
         @empty
