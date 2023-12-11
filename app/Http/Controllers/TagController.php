@@ -14,19 +14,14 @@ class TagController extends Controller
         //return view('pages.tags ', compact('tags'));
     }
 
-    public function showTag($id){
-        $tag = Tag::find($id);
-        return view('pages.tag', ['tag' => $tag]);
-
-    }
-
+    
     public function create()
     {
         Tag::create(['tagName' => $req->tag]);
         return redirect()->back();
         //return view('tags.create');
     }
-
+    
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -38,11 +33,25 @@ class TagController extends Controller
         return redirect()->route('tags.index')->with('success', 'Tag created successfully');
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->input('search'); 
+    
+        $tags = Tag::where('tagName', 'LIKE', "%$search%")->get();
+
+        return view('tags.index', compact('tags'));
+    }
+
     public function show(Tag $tag)
     {
         return view('tags.show', compact('tag'));
     }
 
+    public function showTag($id){
+        $tag = Tag::find($id);
+        return view('pages.tag', ['tag' => $tag]);
+
+    }
     public function edit(Tag $tag)
     {
         return view('tags.edit', compact('tag'));

@@ -4,17 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class QuestionTag
- *
- * @property int $id_tag
- * @property int $id_question
- *
- * @property Tag $tag
- * @property Question $question
- *
- * @package App\Models
- */
 class QuestionTag extends Model
 {
 	protected $table = 'question_tag';
