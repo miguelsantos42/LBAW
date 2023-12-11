@@ -74,13 +74,18 @@
                     </form>
                 </div>
                 <div>
-                    <form method="post"
-                        action="{{ $user->isblocked ? route('admin.unblockuser', $user->id) : route('admin.blockuser', $user->id) }}">
+                    @if($user->blocked)
+                    <form method="post" action="{{ route('admin.unblockuser', $user->id) }}">
                         @csrf
-                        <button type="submit" class="btn {{ $user->is_blocked ? 'btn-sucess' : 'btn-warning' }}">
-                            {{ $user->isblocked ? 'Unblock' : 'Block'}}
-                        </button>
+                        <button type="submit" class="btn btn-success">Unblock</button>
                     </form>
+                    @else
+                    <form method="post" action="{{ route('admin.blockuser', $user->id) }}">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Block</button>
+                    </form>
+                    @endif
+
                 </div>
             </div>
         </li>

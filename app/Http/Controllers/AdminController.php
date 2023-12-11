@@ -66,4 +66,28 @@ class AdminController extends Controller
         $user->save();
         return redirect()->route('admin')->with('success', 'User anonymized successfully');
     }
+
+    public function blockUser($id)
+{
+    // Retrieve the user by the given id and block them
+    $user = User::findOrFail($id);
+    $user->blocked = true; // Set the blocked field to true
+    $user->save(); // Save the changes to the database
+
+    // Redirect back to the admin page with a success message
+    return back()->with('success', 'User has been blocked successfully.');
+}
+
+public function unblockUser($id)
+{
+    // Retrieve the user by the given id and unblock them
+    $user = User::findOrFail($id);
+    $user->blocked = false; // Set the blocked field to false
+    $user->save(); // Save the changes to the database
+
+    // Redirect back to the admin page with a success message
+    return back()->with('success', 'User has been unblocked successfully.');
+}
+
+
 }
