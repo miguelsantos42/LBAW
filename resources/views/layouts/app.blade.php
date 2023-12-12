@@ -44,6 +44,9 @@
                     <a href="{{ url('/faq') }}">FAQ</a>
                     <a href="{{ url('/services') }}">Services</a>
                     <a href="{{ url('/contact') }}">Contact</a>
+                    <a href="{{ url('/feed') }}">
+                        <i class="bi bi-bell-fill"></i>
+                    </a>
 
                     @if (Auth::check())
                         <button class="btnLogout" onclick="location.href='{{ url('/logout') }}'"> Logout </button> 

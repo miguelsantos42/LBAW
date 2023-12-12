@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Models\Tag;
 
 class QuestionController extends Controller
 {
+
+    public function create()
+    {
+        $tags = Tag::all();
+        return view('pages.home', compact('tags'));
+    }
+
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -14,13 +23,26 @@ class QuestionController extends Controller
             'content' => 'required',
         ]);
 
+        // Remove the dd() line to allow the script to continue execution
+        // dd($request->tags);
+
         $question = new Question;
         $question->title = $validatedData['title'];
         $question->content = $validatedData['content'];
-        $question->usersid = auth()->id(); // Assuming you have user authentication in place
+        $question->usersid = auth()->id(); // Assuming you have user authentication in place 
         $question->save();
+
+        // Attach tags if they are present in the request
+        if($request->has('tags')) {
+            $question->tags()->attach($request->tags);
+        }
+
+        // You should redirect after a successful save instead of returning a view directly
+        // This is to prevent a resubmission of the form if the user refreshes the page
         return back()->with('success', 'Your question has been posted.');
+
     }
+
 
     public function destroy($id)
     {
@@ -56,9 +78,6 @@ class QuestionController extends Controller
 
         return view('pages.question', compact('question', 'nestedComments'));
     }
-
-
-
 
 
 }

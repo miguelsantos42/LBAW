@@ -10,9 +10,9 @@ DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS voteComments;
 DROP TABLE IF EXISTS voteQuestions;
 DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS questionTag;
+DROP TABLE IF EXISTS questionTags;
 DROP TABLE IF EXISTS questions;
-DROP TABLE IF EXISTS tag;
+DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS photo;
@@ -43,7 +43,7 @@ CREATE TABLE users(
    blocked BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE tag (
+CREATE TABLE tags (
     id SERIAL PRIMARY KEY,
     tagName TEXT NOT NULL CONSTRAINT tag_name_uk UNIQUE
 );
@@ -60,9 +60,9 @@ CREATE TABLE questions(
     closed BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE questionTag(
+CREATE TABLE questionTags(
     questionId INTEGER NOT NULL REFERENCES questions (id),
-    tagId INTEGER NOT NULL REFERENCES tag (id),
+    tagId INTEGER NOT NULL REFERENCES tags (id),
     PRIMARY KEY (questionId, tagId)
 );
 
@@ -86,7 +86,7 @@ CREATE TABLE followedQuestions(
 
 CREATE TABLE followedTags(
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    tagId INTEGER NOT NULL REFERENCES tag (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    tagId INTEGER NOT NULL REFERENCES tags (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (usersId, tagId)
 );
 
@@ -198,7 +198,7 @@ INSERT INTO users (name, email, password, role, photoId) VALUES
 
 
 -- Populate tags
-INSERT INTO tag(tagName) VALUES
+INSERT INTO tags(tagName) VALUES
 ('Database'),
 ('SQL'),
 ('Web Development'),
@@ -217,7 +217,7 @@ INSERT INTO comments(date, content, usersId, questionId) VALUES
 ('2023-10-23 11:00:00', 'Avoid SELECT *. Always specify your columns.', 4, 2);
 
 -- Populate questionTag
-INSERT INTO questionTag (questionId, tagId) VALUES
+INSERT INTO questionTags (questionId, tagId) VALUES
 (1, 1),  -- Question 1 is associated with Tag 1
 (1, 2),  -- Question 1 is associated with Tag 2
 (2, 2);  -- Question 2 is associated with Tag 2
