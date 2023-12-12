@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,22 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
- 
-    protected $table = 'tag';
+    public $timestamps = false;
 
-    protected $primaryKey = 'id';
-
-    protected $fillable = ['tagName']; //por agora fica assim; mas sq adicionar descrição
-    /*
     public function questions()
     {
-        return $this->belongsToMany(Question::class);
+        return $this->belongsToMany(Question::class, 'questiontags', 'tagid', 'questionid');
     }
-    */
-    
-    public function questions()
-	{
-		return $this->belongsToMany(Question::class, 'questionTag', 'questionId', 'tagId');
-	}
 
 }

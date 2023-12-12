@@ -40,6 +40,7 @@ Route::post('/comments/{comment}/downvote', [CommentController::class, 'downvote
 Route::post('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
+Route::get('/questions/create', [QuestionController::class, 'create'])->name('ask.create');
 
 Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');

@@ -7,8 +7,11 @@
     <div class="question-details">
         
         <h1>{{ $question->title }}</h1>
+    
         <p>{{ $question->content }}</p>
-
+        @foreach($question->tags as $tag)
+            <span class="tag">{{ $tag->tagname }}</span>
+        @endforeach
         {{-- Form for adding a new top-level comment --}}
         <form method="POST" action="{{ route('comments.store') }}" class="form-group">
             @csrf

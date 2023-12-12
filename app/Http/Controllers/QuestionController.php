@@ -11,10 +11,10 @@ class QuestionController extends Controller
 
     public function create()
     {
-        $tags = Tag::all(); 
-        return view('pages.home')->with('tags', $tags);
-        //return view('pages.home', compact('tags'));
+        $tags = Tag::all();
+        return view('pages.home', compact('tags'));
     }
+
 
     public function store(Request $request)
     {
@@ -23,7 +23,8 @@ class QuestionController extends Controller
             'content' => 'required',
         ]);
 
-       // dd($request->tags);  //tags
+        // Remove the dd() line to allow the script to continue execution
+        // dd($request->tags);
 
         $question = new Question;
         $question->title = $validatedData['title'];
@@ -31,16 +32,25 @@ class QuestionController extends Controller
         $question->usersid = auth()->id(); // Assuming you have user authentication in place 
         $question->save();
 
+        // Attach tags if they are present in the request
+        if($request->has('tags')) {
+            $question->tags()->attach($request->tags);
+        }
+
+        // You should redirect after a successful save instead of returning a view directly
+        // This is to prevent a resubmission of the form if the user refreshes the page
         return back()->with('success', 'Your question has been posted.');
-        //return view('pages.home', compact('tags'))->with('success', 'Your question has been posted.');
-        //return redirect()->back()->with('success', 'Your question has been posted.')->with('tags', $tags);
+
     }
+
 
     public function destroy($id)
     {
+        
         $question = Question::where('id', $id)->where('usersid', auth()->id())->firstOrFail();
         $question->delete();
         return response()->json(['success' => 'Question deleted successfully']);
+
     }
 
     public function update(Request $request, Question $question)
@@ -57,16 +67,17 @@ class QuestionController extends Controller
 
         return view('pages.feed', compact('questions'));
     }
+
     public function show($id)
-{
-    $question = Question::with(['comments' => function ($query) {
-        $query->whereNull('parent_id'); 
-    }, 'comments.replies', 'comments.user'])->findOrFail($id);
+    {
+        $question = Question::with(['comments' => function ($query) {
+            $query->whereNull('parent_id'); 
+        }, 'comments.replies', 'comments.user'])->findOrFail($id);
 
-    $nestedComments = true;
+        $nestedComments = true;
 
-    return view('pages.question', compact('question', 'nestedComments'));
-}
+        return view('pages.question', compact('question', 'nestedComments'));
+    }
 
 
 }
