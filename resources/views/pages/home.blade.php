@@ -28,6 +28,7 @@
                     </select>
                 </div>
 
+
                 <button class="submit-post" type="submit">Submit Post</button>
             </form>
         </div>

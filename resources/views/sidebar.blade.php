@@ -1,5 +1,6 @@
 <div id="sidebar" class="sidebar" style="top: -500px;">
     <a href="/feed">Feed</a>
+    <a href="/tags">Tags</a>
     <a href="/feed?order=top">Top Questions</a>
     <a href="/feed?order=recent">Recent Questions</a>
     <a href="/feed?order=myquestions">My Questions</a>
