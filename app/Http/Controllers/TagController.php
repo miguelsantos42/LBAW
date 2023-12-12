@@ -39,7 +39,7 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'tagName' => 'required|unique:tags|max:255',
+            'tagname' => 'required|unique:tags|max:255',
         ]);
     
         $tag = Tag::create($validatedData);
@@ -55,9 +55,9 @@ class TagController extends Controller
 
     public function update(Request $request, Tag $tag)
     {
-        $request->validate([ 'tagName' => 'required' ]);
+        $request->validate([ 'tagname' => 'required' ]);
 
-        $tag->update([ 'tagName' => $request->name ]);
+        $tag->update([ 'tagname' => $request->name ]);
 
         return to_route('tags.index')->with('success', 'Tag updated successfully');
     }
@@ -84,7 +84,7 @@ class TagController extends Controller
     {
         $search = $request->input('search'); 
     
-        $tags = Tag::where('tagName', 'LIKE', "%$search%")->get();
+        $tags = Tag::where('tagname', 'LIKE', "%$search%")->get();
 
         return view('tags.index', compact('tags'));
     }
