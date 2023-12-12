@@ -69,10 +69,10 @@ class CommentController extends Controller
                 // Create a voteNotification record
                 $voteNotification = new VoteNotification([
                     'updown' => TRUE,
-                    'usersId' => $comment->usersid,
-                    'commentId' => $commentid,
-                    'questionId' => NULL,
-                    'voterId' => $usersid,
+                    'usersid' => $comment->usersid,
+                    'commentid' => $commentid,
+                    'questionid' => NULL,
+                    'voterid' => $usersid,
                 ]);
         
                 // Save the voteNotification
@@ -92,10 +92,10 @@ class CommentController extends Controller
             // Create a voteNotification record
             $voteNotification = new VoteNotification([
                 'updown' => TRUE,
-                'usersId' => $comment->usersid,
-                'commentId' => $commentid,
-                'questionId' => NULL,
-                'voterId' => $usersid,
+                'usersid' => $comment->usersid,
+                'commentid' => $commentid,
+                'questionid' => NULL,
+                'voterid' => $usersid,
             ]);
     
             // Save the voteNotification
@@ -137,10 +137,10 @@ class CommentController extends Controller
                 // Create a voteNotification record
                 $voteNotification = new VoteNotification([
                     'updown' => FALSE,
-                    'usersId' => $comment->usersid,
-                    'commentId' => $commentid,
-                    'questionId' => NULL,
-                    'voterId' => $usersid,
+                    'usersid' => $comment->usersid,
+                    'commentid' => $commentid,
+                    'questionid' => NULL,
+                    'voterid' => $usersid,
                 ]);
     
                 // Save the voteNotification
@@ -160,10 +160,10 @@ class CommentController extends Controller
             // Create a voteNotification record
             $voteNotification = new VoteNotification([
                 'updown' => FALSE,
-                'usersId' => $comment->usersid,
-                'commentId' => $commentid,
-                'questionId' => NULL,
-                'voterId' => $usersid,
+                'usersid' => $comment->usersid,
+                'commentid' => $commentid,
+                'questionid' => NULL,
+                'voterid' => $usersid,
             ]);
 
             // Save the voteNotification
