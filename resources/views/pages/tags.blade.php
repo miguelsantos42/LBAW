@@ -18,7 +18,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $tag->id }}</h5>
+                        <h5 class="card-title" style="display: none;">{{ $tag->id }}</h5>
                             <h5 class="card-title">{{ $tag->tagname }}</h5>
 
                             <a href="{{ route('tags.show', ['tag' => $tag->id]) }}" class="btn btn-primary">View Posts</a>
