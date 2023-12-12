@@ -9,7 +9,6 @@ use App\Models\Comment;
 use App\Models\Question;
 
 use App\Models\VoteNotification;
-use App\Models\Notification;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,6 +124,18 @@ public function downvoteComment(Request $request, $commentid) {
               ->where('usersid', $usersid)
               ->where('commentid', $commentid)
               ->update(['updown' => false]);
+
+              // Create a voteNotification record
+              $voteNotification = new VoteNotification([
+                'updown' => FALSE,
+                'usersId' => $comment->usersid,
+                'commentId' => $commentid,
+                'questionId' => NULL,
+                'voterId' => $usersid,
+            ]);
+    
+            // Save the voteNotification
+            $voteNotification->save();
         }
     } else {
         // First-time vote, add downvote
@@ -134,6 +145,18 @@ public function downvoteComment(Request $request, $commentid) {
             'usersid' => $usersid, 
             'commentid' => $commentid
         ]);
+
+        // Create a voteNotification record
+        $voteNotification = new VoteNotification([
+            'updown' => FALSE,
+            'usersId' => $comment->usersid,
+            'commentId' => $commentid,
+            'questionId' => NULL,
+            'voterId' => $usersid,
+        ]);
+
+        // Save the voteNotification
+        $voteNotification->save();
     }
 
     $comment->save();
