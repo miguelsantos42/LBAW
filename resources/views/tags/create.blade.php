@@ -12,7 +12,7 @@
                 <input type="text" class="form-control" name="tagName" value="{{ old('tagName') }}" placeholder="Enter tag name">
             </div>
 
-            <button type="submit" class="btn btn-primary">Create Tag</button>
+            <button type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>
 @endsection

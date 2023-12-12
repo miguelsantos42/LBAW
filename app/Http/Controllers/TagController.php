@@ -18,13 +18,10 @@ class TagController extends Controller
         //return view('pages.tags ', ['tags' => $tags]);
     }
 
-    
     public function create()
     {
-       
         return view('tags.create');
-        
-        //return redirect()->back();
+
     }
 
     /*
@@ -39,7 +36,6 @@ class TagController extends Controller
     }
     */
 
-    
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -52,7 +48,37 @@ class TagController extends Controller
         //return redirect()->route('tags.index')->with('success', 'Tag created successfully');
     }
     
+    public function edit(Tag $tag)
+    {
+        return view('tags.edit', compact('tag'));
+    }
 
+    public function update(Request $request, Tag $tag)
+    {
+        $request->validate([ 'tagName' => 'required' ]);
+
+        $tag->update([ 'tagName' => $request->name ]);
+
+        return to_route('tags.index')->with('success', 'Tag updated successfully');
+    }
+
+    /*
+    public function update(Request $request, Tag $tag)
+    {
+        $validatedData = $request->validate([
+            'tagName' => 'required|unique:tags|max:255',
+        ]);
+
+        $tag->update($validatedData);
+        return redirect()->route('pages.tags')->with('success', 'Tag updated successfully');
+    }
+    */
+
+    public function destroy(Tag $tag)
+    {
+        $tag->delete();
+        return back()->with('success', 'Tag deleted successfully');
+    }
 
     public function search(Request $request)
     {
@@ -74,26 +100,6 @@ class TagController extends Controller
         return view('pages.tag', ['tag' => $tag]);
     }
     
-    public function edit(Tag $tag)
-    {
-        return view('tags.edit', compact('tag'));
-    }
-
-
-    public function update(Request $request, Tag $tag)
-    {
-        $validatedData = $request->validate([
-            'tagName' => 'required|unique:tags|max:255',
-        ]);
-
-        $tag->update($validatedData);
-        return redirect()->route('tags.index')->with('success', 'Tag updated successfully');
-    }
 
  
-    public function destroy(Tag $tag)
-    {
-        $tag->delete();
-        return redirect()->route('tags.index')->with('success', 'Tag deleted successfully');
-    }
 }
