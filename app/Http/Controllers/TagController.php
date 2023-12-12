@@ -12,10 +12,7 @@ class TagController extends Controller
         $tags = Tag::all();
 
         return view('pages.tags ', compact('tags'));
-        
-        //return view('tags.index ', compact('tags'));
 
-        //return view('pages.tags ', ['tags' => $tags]);
     }
 
     public function create()
@@ -23,18 +20,6 @@ class TagController extends Controller
         return view('tags.create');
 
     }
-
-    /*
-    public function store(Request $request)
-    {
-        $request->validate(['tagName' => 'required',]);
-
-        Tag::create(['tagName' => $request->tagName]);
-
-        return redirect()->route('pages.tags')->with('success', 'Tag created successfully');
-        //return redirect()->route('tags.index')->with('success', 'Tag created successfully');
-    }
-    */
 
     public function store(Request $request)
     {
@@ -45,7 +30,6 @@ class TagController extends Controller
         $tag = Tag::create($validatedData);
 
         return redirect()->route('pages.tags')->with('success', 'Tag created successfully');
-        //return redirect()->route('tags.index')->with('success', 'Tag created successfully');
     }
     
     public function edit(Tag $tag)
@@ -62,17 +46,7 @@ class TagController extends Controller
         return to_route('tags.index')->with('success', 'Tag updated successfully');
     }
 
-    /*
-    public function update(Request $request, Tag $tag)
-    {
-        $validatedData = $request->validate([
-            'tagName' => 'required|unique:tags|max:255',
-        ]);
 
-        $tag->update($validatedData);
-        return redirect()->route('pages.tags')->with('success', 'Tag updated successfully');
-    }
-    */
 
     public function destroy(Tag $tag)
     {
@@ -82,11 +56,15 @@ class TagController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->input('search'); 
-    
-        $tags = Tag::where('tagname', 'LIKE', "%$search%")->get();
-
-        return view('tags.index', compact('tags'));
+        $searchtag = $request->input('search'); 
+        if(!empty($searchtag)){
+            $tags = Tag::query()
+            ->where('tagname', 'LIKE', "%{$searchtag}%")
+            ->get();
+        }else{
+            $tags = Tag::all();
+        }
+        return view('tags.index', compact('tags'));    
     }
 
     public function show(Tag $tag)
