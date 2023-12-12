@@ -53,13 +53,18 @@ class CommentController extends Controller
                   ->where('usersid', $usersid)
                   ->where('commentid', $commentid)
                   ->delete();
+
+                $comment->save();
             } else {
                 // Change downvote to upvote
                 $comment->votecount += 2;
+
                 DB::table('votecomments')
                   ->where('usersid', $usersid)
                   ->where('commentid', $commentid)
                   ->update(['updown' => true]);
+
+                $comment->save();
     
                 // Create a voteNotification record
                 $voteNotification = new VoteNotification([
@@ -76,12 +81,14 @@ class CommentController extends Controller
         } else {
             // First-time vote, add upvote
             $comment->votecount += 1;
+
             DB::table('votecomments')->insert([
                 'updown' => true, 
                 'usersid' => $usersid, 
                 'commentid' => $commentid
             ]);
-    
+
+            $comment->save();
             // Create a voteNotification record
             $voteNotification = new VoteNotification([
                 'updown' => TRUE,
@@ -95,73 +102,76 @@ class CommentController extends Controller
             $voteNotification->save();
         }
     
-        // Save the comment
-        $comment->save();
-    
         return response()->json(['votecount' => $comment->votecount]);
     }
 
-public function downvoteComment(Request $request, $commentid) {
-    $usersid = Auth::id();
-    $comment = Comment::findOrFail($commentid);
-    $existingVote = DB::table('votecomments')
-                      ->where('usersid', $usersid)
-                      ->where('commentid', $commentid)
-                      ->first();
+    public function downvoteComment(Request $request, $commentid) {
+        $usersid = Auth::id();
+        $comment = Comment::findOrFail($commentid);
+        $existingVote = DB::table('votecomments')
+                        ->where('usersid', $usersid)
+                        ->where('commentid', $commentid)
+                        ->first();
 
-    if ($existingVote) {
-        if ($existingVote->updown === false) {
-            // Already downvoted, so remove the vote
-            $comment->votecount += 1;
-            DB::table('votecomments')
-              ->where('usersid', $usersid)
-              ->where('commentid', $commentid)
-              ->delete();
+        if ($existingVote) {
+            if ($existingVote->updown === false) {
+                // Already downvoted, so remove the vote
+                $comment->votecount += 1;
+
+                DB::table('votecomments')
+                ->where('usersid', $usersid)
+                ->where('commentid', $commentid)
+                ->delete();
+
+                $comment->save();
+            } else {
+                // Change upvote to downvote
+                $comment->votecount -= 2;
+
+                DB::table('votecomments')
+                ->where('usersid', $usersid)
+                ->where('commentid', $commentid)
+                ->update(['updown' => false]);
+                
+                $comment->save();
+                // Create a voteNotification record
+                $voteNotification = new VoteNotification([
+                    'updown' => FALSE,
+                    'usersId' => $comment->usersid,
+                    'commentId' => $commentid,
+                    'questionId' => NULL,
+                    'voterId' => $usersid,
+                ]);
+    
+                // Save the voteNotification
+                $voteNotification->save();
+            }
         } else {
-            // Change upvote to downvote
-            $comment->votecount -= 2;
-            DB::table('votecomments')
-              ->where('usersid', $usersid)
-              ->where('commentid', $commentid)
-              ->update(['updown' => false]);
+            // First-time vote, add downvote
+            $comment->votecount -= 1;
 
-              // Create a voteNotification record
-              $voteNotification = new VoteNotification([
+            DB::table('votecomments')->insert([
+                'updown' => false, 
+                'usersid' => $usersid, 
+                'commentid' => $commentid
+            ]);
+
+            $comment->save();
+            // Create a voteNotification record
+            $voteNotification = new VoteNotification([
                 'updown' => FALSE,
                 'usersId' => $comment->usersid,
                 'commentId' => $commentid,
                 'questionId' => NULL,
                 'voterId' => $usersid,
             ]);
-    
+
             // Save the voteNotification
             $voteNotification->save();
         }
-    } else {
-        // First-time vote, add downvote
-        $comment->votecount -= 1;
-        DB::table('votecomments')->insert([
-            'updown' => false, 
-            'usersid' => $usersid, 
-            'commentid' => $commentid
-        ]);
 
-        // Create a voteNotification record
-        $voteNotification = new VoteNotification([
-            'updown' => FALSE,
-            'usersId' => $comment->usersid,
-            'commentId' => $commentid,
-            'questionId' => NULL,
-            'voterId' => $usersid,
-        ]);
-
-        // Save the voteNotification
-        $voteNotification->save();
+        return response()->json(['votecount' => $comment->votecount]);
     }
-
-    $comment->save();
-    return response()->json(['votecount' => $comment->votecount]);
-}
 
     public function destroy($id)
     {
