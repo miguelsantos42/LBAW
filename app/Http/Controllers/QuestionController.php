@@ -12,7 +12,7 @@ class QuestionController extends Controller
     public function create()
     {
         $tags = Tag::all(); 
-        return view('pages.home', compact('tags'))
+        return view('pages.home', compact('tags'));
     }
 
     public function store(Request $request)
