@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Comment;
 use App\Models\Question;
+use App\Models\Notification;
+use App\Models\CommentNotification;
 
 use App\Models\VoteNotification;
 
@@ -31,10 +33,39 @@ class CommentController extends Controller
         $comment->parent_id = $request->parent_id;
         $comment->save();
 
+        // Retrieve associated models with 'usersid' attribute
+        $question = Question::with('user')->findOrFail($comment->questionid);
+        $parentComment = ($comment->parent_id) ? Comment::with('user')->findOrFail($comment->parent_id) : null;
+
+        // Checks if there is a usersid in parentComment if not check for usersid in question. If it cant find both set notifusersid to null
+        $notifusersid = $parentComment ? $parentComment->user->id : ($question->user->id ?? null);
+
+        if ($notifusersid !== null) {
+            // Create a notification record
+            $notification = new Notification([
+                'content' => $comment->content,
+                'usersid' => $notifusersid,
+                'questionid' => $comment->questionid
+            ]);
+
+            // Save the notification
+            $notification->save();
+
+            // Create a commentNotification record
+            $commentNotification = new CommentNotification([
+                'notificationid' => $notification->id,
+                'commentid' => $comment->id
+            ]);
+
+            // Save the commentNotification
+            $commentNotification->save();
+        }
+
         return back()->with('message', 'Answer submitted successfully!');
     }
 
-  
+
+
     public function upvoteComment(Request $request, $commentid) {
         $usersid = Auth::id();
         $comment = Comment::findOrFail($commentid);
