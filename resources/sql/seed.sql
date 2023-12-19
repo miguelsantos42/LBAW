@@ -358,14 +358,15 @@ CREATE INDEX idx_search_comment ON comments USING GIN (tsvectors);
 CREATE OR REPLACE FUNCTION update_question_votes()
 RETURNS TRIGGER AS $$
 BEGIN
-   IF NEW.vote = TRUE THEN
-      UPDATE questions SET votes = votes + 1 WHERE id = NEW.question_id;
-   ELSE
-      UPDATE questions SET votes = votes - 1 WHERE id = NEW.question_id;
-   END IF;
-   RETURN NEW;
+    IF NEW.updown THEN
+        UPDATE questions SET votecount = votecount + 1 WHERE id = NEW.questionId;
+    ELSE
+        UPDATE questions SET votecount = votecount - 1 WHERE id = NEW.questionId;
+    END IF;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE TRIGGER trigger_update_question_votes
 AFTER INSERT OR UPDATE ON voteQuestions

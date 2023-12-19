@@ -16,13 +16,16 @@
             <div class="accordion-content" id="content{{ $question->id }}">
                 <p>{{ Str::limit($question->content, 500) }}</p>
                 <div class="vote-controls">
-                    <button class="upvote">
+                    <button class="upvote" onclick="voteQuestion({{ $question->id }}, true)">
                         <i class="bi-arrow-up-square"></i>
                     </button>
-                    {{ $question->votecount }}
-                    <button class="downvote">
+                    <span id="votecount-{{ $question->id }}">
+                        {{ $question->votecount }}
+                    </span>
+                    <button class="downvote" onclick="voteQuestion({{ $question->id }}, false)">
                         <i class="bi-arrow-down-square"></i>
                     </button>
+
                 </div>
                 <a href="{{ route('questions.show', $question->id) }}">Read more...</a>
 
@@ -58,6 +61,49 @@ function toggleAccordion(contentId, containerId) {
         content.style.maxHeight = content.scrollHeight + "px";
         container.classList.add('active');
     }
+}
+
+function voteQuestion(questionid, isupvote) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const url = isupvote ? `/questions/${questionid}/upvote` : `/questions/${questionid}/downvote`;
+
+    fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({
+                questionid: questionid,
+                _token: token // CSRF token
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            let voteCountElement = document.querySelector(`#votecount-${questionid}`);
+            if (voteCountElement) {
+                voteCountElement.textContent = data.votecount;
+            }
+
+            // Optionally, toggle the button's active state
+            let upvoteButton = document.querySelector(`#container${questionid} .upvote`);
+            let downvoteButton = document.querySelector(`#container${questionid} .downvote`);
+            if (isupvote) {
+                upvoteButton.classList.toggle('upvote-active');
+                downvoteButton.classList.remove('downvote-active');
+            } else {
+                downvoteButton.classList.toggle('downvote-active');
+                upvoteButton.classList.remove('upvote-active');
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 </script>
 @endsection

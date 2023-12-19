@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class VoteQuestion extends Model
 {
-    protected $table = 'voteQuestions';
+    protected $table = 'votequestions';
     public $incrementing = false;
     public $timestamps = false;
-    
+    protected $primaryKey = ['usersid', 'questionid'];
+
     protected $fillable = [
         'updown',
         'usersid',
