@@ -20,31 +20,51 @@ class ProfileController extends Controller
     }
 
     public function update(Request $request)
-{
-    $user = Auth::user();
-
-    $request->validate([
-        'name' => [
-        'required',
-        'max:255',
-        Rule::unique('users')->ignore($user->id), // Use the rule here
-
-    ],
-        'email' => [
-            'required',
-            'email',
-            'max:255',
-            Rule::unique('users')->ignore($user->id), // Use the rule here
-        ],
-    ]);
-
-    $user->name = $request->name;
-    $user->email = $request->email;
-    $user->save();
-
+    {
+        $user = Auth::user();
     
-    return redirect()->route('profile.index');
-}
+        $request->validate([
+            'name' => [
+                'required',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'current_password' => [ // Add validation for the current password
+                'required',
+                function ($attribute, $value, $fail) use ($user) {
+                    if (!Hash::check($value, $user->password)) {
+                        return $fail(__('The current password is incorrect.'));
+                    }
+                },
+            ],
+            'password' => [
+                'required',
+                'min:8',
+                'confirmed',
+                'different:current_password', // Add this rule to ensure the new password is different
+            ],
+        ]);
+    
+        // Update the user's name and email
+        $user->name = $request->name;
+        $user->email = $request->email;
+    
+        // Update the password only if the current password is correct and new password is different
+        if (Hash::check($request->current_password, $user->password)) {
+            $user->password = Hash::make($request->password);
+        }
+    
+        $user->save();
+    
+        return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
+    }
+    
 
     public function delete()
     {
