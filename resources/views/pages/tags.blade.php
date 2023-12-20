@@ -20,9 +20,15 @@
                         <div class="card-body">
                         <h5 class="card-title" style="display: none;">{{ $tag->id }}</h5>
                             <h5 class="card-title">{{ $tag->tagname }}</h5>
-
-                            <a href="{{ route('tags.show', ['tag' => $tag->id]) }}" class="btn btn-primary">View Posts</a>
-                            <a href="{{ route('tags.edit',  $tag->id) }}" class="btn btn-secondary">Edit</a>    <!-- Se for Admin -->
+                            
+                            <div class="mt-3">
+                                <form method="POST" action="{{ route('tags.follow', $tag->id) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary btn-sm">Follow</button>
+                                </form>
+                            
+                                <a href="{{ route('tags.edit',  $tag->id) }}" class="btn btn-secondary">Edit</a>    <!-- Se for Admin -->
+                          
                             <form action="{{ route('tags.destroy',  $tag->id) }}" method="POST" 
                                 onsubmit="return confirm('Are you sure?');">
                                 @csrf

@@ -50,6 +50,9 @@ Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit'
 Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
 Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
+Route::post('/tags/{tag}/follow', [TagController::class, 'follow'])->name('tags.follow');
+Route::post('/tags/{tag}/unfollow', [TagController::class, 'unfollow'])->name('tags.unfollow');
+
 
 Route::post('/questions/{question}/upvote', [CommentController::class, 'upvoteQuestion'])->name('questions.upvote');
 Route::post('/questions/{question}/downvote', [CommentController::class, 'downvoteQuestion'])->name('questions.downvote');
