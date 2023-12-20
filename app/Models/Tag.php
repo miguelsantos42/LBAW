@@ -15,6 +15,8 @@ class Tag extends Model
 
     public function followers()
     {
-        return $this->belongsToMany(Tag::class, 'followedTags', 'tagid', 'usersid');
+        return $this->belongsToMany(Tag::class, 'followedtags', 'tagid', 'usersid');
     }
+
+
 }

@@ -9,28 +9,38 @@
             <button type="submit">Search</button>
         </form>
 
+        <a href="{{ route('tags.create') }}" class="btn btn-primary">New Tag</a>
 
-        <form action="{{ route('tags.create') }}">
-            <button class="btn btn-primary">New Tag</button>
-        </form>
+        
         <div class="row mt-3">
             @foreach($tags as $tag)
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         <div class="card-body">
-                        <h5 class="card-title" style="display: none;">{{ $tag->id }}</h5>
-                            <h5 class="card-title">{{ $tag->tagname }}</h5>
-                            
-                            <div class="mt-3">
+                            <h5 class="card-title" style="display: none;">{{ $tag->id }}</h5>
+                            <h5 class="card-title">{{ $tag->tagName }}</h5>
+
+                            @auth
+                              @if(Auth::user()->follows($tag))
+                                <form method="POST" action="{{ route('tags.unfollow', $tag->id) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">Unfollow</button>
+                                </form>
+                              @else
                                 <form method="POST" action="{{ route('tags.follow', $tag->id) }}">
                                     @csrf
                                     <button type="submit" class="btn btn-primary btn-sm">Follow</button>
                                 </form>
-                            
-                                <a href="{{ route('tags.edit',  $tag->id) }}" class="btn btn-secondary">Edit</a>    <!-- Se for Admin -->
-                          
-                            <form action="{{ route('tags.destroy',  $tag->id) }}" method="POST" 
-                                onsubmit="return confirm('Are you sure?');">
+                              @endif
+                            @endauth
+
+                            @guest
+                              <!-- Botão caso o usuário não esteja autenticado -->
+                            @endguest
+
+                            <a href="{{ route('tags.show', ['tag' => $tag->id]) }}" class="btn btn-primary">View Posts</a>
+                            <a href="{{ route('tags.edit',  $tag->id) }}" class="btn btn-secondary">Edit</a>    <!-- Se for Admin -->
+                            <form action="{{ route('tags.destroy', ['tag' => $tag->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>

@@ -78,18 +78,18 @@ class TagController extends Controller
     
     public function follow(Tag $tag)  //deguir uma tag
     {
-        $user = augth()->user();
+        $user = auth()->user();
 
-        $user->followings()->attach($tag->id);
+        $user->followedTags()->attach($tag->id);
 
         return redirect()->back()->with('success', "followed successfully!");
     }
 
     public function unfollow(Tag $tag)  //deguir uma tag
     {
-        $user = augth()->user();
+        $user = auth()->user();
 
-        $user->followings()->detach($tag->id);
+        $user->followedTags()->detach($tag->id);
 
         return redirect()->back()->with('success', "followed successfully!");
     }
