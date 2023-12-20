@@ -64,4 +64,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Card::class);
     }
+
+    public function followings()
+    {
+        return $this->belongsToMany(Tag::class, 'followedTags', 'usersid', 'tagid');
+    }
+
 }
