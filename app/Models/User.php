@@ -65,7 +65,6 @@ class User extends Authenticatable
         return $this->hasMany(Card::class);
     }
     
-
     public function followsTags()
     {
         return $this->hasMany(FollowsTag::class, 'usersid');
@@ -80,16 +79,5 @@ class User extends Authenticatable
     {
         return $this->followedTags()->where('tagid', $tag->id)->exists();
     }
-    /*
-    public function follows()
-    {
-        return $this->followedTags()->where('usersid', $user->id)->exists();  //para ver se um user segue uma tag /para aparecer o botão de unfollow 
-    }  
-
-    public function follows($tagid)
-    {
-        return $this->followedTags()->where('tagId', $tagId)->exists();
-    }
-    */
 
 }
