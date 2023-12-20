@@ -65,19 +65,26 @@ class User extends Authenticatable
         return $this->hasMany(Card::class);
     }
     
-    public function followsTags()
-    {
-        return $this->hasMany(FollowsTag::class, 'usersid');
-    }
-
+    //-- Follow Tags
     public function followedTags()
     {
         return $this->belongsToMany(Tag::class, 'followedtags', 'usersid', 'tagid');
     }
 
-    public function follows(Tag $tag) //a ver se seguimos esta tag
+    public function followsT(Tag $tag)
     {
         return $this->followedTags()->where('tagid', $tag->id)->exists();
+    }
+    
+    //-- Follow Questions
+    public function followedQuestions()
+    {
+        return $this->belongsToMany(Question::class, 'followedquestions', 'usersid', 'questionid');
+    }
+
+    public function followsQ(Question $question)
+    {
+        return $this->followedQuestions()->where('questionid', $question->id)->exists();
     }
 
 }

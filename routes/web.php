@@ -51,8 +51,11 @@ Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update')
 Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
 
-Route::post('/tags/follow/{tag}', [TagController::class, 'follow'])->name('tags.follow');
-Route::post('/tags/unfollow/{tag}', [TagController::class, 'unfollow'])->name('tags.unfollow');
+Route::post('/tags/{tag}/follow', [TagController::class, 'follow'])->name('tags.follow');
+Route::post('/tags/{tag}/unfollow', [TagController::class, 'unfollow'])->name('tags.unfollow');
+
+Route::post('/question/{question}/follow', [QuestionController::class, 'follow'])->name('question.follow');
+Route::post('/question/{question}/unfollow', [QuestionController::class, 'unfollow'])->name('question.unfollow');
 
 
 Route::post('/questions/{question}/upvote', [CommentController::class, 'upvoteQuestion'])->name('questions.upvote');

@@ -21,7 +21,7 @@
                             <h5 class="card-title" style="display: none;">{{ $tag->id }}</h5>
                             <h5 class="card-title">{{ $tag->tagname }}</h5>
                             @auth
-                              @if(Auth::user()->follows($tag))
+                              @if(Auth::user()->followsT($tag))
                                 <form method="POST" action="{{ route('tags.unfollow', $tag->id) }}">
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">Unfollow</button>
