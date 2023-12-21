@@ -55,6 +55,7 @@ CREATE TABLE questions(
     content TEXT NOT NULL,
     voteCount INT DEFAULT 0,
     edited BOOLEAN NOT NULL DEFAULT FALSE,
+    edited_date TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     isDeleted BOOLEAN DEFAULT FALSE,
     closed BOOLEAN DEFAULT FALSE
@@ -352,20 +353,49 @@ CREATE TRIGGER comment_search_update
 CREATE INDEX idx_search_comment ON comments USING GIN (tsvectors);
 
 --TRIGGERS--
+CREATE OR REPLACE FUNCTION delete_question_cascade()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM questionTags WHERE questionId = OLD.id;
+    
+    DELETE FROM comments WHERE questionId = OLD.id;
+    
+    DELETE FROM followedQuestions WHERE questionId = OLD.id;
+    
+    DELETE FROM voteQuestions WHERE questionId = OLD.id;
+    
+    DELETE FROM notification WHERE questionId = OLD.id;
+    
+    DELETE FROM commentNotification WHERE commentId IN (SELECT id FROM comments WHERE questionId = OLD.id);
+    
+    DELETE FROM report WHERE questionId = OLD.id;
+    
+    DELETE FROM voteNotification WHERE questionId = OLD.id;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_delete_question_cascade
+BEFORE DELETE ON questions
+FOR EACH ROW EXECUTE FUNCTION delete_question_cascade();
+
+
 
 
 --every time a new vote is cast on a question, update the vote count of the question.
 CREATE OR REPLACE FUNCTION update_question_votes()
 RETURNS TRIGGER AS $$
 BEGIN
-   IF NEW.vote = TRUE THEN
-      UPDATE questions SET votes = votes + 1 WHERE id = NEW.question_id;
-   ELSE
-      UPDATE questions SET votes = votes - 1 WHERE id = NEW.question_id;
-   END IF;
-   RETURN NEW;
+    IF NEW.updown THEN
+        UPDATE questions SET votecount = votecount + 1 WHERE id = NEW.questionId;
+    ELSE
+        UPDATE questions SET votecount = votecount - 1 WHERE id = NEW.questionId;
+    END IF;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE TRIGGER trigger_update_question_votes
 AFTER INSERT OR UPDATE ON voteQuestions

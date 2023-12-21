@@ -38,6 +38,7 @@ class Question extends Model
     public function follows()
     {
         return $this->belongsToMany(User::class, 'followedquestions', 'questionid', 'usersid');
-    }*/
+    }
+    
 
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Tag;
-
+use App\Models\VoteQuestion;
 use App\Models\VoteNotification;
 
 
@@ -29,22 +29,17 @@ class QuestionController extends Controller
             'content' => 'required',
         ]);
 
-        // Remove the dd() line to allow the script to continue execution
-        // dd($request->tags);
-
         $question = new Question;
         $question->title = $validatedData['title'];
         $question->content = $validatedData['content'];
-        $question->usersid = auth()->id(); // Assuming you have user authentication in place 
+        $question->usersid = auth()->id(); 
         $question->save();
 
-        // Attach tags if they are present in the request
         if($request->has('tags')) {
             $question->tags()->attach($request->tags);
         }
 
-        // You should redirect after a successful save instead of returning a view directly
-        // This is to prevent a resubmission of the form if the user refreshes the page
+
         return back()->with('success', 'Your question has been posted.');
 
     }
@@ -53,18 +48,30 @@ class QuestionController extends Controller
     public function destroy($id)
     {
         
-        $question = Question::where('id', $id)->where('usersid', auth()->id())->firstOrFail();
+        $question = Question::where('id', $id)->firstOrFail();
         $question->delete();
         return response()->json(['success' => 'Question deleted successfully']);
 
     }
 
+    public function edit($id)
+    {
+        $question = Question::findOrFail($id);
+
+        $tags = Tag::all(); 
+
+        return view('pages.editquestion', compact('question', 'tags'));
+    }
+
+
     public function update(Request $request, Question $question)
     {
         $question->title = $request->title;
         $question->content = $request->content;
+        $question->edited = true;
+        $question->tags()->sync($request->tags);
         $question->save();
-        return back()->with('message', 'Question updated successfully!');
+        return redirect()->route('questions.show', $question->id);
     }
 
     public function index()
@@ -86,142 +93,87 @@ class QuestionController extends Controller
     }
 
     public function upvoteQuestion(Request $request, $questionid) {
-        $usersid = Auth::id();
+        $userid = Auth::id();
         $question = Question::findOrFail($questionid);
         $existingVote = DB::table('votequestions')
-                          ->where('usersid', $usersid)
-                          ->where('questionid', $questionid)
-                          ->first();
-    
+                            ->where('usersid', $userid)
+                            ->where('questionid', $questionid)
+                            ->first();
     
         if ($existingVote) {
-            if ($existingVote->updown === true) {
+            if ($existingVote->updown) {
                 // Already upvoted, so remove the vote
-                $question->votecount -= 1;
-                
+                $question->votecount--;
                 DB::table('votequestions')
-                  ->where('usersid', $usersid)
-                  ->where('questionid', $questionid)
-                  ->delete();
-
-                $question->save();
+                    ->where('usersid', $userid)
+                    ->where('questionid', $questionid)
+                    ->delete();
             } else {
                 // Change downvote to upvote
                 $question->votecount += 2;
-
                 DB::table('votequestions')
-                  ->where('usersid', $usersid)
-                  ->where('questionid', $questionid)
-                  ->update(['updown' => true]);
-
-                $question->save();
-    
-                // Create a voteNotification record
-                $voteNotification = new VoteNotification([
-                    'updown' => TRUE,
-                    'usersid' => $question->usersid,
-                    'commentid' => NULL,
-                    'questionid' => $questionid,
-                    'voterid' => $usersid,
-                ]);
-        
-                // Save the voteNotification
-                $voteNotification->save();
+                    ->where('usersid', $userid)
+                    ->where('questionid', $questionid)
+                    ->update(['updown' => true]);
             }
         } else {
             // First-time vote, add upvote
-            $question->votecount += 1;
-
+            $question->votecount++;
             DB::table('votequestions')->insert([
-                'updown' => true, 
-                'usersid' => $usersid, 
+                'updown' => true,
+                'usersid' => $userid,
                 'questionid' => $questionid
             ]);
-
-            $question->save();
-            // Create a voteNotification record
-            $voteNotification = new VoteNotification([
-                'updown' => TRUE,
-                'usersid' => $question->usersid,
-                'commentid' => NULL,
-                'questionid' => $questionid,
-                'voterid' => $usersid,
-            ]);
-    
-            // Save the voteNotification
-            $voteNotification->save();
         }
+    
+        $question->save();
+    
+        // Add any necessary logic for notifications here
     
         return response()->json(['votecount' => $question->votecount]);
     }
-
+    
     public function downvoteQuestion(Request $request, $questionid) {
-        $usersid = Auth::id();
+        $userid = Auth::id();
         $question = Question::findOrFail($questionid);
         $existingVote = DB::table('votequestions')
-                        ->where('usersid', $usersid)
-                        ->where('questionid', $questionid)
-                        ->first();
-
+                            ->where('usersid', $userid)
+                            ->where('questionid', $questionid)
+                            ->first();
+    
         if ($existingVote) {
-            if ($existingVote->updown === false) {
+            if (!$existingVote->updown) {
                 // Already downvoted, so remove the vote
-                $question->votecount += 1;
-
+                $question->votecount++;
                 DB::table('votequestions')
-                ->where('usersid', $usersid)
-                ->where('questionid', $questionid)
-                ->delete();
-
-                $question->save();
+                    ->where('usersid', $userid)
+                    ->where('questionid', $questionid)
+                    ->delete();
             } else {
                 // Change upvote to downvote
                 $question->votecount -= 2;
-
                 DB::table('votequestions')
-                ->where('usersid', $usersid)
-                ->where('questionid', $questionid)
-                ->update(['updown' => false]);
-                
-                $question->save();
-                // Create a voteNotification record
-                $voteNotification = new VoteNotification([
-                    'updown' => FALSE,
-                    'usersid' => $question->usersid,
-                    'commentid' => NULL,
-                    'questionid' => $questionid,
-                    'voterid' => $usersid,
-                ]);
-    
-                // Save the voteNotification
-                $voteNotification->save();
+                    ->where('usersid', $userid)
+                    ->where('questionid', $questionid)
+                    ->update(['updown' => false]);
             }
         } else {
             // First-time vote, add downvote
-            $question->votecount -= 1;
-
+            $question->votecount--;
             DB::table('votequestions')->insert([
-                'updown' => false, 
-                'usersid' => $usersid, 
+                'updown' => false,
+                'usersid' => $userid,
                 'questionid' => $questionid
             ]);
-
-            $question->save();
-            // Create a voteNotification record
-            $voteNotification = new VoteNotification([
-                'updown' => FALSE,
-                'usersid' => $question->usersid,
-                'commentid' => NULL,
-                'questionid' => $questionid,
-                'voterid' => $usersid,
-            ]);
-
-            // Save the voteNotification
-            $voteNotification->save();
         }
-
+    
+        $question->save();
+    
+        // Add any necessary logic for notifications here
+    
         return response()->json(['votecount' => $question->votecount]);
     }
+    
 
     //-- Folow Questions
     public function follow(Question $question)

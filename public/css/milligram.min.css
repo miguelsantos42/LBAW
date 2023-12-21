@@ -151,7 +151,7 @@ input[type='checkbox'],input[type='radio']{
     max-width:112.0rem;
     padding:0 2.0rem;
     position:relative;
-    width:100%
+    width:100%;
 }
 .row{
     display:flex;

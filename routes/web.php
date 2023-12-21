@@ -16,6 +16,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MailController;
 
 
 // Home
@@ -41,15 +44,19 @@ Route::post('/comments/{comment}/edit', [CommentController::class, 'edit'])->nam
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
 Route::get('/questions/create', [QuestionController::class, 'create'])->name('ask.create');
+Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
 
-Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+
+Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
 Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');
 Route::post('/tags', [TagController::class, 'store'])->name('tags.store');
+Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit');
 Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
 Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
-Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
+Route::resource('tags', TagController::class)->except(['create', 'store', 'show', 'edit', 'update', 'destroy']);
 
 Route::post('/tags/{tag}/follow', [TagController::class, 'follow'])->name('tags.follow');
 Route::post('/tags/{tag}/unfollow', [TagController::class, 'unfollow'])->name('tags.unfollow');
@@ -60,6 +67,11 @@ Route::post('/question/{question}/unfollow', [QuestionController::class, 'unfoll
 
 Route::post('/questions/{question}/upvote', [CommentController::class, 'upvoteQuestion'])->name('questions.upvote');
 Route::post('/questions/{question}/downvote', [CommentController::class, 'downvoteQuestion'])->name('questions.downvote');
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+Route::post('/questions/{question}/upvote', [QuestionController::class, 'upvoteQuestion'])->name('questions.upvote');
+Route::post('/questions/{question}/downvote', [QuestionController::class, 'downvoteQuestion'])->name('questions.downvote');
+
 
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
@@ -99,3 +111,12 @@ Route::post('/comments', [CommentController::class, 'store'])->name('comments.st
 
 Route::post('/admin/users/{id}/block', [AdminController::class,'blockUser'])->name('admin.blockuser');
 Route::post('/admin/users/{id}/unblock', [AdminController::class,'unblockUser'])->name('admin.unblockuser');
+
+
+
+//mail
+
+Route::post('/send', [MailController::class, 'send']);
+Route::get('/send-mail', [UserController::class, 'showLinkRequestForm'])->name('send-mail');
+Route::get('/password/reset', [UserController::class, 'showUpdatePassForm'])->name('password.reset');
+Route::post('/password/reset', [UserController::class, 'updatePassword'])->name('password.update');

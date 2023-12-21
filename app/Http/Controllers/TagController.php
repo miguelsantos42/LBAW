@@ -39,11 +39,11 @@ class TagController extends Controller
 
     public function update(Request $request, Tag $tag)
     {
-        $request->validate(['tagname' => 'required']);
+        $validatedData = $request->validate([ 'tagname' => 'required|unique:tags,tagname,' . $tag->id,]);
 
-        $tag->update(['tagname' => $request->tagname]);
+        $tag->update($validatedData);
 
-        return redirect()->route('tags.index')->with('success', 'Tag updated successfully');
+        return redirect()->route('tags.index')->with('success', 'Tag updated sucessfully');
     }
 
     public function destroy(Tag $tag)
@@ -54,14 +54,11 @@ class TagController extends Controller
 
     public function search(Request $request)
     {
-        $searchtag = $request->input('search'); 
-        if(!empty($searchtag)){
-            $tags = Tag::query()
-            ->where('tagname', 'LIKE', "%{$searchtag}%")
-            ->get();
-        }else{
-            $tags = Tag::all();
-        }
+        $searchTerm = $request->input('search'); 
+        $tags = Tag::when($searchTerm, function ($query, $searchTerm){
+            return $query->where('tagname','LIKE', "%{$searchTerm}%");
+        })->get();
+
         return view('tags.index', compact('tags'));    
     }
 

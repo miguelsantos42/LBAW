@@ -1,19 +1,15 @@
 body {
-  /* Define a radial gradient background that's centered */
-  /*background: radial-gradient(circle at center, #242c2d 0%, #0b1416 100%); */
+
   background-image: url('/images/daniel-leone-g30P1zcOzXo-unsplash.jpg');
   background-color: black;
   /* Ensure it covers the whole page */
   min-height: 100vh;
-  background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-  /* These ensure the background extends to the whole page */
+  background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
   margin: 0;
   padding: 0;
-  
-  /* Center the content horizontally and vertically */
-  display: grid;
+    display: grid;
 
 }
 
@@ -184,8 +180,43 @@ main > header {
     color: #4a677c;
 }
 
+.notifications {
+  position: fixed; 
+  right: 5px;
+  width: 30%; 
+  height: 50%; 
+  background: rgba(255, 255, 255, 1); 
+  overflow-x: hidden;
+  transition: 0.5s; 
+  padding-top: 25px;
+  border-radius: 25px;
+  overflow: hidden;
+  z-index: 900;
+  transition: all 0.5s ease-in-out;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  padding: 1em;
+}
 
 
+.notifications a {
+  padding: 8px 8px 18px 18px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: all 0.5s ease-in-out;
+}
+
+.notifications a:hover {
+  color: #4a677c;
+}
+
+.blur-backdrop > :not(.notifications) {
+  z-index: 800;
+  backdrop-filter: blur(50px);
+  transition: all 1s ease-in-out;
+
+}
 
 
 #cards {

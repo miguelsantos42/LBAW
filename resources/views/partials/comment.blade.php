@@ -31,6 +31,9 @@
             <button class="delete-comment" type="submit">
                 <i class="bi bi-trash"></i>
             </button>
+            <button class="mark-as-correct">
+                <i class="bi bi-star"></i>
+            </button>
         </form>
         @endif
 

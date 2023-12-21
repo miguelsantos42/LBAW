@@ -1,0 +1,62 @@
+.send-mail-form {
+    background-color: white;
+    width: 30%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 20px;
+}
+.send-email-title{
+    text-align: center;
+    color: #4a677c;
+
+}
+
+#email-mailtrap{
+    border: 1px solid #4a677c;
+    border-radius: 25px;
+}
+
+.send-email-button{
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    background-color: #4a677c;
+    color: white;
+    border: none;
+}
+
+.send-email-button:hover{
+    background-color: #6e94af;
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+.reset-password-button{
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    background-color: #4a677c;
+    color: white;
+    border: none;
+}
+
+.reset-password-button:hover{
+    background-color: #6e94af;
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+#password.password{
+    border: 1px solid #4a677c;
+    border-radius: 25px;
+}
+
+#password_confirmation.password_confirmation{
+    border: 1px solid #4a677c;
+    border-radius: 25px;
+}
+
+.min{
+    font-size: 10px;
+    margin-left: 10px;
+}
