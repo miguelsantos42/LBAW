@@ -1,4 +1,4 @@
-<div id="sidebar" class="sidebar" style="top: -500px;">
+<div id="sidebar" class="sidebar" style="top: -1000px">
 
     @if(Auth::check())
         <a href="/feed">Feed</a>

@@ -21,6 +21,7 @@
     <link href="{{ url('css/question.css') }}" rel="stylesheet">
     <link href="{{ url('css/editquestion.css') }}" rel="stylesheet">
     <link href="{{ url('css/emails.css') }}" rel="stylesheet">
+    <link href="{{ url('css/tag.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"
         rel="stylesheet">
 
@@ -77,10 +78,10 @@
     <script>
     function toggleSidebar() {
         var sidebar = document.getElementById("sidebar");
-        if (sidebar.style.top === '-500px') {
+        if (sidebar.style.top === '-1000px') {
             sidebar.style.top = '180px';
         } else {
-            sidebar.style.top = '-500px';
+            sidebar.style.top = '-1000px';
         }
     }
 
@@ -88,12 +89,12 @@
         var notifications = document.getElementById("notifications");
         var body = document.body; // Get the body element
         var content = document.getElementById("content");
-        if (notifications.style.top === '-500px') {
+        if (notifications.style.top === '-1000px') {
             notifications.style.top = '130px';
             body.classList.add('blur-backdrop'); // Add the blur effect to the body
             content.style.display = "none";
         } else {
-            notifications.style.top = '-500px';
+            notifications.style.top = '-1000px';
             body.classList.remove('blur-backdrop'); // Remove the blur effect from the body
             content.style.display = "block";
         }

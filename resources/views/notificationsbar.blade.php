@@ -1,6 +1,6 @@
 {{-- resources/views/notificationsbar.blade.php --}}
 @if(Auth::check())
-    <div id="notifications" class="notifications" style="top: -500px;">
+    <div id="notifications" class="notifications" style="top: -1000px;">
         <div class="notifications-header">
             <h3>Notifications</h3>
         </div>

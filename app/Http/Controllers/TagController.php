@@ -11,6 +11,7 @@ class TagController extends Controller
     {
         $tags = Tag::all();
 
+        $auth = auth()->user();
         return view('pages.tags ', compact('tags'));
 
     }
@@ -59,7 +60,7 @@ class TagController extends Controller
             return $query->where('tagname','LIKE', "%{$searchTerm}%");
         })->get();
 
-        return view('tags.index', compact('tags'));    
+        return view('pages.tags', compact('tags'));    
     }
 
     public function show(Tag $tag)

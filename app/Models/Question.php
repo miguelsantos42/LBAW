@@ -34,7 +34,7 @@ class Question extends Model
         return $this->belongsToMany(Question::class, 'followedquestions', 'questionid', 'usersid');
     }
 
-    /*
+    
     public function follows()
     {
         return $this->belongsToMany(User::class, 'followedquestions', 'questionid', 'usersid');
