@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Question; // Assuming you have a Question model
+use App\Models\Question;
 use App\Models\User;
 
 class FeedController extends Controller

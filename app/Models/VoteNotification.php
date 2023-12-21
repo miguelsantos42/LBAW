@@ -32,4 +32,10 @@ class VoteNotification extends Model
     {
         return $this->belongsTo(User::class, 'voterid');
     }
+    public function notification()
+    {
+        return $this->belongsTo(Notification::class, 'id'); // 'notiticationid' is misspelled
+    }
+    
+
 }

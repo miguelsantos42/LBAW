@@ -48,18 +48,29 @@ class QuestionController extends Controller
     public function destroy($id)
     {
         
-        $question = Question::where('id', $id)->where('usersid', auth()->id())->firstOrFail();
+        $question = Question::where('id', $id)->firstOrFail();
         $question->delete();
         return response()->json(['success' => 'Question deleted successfully']);
 
     }
 
+    public function edit($id)
+    {
+        $question = Question::findOrFail($id);
+
+        $tags = Tag::all(); 
+
+        return view('pages.editquestion', compact('question', 'tags'));
+    }
+
+
     public function update(Request $request, Question $question)
     {
         $question->title = $request->title;
         $question->content = $request->content;
+        $question->tags()->sync($request->tags);
         $question->save();
-        return back()->with('message', 'Question updated successfully!');
+        return redirect()->route('questions.show', $question->id);
     }
 
     public function index()

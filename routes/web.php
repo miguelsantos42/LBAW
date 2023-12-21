@@ -16,6 +16,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\NotificationController;
 
 
 // Home
@@ -41,6 +42,8 @@ Route::post('/comments/{comment}/edit', [CommentController::class, 'edit'])->nam
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
 Route::get('/questions/create', [QuestionController::class, 'create'])->name('ask.create');
+Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
 
 Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');
@@ -53,7 +56,7 @@ Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search'
 
 Route::post('/questions/{question}/upvote', [CommentController::class, 'upvoteQuestion'])->name('questions.upvote');
 Route::post('/questions/{question}/downvote', [CommentController::class, 'downvoteQuestion'])->name('questions.downvote');
-
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
 Route::post('/questions/{question}/upvote', [QuestionController::class, 'upvoteQuestion'])->name('questions.upvote');
 Route::post('/questions/{question}/downvote', [QuestionController::class, 'downvoteQuestion'])->name('questions.downvote');

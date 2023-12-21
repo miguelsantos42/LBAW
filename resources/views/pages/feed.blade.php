@@ -19,15 +19,23 @@
                     <button class="upvote" onclick="voteQuestion({{ $question->id }}, true)">
                         <i class="bi-arrow-up-square"></i>
                     </button>
-                    <span id="votecount-{{ $question->id }}">
+                    <span class="votecount" id="votecount-{{ $question->id }}">
                         {{ $question->votecount }}
                     </span>
                     <button class="downvote" onclick="voteQuestion({{ $question->id }}, false)">
                         <i class="bi-arrow-down-square"></i>
                     </button>
+                    @if (Auth::check() && Auth::user()->id == $question->usersid || Auth::user()->role == '2')
+                        <button class="settings" onclick="window.location.href='{{ route('questions.edit', $question->id) }}'">
+                            <i class="bi bi-gear"></i>
+                        </button>
+                        <button class="trash" onclick="deleteQuestion({{ $question->id }})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    @endif
 
                 </div>
-                <a href="{{ route('questions.show', $question->id) }}">Read more...</a>
+                <a class="ReadMore" href="{{ route('questions.show', $question->id) }}">Read more...</a>
 
             </div>
 
@@ -105,5 +113,35 @@ function voteQuestion(questionid, isupvote) {
         })
         .catch(error => console.error('Error:', error));
 }
+
+function deleteQuestion(questionId) {
+    if(confirm('Are you sure you want to delete this question?')) {
+        fetch(`/questions/${questionId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            // You can redirect or remove the element from the DOM
+            window.location.reload(); // Simplest way to refresh the page
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+
+
+
 </script>
 @endsection

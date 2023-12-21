@@ -22,4 +22,13 @@ class Notification extends Model
     {
         return $this->belongsTo(Question::class, 'questionid');
     }
+    public function commentNotification()
+    {
+        return $this->hasOne(CommentNotification::class, 'notificationid');
+    }
+    public function voteNotifications()
+    {
+        return $this->hasMany(VoteNotification::class, 'id');
+    }
+
 }

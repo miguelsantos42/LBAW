@@ -58,6 +58,7 @@ CREATE TABLE questions(
     usersId INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     isDeleted BOOLEAN DEFAULT FALSE,
     closed BOOLEAN DEFAULT FALSE
+    edited BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE questionTags(
@@ -352,6 +353,34 @@ CREATE TRIGGER comment_search_update
 CREATE INDEX idx_search_comment ON comments USING GIN (tsvectors);
 
 --TRIGGERS--
+CREATE OR REPLACE FUNCTION delete_question_cascade()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM questionTags WHERE questionId = OLD.id;
+    
+    DELETE FROM comments WHERE questionId = OLD.id;
+    
+    DELETE FROM followedQuestions WHERE questionId = OLD.id;
+    
+    DELETE FROM voteQuestions WHERE questionId = OLD.id;
+    
+    DELETE FROM notification WHERE questionId = OLD.id;
+    
+    DELETE FROM commentNotification WHERE commentId IN (SELECT id FROM comments WHERE questionId = OLD.id);
+    
+    DELETE FROM report WHERE questionId = OLD.id;
+    
+    DELETE FROM voteNotification WHERE questionId = OLD.id;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_delete_question_cascade
+BEFORE DELETE ON questions
+FOR EACH ROW EXECUTE FUNCTION delete_question_cascade();
+
+
 
 
 --every time a new vote is cast on a question, update the vote count of the question.
