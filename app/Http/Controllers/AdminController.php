@@ -11,10 +11,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // Fetch all users from the User model
         $users = User::all();
-
-        // Pass the $users data to the 'pages.admin' view
         return view('pages.admin', ['users' => $users]);
     }
 

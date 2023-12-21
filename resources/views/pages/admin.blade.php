@@ -36,9 +36,10 @@
     <a href="{{ route('register') }}" class="btn btn-primary">
         <button type="button" class="btn btn-primary">Create User</button>
     </a>
-
+    @if($role == 2)
     <h2>Admin Page - User List</h2>
     <ul>
+    @endif
         @forelse ($users as $user)
         <li>
             <strong>{{ $user->name }}</strong> (Role: {{ $user->role }}) Email: {{ $user->email }}

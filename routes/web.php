@@ -73,11 +73,18 @@ Route::post('/questions/{question}/upvote', [QuestionController::class, 'upvoteQ
 Route::post('/questions/{question}/downvote', [QuestionController::class, 'downvoteQuestion'])->name('questions.downvote');
 
 
-Route::middleware(['checkRole:2'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
-    Route::post('/admin/users', [AdminController::class,'storeUser'])->name('admin.store-user');
+
+Route::middleware(['checkRole:1'])->group(function () {
+    Route::get('/moderator', [AdminController::class, 'index'])->name('moderator');
+    Route::post('/moderator/users', [AdminController::class, 'storeUser'])->name('moderator.store-user');
+    // Add other moderator routes as needed
 });
 
+Route::middleware(['checkRole:2'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+    Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.store-user');
+    // Add other admin routes as needed
+});
 
 // Cards
 Route::controller(CardController::class)->group(function () {

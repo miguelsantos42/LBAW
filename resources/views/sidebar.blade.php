@@ -26,7 +26,7 @@
         echo '<a href="/admin">Admin</a>';
     }
     if ($userRole == 1) {
-        echo '<a href="/admin">Moderator</a>';
+        echo '<a href="/moderator">Moderator</a>';
 
     }
     }
