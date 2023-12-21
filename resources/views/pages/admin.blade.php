@@ -36,11 +36,14 @@
     <a href="{{ route('register') }}" class="btn btn-primary">
         <button type="button" class="btn btn-primary">Create User</button>
     </a>
-    @if($role == 2)
+    @if(Auth::user()->role == 2)
     <h2>Admin Page - User List</h2>
+    @elseif(Auth::user()->role == 1)
+    <h2>Moderator Page - User List</h2>
     <ul>
     @endif
         @forelse ($users as $user)
+        @if(Auth::user()->role == 2)
         <li>
             <strong>{{ $user->name }}</strong> (Role: {{ $user->role }}) Email: {{ $user->email }}
             <div class="user-actions">
@@ -90,6 +93,28 @@
                 </div>
             </div>
         </li>
+        @elseif(Auth::user()->role == 1)
+        <!-- only be able to block users, cant delete neither change name and email ...-->
+        <li>
+            <strong>{{ $user->name }}</strong> (Role: {{ $user->role }}) Email: {{ $user->email }}
+            <div class="user-actions">
+                <div>
+                    @if($user->blocked)
+                    <form method="post" action="{{ route('admin.unblockuser', $user->id) }}">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Unblock</button>
+                    </form>
+                    @else
+                    <form method="post" action="{{ route('admin.blockuser', $user->id) }}">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Block</button>
+                    </form>
+                    @endif
+
+                </div>
+            </div>
+        </li>
+        @endif
         @empty
         <li>No users found.</li>
         @endforelse
