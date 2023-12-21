@@ -1,6 +1,8 @@
 body {
 
   background-image: url('/images/daniel-leone-g30P1zcOzXo-unsplash.jpg');
+  background-color: black;
+  /* Ensure it covers the whole page */
   min-height: 100vh;
   background-size: cover;
     background-position: center; 
@@ -152,10 +154,10 @@ main > header {
 
 .sidebar {
     position: fixed; 
-
+    top: -600px; 
     left: 70px;
     width: 280px; 
-    height: 50%; 
+    height: 60%; 
     background: rgba(255, 255, 255, 1); 
     overflow-x: hidden;
     transition: 0.5s; 

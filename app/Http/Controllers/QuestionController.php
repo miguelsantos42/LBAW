@@ -175,5 +175,21 @@ class QuestionController extends Controller
     }
     
 
+    //-- Folow Questions
+    public function follow(Question $question)
+    {
+        $user = auth()->user();
+        $user->followedQuestions()->attach($question->id);
+
+        return redirect()->back()->with('success', "followed successfully!");
+    }
+
+    public function unfollow(Question $question)
+    {
+        $user = auth()->user();
+        $user->followedQuestions()->detach($question->id);
+
+        return redirect()->back()->with('success', "followed successfully!");
+    }
 
 }

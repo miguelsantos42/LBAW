@@ -58,6 +58,13 @@ Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update')
 Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 Route::resource('tags', TagController::class)->except(['create', 'store', 'show', 'edit', 'update', 'destroy']);
 
+Route::post('/tags/{tag}/follow', [TagController::class, 'follow'])->name('tags.follow');
+Route::post('/tags/{tag}/unfollow', [TagController::class, 'unfollow'])->name('tags.unfollow');
+
+Route::post('/question/{question}/follow', [QuestionController::class, 'follow'])->name('questions.follow');
+Route::post('/question/{question}/unfollow', [QuestionController::class, 'unfollow'])->name('questions.unfollow');
+
+
 Route::post('/questions/{question}/upvote', [CommentController::class, 'upvoteQuestion'])->name('questions.upvote');
 Route::post('/questions/{question}/downvote', [CommentController::class, 'downvoteQuestion'])->name('questions.downvote');
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
@@ -69,6 +76,7 @@ Route::post('/questions/{question}/downvote', [QuestionController::class, 'downv
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
     Route::post('/admin/users', [AdminController::class,'storeUser'])->name('admin.store-user');
+    //Route::get('/tags', [TagController::class, 'index'])->name('tags');
 });
 
 

@@ -8,8 +8,8 @@
             @csrf
 
             <div class="form-group">
-                <label for="tagName">Tag Name</label>
-                <input type="text" class="form-control" name="tagName" value="{{ old('tagName') }}" placeholder="Enter tag name">
+                <label for="tagname">Tag Name</label>
+                <input type="text" class="form-control" name="tagname" value="{{ old('tagname') }}" placeholder="Enter tag name">
             </div>
 
             <button type="submit" class="btn btn-primary">Create</button>
