@@ -10,44 +10,51 @@ class FeedController extends Controller
 {
 
      public function index(Request $request)
-     {
+     {        
+
          $userId = auth()->id();
          $orderType = $request->get('order', 'random');
-     
+
          if ($orderType == 'top') {
              $questions = Question::with('user', 'tags')
                                  ->where('isdeleted', false)
                                  ->orderBy('votecount', 'desc')
                                  ->get();
+             $title = 'Top Questions';
          } elseif ($orderType == 'recent') {
              $questions = Question::with('user', 'tags')
                                  ->where('isdeleted', false)
                                  ->orderBy('date', 'desc')
                                  ->get();
+            $title = 'Recent Questions';
          } elseif ($orderType == 'myquestions') {
              $questions = Question::with('user', 'tags')
                                  ->where('isdeleted', false)
                                  ->where('usersid', $userId)
                                  ->get();
+            $title = 'My Questions';
          } elseif ($orderType == 'myanswers') {
              $questions = Question::with('user', 'tags')->whereHas('comments', function ($query) use ($userId) {
                  $query->where('usersid', $userId);
              })->where('isdeleted', false)
                ->get();
+            $title = 'My Answers';
          } elseif($orderType == 'followedquestions') {
             $questions = Question::with('user', 'tags')->whereHas('follows', function ($query) use ($userId) {
                 $query->where('usersid', $userId);
             })->where('isdeleted', false)
               ->get();
+            $title = 'Followed Questions';
 
         } else { // Default to random
              $questions = Question::with('user', 'tags')
                                  ->where('isdeleted', false)
                                  ->inRandomOrder()
                                  ->get();
+            $title = 'Feed';
          }
      
-         return view('pages.feed', compact('questions'));
+         return view('pages.feed', compact('questions', 'title'));
      }
      
 
@@ -57,7 +64,6 @@ class FeedController extends Controller
             $query->where('isDeleted', false);
         }])->findOrFail($id);
 
-        //show the tag that is associated with the question
         $tags = $question->tags()->get();
 
 

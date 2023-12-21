@@ -5,7 +5,7 @@
 @section('content')
 <div class="feed">
     <div class="container">
-        <h1 class="title">Questions Feed</h1>
+        <h1 class="title">{{$title}}</h1>
         <div class="accordion">
             @forelse ($questions as $question)
             <div class="accordion-container" id="container{{ $question->id }}"
@@ -19,7 +19,7 @@
                         </span>
                         <span>
                         @if ($question->edited)
-                            <span class="edited">Edited</span>
+                            <span title="Edited {{\Carbon\Carbon::parse($question->edited_date)->diffForHumans()}}" class="edited">Edited</span>
                         @endif
                     </span>
             </div>
@@ -50,7 +50,7 @@
             </div>
 
             @empty
-            <p>No questions available.</p>
+            <p class="no_questions">There are no questions available.</p>
             @endforelse
         </div>
     </div>
