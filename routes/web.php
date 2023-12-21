@@ -64,6 +64,7 @@ Route::post('/questions/{question}/downvote', [CommentController::class, 'downvo
 Route::middleware(['checkRole:2'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
     Route::post('/admin/users', [AdminController::class,'storeUser'])->name('admin.store-user');
+    //Route::get('/tags', [TagController::class, 'index'])->name('tags');
 });
 
 

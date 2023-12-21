@@ -8,8 +8,8 @@
             @csrf
             @method('PUT')
             <div class="form-group">
-                <label for="tagName">{{ $tag->tagname }}</label>
-                <input type="text" class="form-control" name="tagName" value="{{ old('tagName', $tag->tagName) }}" placeholder="Edit tag name">
+                <label for="tagname">{{ $tag->tagname }}</label>
+                <input type="text" class="form-control" name="tagname" value="{{ old('tagname', $tag->tagname) }}" placeholder="Edit tag name">
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>

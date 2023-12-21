@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    public $timestamps = false;
+     protected $table = 'tags';
+
+     protected $primaryKey = 'id';
+ 
+     public $timestamps = false;
+ 
+     protected $fillable = ['tagname'];
 
     public function questions()
     {

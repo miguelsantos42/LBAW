@@ -29,7 +29,7 @@ class TagController extends Controller
     
         $tag = Tag::create($validatedData);
 
-        return redirect()->route('pages.tags')->with('success', 'Tag created successfully');
+        return redirect()->route('tags.index')->with('success', 'Tag created successfully');
     }
     
     public function edit(Tag $tag)
@@ -39,11 +39,11 @@ class TagController extends Controller
 
     public function update(Request $request, Tag $tag)
     {
-        $request->validate([ 'tagname' => 'required' ]);
+        $request->validate(['tagname' => 'required']);
 
-        $tag->update([ 'tagname' => $request->name ]);
+        $tag->update(['tagname' => $request->tagname]);
 
-        return to_route('tags.index')->with('success', 'Tag updated successfully');
+        return redirect()->route('tags.index')->with('success', 'Tag updated successfully');
     }
 
     public function destroy(Tag $tag)
