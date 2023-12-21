@@ -31,6 +31,4 @@
     }
     }
     ?>
-
-    <!-- Add more links or content as needed -->
 </div>
