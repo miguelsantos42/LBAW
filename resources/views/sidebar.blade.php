@@ -1,4 +1,4 @@
-<div id="sidebar" class="sidebar" style="top: -500px;">
+<div id="sidebar" class="sidebar" style="top: -600px;">
     <a href="/feed">Feed</a>
     <a href="/tags">Tags</a>
     <a href="/feed?order=top">Top Questions</a>
@@ -6,9 +6,6 @@
     <a href="/feed?order=myquestions">My Questions</a>
     <a href="/feed?order=followedquestions">Followed Questions</a>
     <a href="/feed?order=myanswers">My Answers</a>
-
-
-
     <?php
     $user = auth()->user();
 

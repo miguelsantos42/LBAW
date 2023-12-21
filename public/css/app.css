@@ -157,10 +157,10 @@ main > header {
 
 .sidebar {
     position: fixed; 
-    top: -500px; 
+    top: -600px; 
     left: 70px;
     width: 280px; 
-    height: 50%; 
+    height: 60%; 
     background: rgba(255, 255, 255, 1); 
     overflow-x: hidden;
     transition: 0.5s; 

@@ -65,10 +65,10 @@
         <script>
             function toggleSidebar() {
                 var sidebar = document.getElementById("sidebar");
-                if (sidebar.style.top === '-500px') {
+                if (sidebar.style.top === '-600px') {
                     sidebar.style.top = '180px'; // Slide in
                 } else {
-                    sidebar.style.top = '-500px'; // Slide out
+                    sidebar.style.top = '-600px'; // Slide out
                 }
             }
         </script>
