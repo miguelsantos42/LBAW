@@ -200,7 +200,6 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($id);
 
-        // Check if the authenticated user can delete this comment
         if (auth()->id() === $comment->usersid) {
             $comment->delete();
             return redirect()->route('feed.index')->with('success', 'Comment deleted successfully.');
@@ -209,4 +208,69 @@ class CommentController extends Controller
             return redirect()->route('feed.index')->with('error', 'You cannot delete this comment.');
         }
     }
+    public function edit(Request $request, $id)
+    {
+        $request->validate([
+            'editedContent' => 'required',
+        ]);
+
+        $comment = Comment::findOrFail($id);
+        
+        if (auth()->id() === $comment->usersid) {
+            $comment->content = $request->editedContent;
+            $comment->edited = true;
+            $comment->save();
+
+
+            return back()->with('message', 'Comment edited successfully!');
+        } 
+        else {
+            return back()->with('error', 'You cannot edit this comment.');
+        }
+
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'editedContent' => 'required',
+        ]);
+    
+        $comment = Comment::findOrFail($id);
+        
+        if (auth()->id() === $comment->usersid) {
+            $comment->content = $request->editedContent;
+            $comment->save();
+    
+            return back()->with('message', 'Comment edited successfully!');
+        } else {
+            return back()->with('error', 'You cannot edit this comment.');
+        }
+    }
+    public function markAsCorrect(Request $request, $commentId)
+    {
+        $comment = Comment::findOrFail($commentId);
+        $question = $comment->question;
+    
+        $comment->correct = !$comment->correct;
+        $comment->save();
+    
+        $user = $comment->user;
+    
+        if ($comment->correct) {
+            $user->rating += 10;
+            $user->save();
+        }
+    
+        $correctCommentsCount = $question->comments()->where('correct', true)->count();
+    
+        $question->closed = $correctCommentsCount > 0;
+        $question->save();
+    
+        return back()->with('message', 'Comment marked as correct!');
+    }
+    
+    
+    
+
+
 }

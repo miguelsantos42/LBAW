@@ -7,6 +7,11 @@
     <div class="comment-metadata">
         <span class="comment-user">{{ $comment->user->name }}</span>
         <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
+        @if($comment->edited === true)
+            <span class="edited">
+                Edited
+            </span>
+        @endif
     </div>
     <div class="comment-content">{{ $comment->content }}</div>
 
@@ -24,18 +29,32 @@
             </button>
         </div>
 
-        @if(auth()->check() && auth()->id() === $comment->usersid)
+        @if(auth()->check() && auth()->id() === $question->usersid)
         <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" class="delete-form">
             @csrf
             @method('DELETE')
             <button class="delete-comment" type="submit">
                 <i class="bi bi-trash"></i>
             </button>
-            <button class="mark-as-correct">
-                <i class="bi bi-star"></i>
-            </button>
         </form>
+        <button class="mark-as-correct" onclick="markAsCorrect({{ $comment->id }})">
+            @if($comment->correct === true)
+                <i id="estrela" class="bi bi-star-fill "></i>
+            @elseif($comment->correct === false)
+                <i id="estrela-fill" class="bi bi-star"></i>
+            @endif
+        </button>
+        <button class="edit-comment" onclick="editComment({{ $comment->id }})">
+            <i class="bi bi-pencil"></i> Edit
+        </button>
+        @else
+            @if($comment->correct === true)
+                <i id="estrela" class="bi bi-star-fill "></i>
+            @elseif($comment->correct === false)
+                <i id="estrela-fill" class="bi bi-star"></i>
+            @endif
         @endif
+    
 
         <!-- Reply button -->
         @if(auth()->check())
@@ -65,7 +84,18 @@
         </form>
     </div>
     @endif
-
+    <!-- hidden edit form -->
+    @if(auth()->check() && auth()->id() === $comment->user->id)
+    <div class="edit-form-container" id="edit-form-{{ $comment->id }}" style="display: none;">
+        <form method="POST" action="{{ route('comments.edit', $comment->id) }}">
+            @csrf
+            @method('POST')
+            <textarea class="edit-textarea" name="editedContent" placeholder="Edit your comment..."
+                required>{{ $comment->content }}</textarea>
+            <button class="submit-edit" type="submit">Save Edit</button>
+        </form>
+    </div>
+    @endif
 </div>
 
 <script>
@@ -116,4 +146,50 @@ function toggleReplyForm(commentId) {
         replyForm.style.display = 'none';
     }
 }
+function editComment(commentId) {
+    var editForm = document.getElementById('edit-form-' + commentId);
+    var replyForm = document.getElementById('reply-form-' + commentId);
+
+    if (editForm.style.display === 'none' || editForm.style.display === '') {
+        editForm.style.display = 'block';
+        if (replyForm) replyForm.style.display = 'none'; // Hide reply form if visible
+    } else {
+        editForm.style.display = 'none';
+    }
+}
+
+function hideEditForm(commentId) {
+    var editForm = document.getElementById('edit-form-' + commentId);
+    if (editForm) editForm.style.display = 'none';
+}
+
+function markAsCorrect(commentId) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/comments/${commentId}/mark-as-correct`;
+    form.style.display = 'none';
+
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = token;
+    form.appendChild(csrfInput);
+
+    const commentIdInput = document.createElement('input');
+    commentIdInput.type = 'hidden';
+    commentIdInput.name = 'commentId';
+    commentIdInput.value = commentId;
+    form.appendChild(commentIdInput);
+
+    document.body.appendChild(form);
+
+    form.submit(); 
+
+    document.body.removeChild(form);
+}
+
+
+
+
 </script>

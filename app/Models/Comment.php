@@ -12,7 +12,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['content', 'usersId', 'questionId', 'voteCount', 'edited', 'isDeleted', 'parent_id'];
+    protected $fillable = ['content', 'usersId', 'questionId', 'voteCount', 'edited', 'isDeleted', 'parent_id', 'correct'];
     protected $dates = ['date']; 
 
     public $timestamps = false;
@@ -42,5 +42,6 @@ class Comment extends Model
         return $this->hasOne(VoteComment::class, 'commentid', 'id')
                     ->where('usersid', auth()->id());
     }
+
 }
 

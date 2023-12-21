@@ -168,3 +168,15 @@
     font-style: italic;
     font-size: 0.8em;
 }
+
+.postedBy{
+    font-size: 0.8em;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: Arial, sans-serif;
+    margin-left: 1rem;
+    margin-top: 1em;
+}

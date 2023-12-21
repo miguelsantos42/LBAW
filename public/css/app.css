@@ -161,7 +161,7 @@ main > header {
     background: rgba(255, 255, 255, 1); 
     overflow-x: hidden;
     transition: 0.5s; 
-    padding-top: 25px;
+    padding-top: 10px;
     border-radius: 25px;
     overflow: hidden;
 }

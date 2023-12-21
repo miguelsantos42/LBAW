@@ -143,6 +143,7 @@
     border: none;
     cursor: pointer;
     padding: 0 1rem;
+    font-size: 0.7em;
 }
 
 .reply-button:hover {
@@ -155,4 +156,89 @@
     border: none;
     cursor: pointer;
     padding: 0 1rem;
+}
+
+
+.mark-as-correct{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 1rem;
+    font-size: 1.2em;
+}
+.mark-as-correct:hover{
+    color: green;
+}
+
+.edit-comment{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 1rem;
+    font-size: 0.7em;
+
+}
+.edit-comment:hover{
+    color: rgb(255, 133, 153);
+}
+
+
+/* Add this to your CSS file */
+.question-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-details h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    color: #333;
+}
+
+.question-details p {
+    font-size: 1em;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 1em;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    background-color: #e1e1e1;
+    color: #333;
+    border-radius: 15px;
+    font-size: 0.85em;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #003d82;
+}
+
+.comments-section {
+    margin-top: 2em;
+}
+
+#estrela{
+    color: green;
+    margin-left: 15px;
 }

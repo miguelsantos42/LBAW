@@ -8,6 +8,7 @@
         <a href="/feed?order=followedquestions">Followed Questions</a>
         <a href="/feed?order=myanswers">My Answers</a>
         <a href="/feed?order=closedq">Closed Questions</a>
+        <a href="/feed?order=followedtags">Followed Tags</a>
         <a href="/tags">Tags</a>
 
     @else

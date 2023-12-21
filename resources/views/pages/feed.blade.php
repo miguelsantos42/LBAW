@@ -10,11 +10,11 @@
             @forelse ($questions as $question)
             <div class="accordion-container" id="container{{ $question->id }}"
                 onclick="toggleAccordion('content{{ $question->id }}', 'container{{ $question->id }}')">
-                <strong>{{ $question->title }}</strong> Posted by {{ $question->user->name }} <span
+                <strong>{{ $question->title }}</strong><span></span> Posted by {{ $question->user->name }} <span
                     class="date">{{ \Carbon\Carbon::parse($question->date)->diffForHumans() }}</span>
                         <span>
                             @foreach ($question->tags as $tag)
-                                <a href="{{ route('tags.show', $tag->id) }}" class="tag">#{{ $tag->tagname }}</a>
+                                <a href="{{ url('/tags') }}" class="tag">#{{ $tag->tagname }}</a>
                             @endforeach
                         </span>
                         <span>

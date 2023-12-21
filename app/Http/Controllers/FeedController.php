@@ -49,6 +49,12 @@ class FeedController extends Controller
             $questions = Question::with('user', 'tags')->where('closed', true)->where('isdeleted', false)->get();
 
               $title = 'Closed Questions';
+        } elseif($orderType == 'followedtags') {
+            $questions = Question::with('user', 'tags')->whereHas('tags', function ($query) use ($userId) {
+                $query->where('usersid', $userId);
+            })->where('isdeleted', false)
+                ->get();
+            $title = 'Followed Tags';
         } else { // Default to random
              $questions = Question::with('user', 'tags')
                                  ->where('isdeleted', false)

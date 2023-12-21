@@ -20,7 +20,7 @@
 
         <div class="form-group">
             <label for="tags">Tags</label>
-            <select multiple class="form-control" id="tags" name="tags[]">
+            <select title="Hold CTRL to choose more than one Tag" multiple class="form-control" id="tags" name="tags[]">
                 @foreach ($tags as $tag)
                     <option value="{{ $tag->id }}" @if($question->tags->contains($tag->id)) selected @endif>
                         {{ $tag->tagname }}

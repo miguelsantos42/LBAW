@@ -42,10 +42,12 @@ Route::post('/comments/{comment}/upvote', [CommentController::class, 'upvoteComm
 Route::post('/comments/{comment}/downvote', [CommentController::class, 'downvoteComment'])->name('comments.downvote');
 Route::post('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
 Route::get('/questions/create', [QuestionController::class, 'create'])->name('ask.create');
 Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+Route::post('/comments/{comment}/mark-as-correct', [CommentController::class, 'markAsCorrect'])->name('comments.markAsCorrect');
 
 
 Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
