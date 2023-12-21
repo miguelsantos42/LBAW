@@ -42,14 +42,16 @@ Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->nam
 Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
 Route::get('/questions/create', [QuestionController::class, 'create'])->name('ask.create');
 
-Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+
+Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
 Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');
 Route::post('/tags', [TagController::class, 'store'])->name('tags.store');
+Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit');
 Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
 Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
-Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
+Route::resource('tags', TagController::class)->except(['create', 'store', 'show', 'edit', 'update', 'destroy']);
 
 Route::post('/questions/{question}/upvote', [CommentController::class, 'upvoteQuestion'])->name('questions.upvote');
 Route::post('/questions/{question}/downvote', [CommentController::class, 'downvoteQuestion'])->name('questions.downvote');
