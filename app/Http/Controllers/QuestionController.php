@@ -68,6 +68,7 @@ class QuestionController extends Controller
     {
         $question->title = $request->title;
         $question->content = $request->content;
+        $question->edited = true;
         $question->tags()->sync($request->tags);
         $question->save();
         return redirect()->route('questions.show', $question->id);

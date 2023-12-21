@@ -12,6 +12,16 @@
                 onclick="toggleAccordion('content{{ $question->id }}', 'container{{ $question->id }}')">
                 <strong>{{ $question->title }}</strong> Posted by {{ $question->user->name }} <span
                     class="date">{{ \Carbon\Carbon::parse($question->date)->diffForHumans() }}</span>
+                        <span>
+                            @foreach ($question->tags as $tag)
+                                <a href="{{ route('tags.show', $tag->id) }}" class="tag">#{{ $tag->tagname }}</a>
+                            @endforeach
+                        </span>
+                        <span>
+                        @if ($question->edited)
+                            <span class="edited">Edited</span>
+                        @endif
+                    </span>
             </div>
             <div class="accordion-content" id="content{{ $question->id }}">
                 <p>{{ Str::limit($question->content, 500) }}</p>

@@ -21,7 +21,7 @@
     border-radius: 10px;
     transition: background-color 0.3s, border-radius 0.3s;
     border-bottom-left-radius: 10px; 
-    border-bottom-right-radius: 10px';
+    border-bottom-right-radius: 10px;
 }
 
 .accordion-container::after {
@@ -140,4 +140,12 @@
 .trash:hover{
     transition: 0.5s;
     color: red;
+}
+
+.edited{
+    color: rgba(144, 0, 0, 0.686);
+    font-style: italic;
+    font-size: 0.8em;
+ 
+
 }
