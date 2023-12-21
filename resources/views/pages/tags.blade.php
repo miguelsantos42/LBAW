@@ -18,10 +18,21 @@
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         <div class="card-body">
-                        <h5 class="card-title" style="display: none;">{{ $tag->id }}</h5>
+                            <h5 class="card-title" style="display: none;">{{ $tag->id }}</h5>
                             <h5 class="card-title">{{ $tag->tagname }}</h5>
-
-                            <a href="{{ route('tags.show', ['tag' => $tag->id]) }}" class="btn btn-primary">View Posts</a>
+                            @auth
+                              @if(Auth::user()->followsT($tag))
+                                <form method="POST" action="{{ route('tags.unfollow', $tag->id) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">Unfollow</button>
+                                </form>
+                              @else
+                                <form method="POST" action="{{ route('tags.follow', $tag->id) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary btn-sm">Follow</button>
+                                </form>
+                              @endif
+                            @endauth
                             <a href="{{ route('tags.edit',  $tag->id) }}" class="btn btn-secondary">Edit</a>    <!-- Se for Admin -->
                             <form action="{{ route('tags.destroy',  $tag->id) }}" method="POST" 
                                 onsubmit="return confirm('Are you sure?');">

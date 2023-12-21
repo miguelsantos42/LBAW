@@ -24,6 +24,22 @@
                         <i class="bi-arrow-down-square"></i>
                     </button>
                 </div>
+                <div class="follow-unfollow">
+                    @auth
+                      @if(Auth::user()->followsQ($question))
+                        <form method="POST" action="{{ route('questions.unfollow', $question->id) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-sm">Unfollow</button>
+                        </form>
+                      @else
+                        <form method="POST" action="{{ route('questions.follow', $question->id) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-sm">Follow</button>
+                        </form>
+                      @endif
+                    @endauth 
+                </div>
+
                 <a href="{{ route('questions.show', $question->id) }}">Read more...</a>
 
             </div>

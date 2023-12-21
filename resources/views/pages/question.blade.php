@@ -17,7 +17,7 @@
             @csrf
             <input type="hidden" name="questionid" value="{{ $question->id }}" />
             <textarea name="content" placeholder="Your answer..." required class="form-control"></textarea>
-            <button type="submit" class="btn btn-primary">Submit Answer</button>
+            <button type="submit" class="btn btn-primary">Submit Answer</button>          
         </form>
         <div class="comments-section">
             @if($nestedComments)
