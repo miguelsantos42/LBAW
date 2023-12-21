@@ -26,14 +26,11 @@ class Controller extends BaseController
                                                     // Add a simple check to ensure the related objects are loaded
                                                     $content = $notification->content;
                                                     $date = $notification->date;
-                                                    $questionid = optional($notification->commentNotification->comment->question)->id
-                                                                ?? optional($notification->voteNotifications->question)->id;
-
+                                                    
                                                     return [
                                                         'id' => $notification->id,
                                                         'content' => $content,
                                                         'date' => $date,
-                                                        'questionid' => $questionid,
                                                     ];
                                                 });
                 View::share('allnotifications', $allnotifications);

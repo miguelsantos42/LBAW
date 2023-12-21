@@ -161,3 +161,10 @@
     margin-left: 1rem;
     margin-top: 8em;
 }
+
+
+.closed{
+    color: rgba(12, 144, 0, 0.686);
+    font-style: italic;
+    font-size: 0.8em;
+}

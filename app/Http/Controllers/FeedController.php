@@ -45,7 +45,10 @@ class FeedController extends Controller
             })->where('isdeleted', false)
               ->get();
             $title = 'Followed Questions';
+        } elseif($orderType == 'closedq') {
+            $questions = Question::with('user', 'tags')->where('closed', true)->where('isdeleted', false)->get();
 
+              $title = 'Closed Questions';
         } else { // Default to random
              $questions = Question::with('user', 'tags')
                                  ->where('isdeleted', false)

@@ -21,7 +21,12 @@
                         @if ($question->edited)
                             <span title="Edited {{\Carbon\Carbon::parse($question->edited_date)->diffForHumans()}}" class="edited">Edited</span>
                         @endif
-                    </span>
+                        </span>
+                        @if ($question->closed)
+                        <span>
+                            <span title="This question is closed" class="closed">Closed</span>
+                        </span>
+                        @endif
             </div>
             <div class="accordion-content" id="content{{ $question->id }}">
                 <p>{{ Str::limit($question->content, 500) }}</p>
