@@ -22,7 +22,7 @@
         @endif
 
         <label>
-            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+            <a href="{{route('send-mail')}}">Recover Password</a>
         </label>
 
         <button type="submit">

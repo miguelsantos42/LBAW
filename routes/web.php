@@ -17,6 +17,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MailController;
 
 
 // Home
@@ -99,3 +101,12 @@ Route::post('/comments', [CommentController::class, 'store'])->name('comments.st
 
 Route::post('/admin/users/{id}/block', [AdminController::class,'blockUser'])->name('admin.blockuser');
 Route::post('/admin/users/{id}/unblock', [AdminController::class,'unblockUser'])->name('admin.unblockuser');
+
+
+
+//mail
+
+Route::post('/send', [MailController::class, 'send']);
+Route::get('/send-mail', [UserController::class, 'showLinkRequestForm'])->name('send-mail');
+Route::get('/password/reset', [UserController::class, 'showUpdatePassForm'])->name('password.reset');
+Route::post('/password/reset', [UserController::class, 'updatePassword'])->name('password.update');
